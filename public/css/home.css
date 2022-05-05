@@ -1,0 +1,111 @@
+*{
+    margin: 0;
+    padding: 0;
+    color: #000000;
+    font-family: 'Noto Sans Telugu UI';
+    font-size: 18px;
+}
+body{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    justify-content: space-between;
+    background: linear-gradient(223.73deg, #FBB7C0 0%, rgba(196, 196, 196, 0) 74.76%);
+}
+.left-header-container{
+    flex: auto;
+    max-width: 700px;
+    height:100vh;
+}
+.img-container{
+    background-image: url(https://d1dd0qmbf0xvcr.cloudfront.net/home.jpg);
+    background-size: cover;
+    max-width: 700px;
+    height:100vh;
+}
+.logo-container > div{
+    width: 222px;
+    margin-left: 20px;
+    font-weight: 700;
+    font-size: 45px;
+    color: #B6244F;
+}
+.form-container{
+    flex: auto;
+    max-width: 700px;
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.form-container > .slogan-container{
+    margin-bottom: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.slogan-container > div{
+    color: #666666;
+    font-weight: 700;
+}
+form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 500px;
+    height: 650px;
+    background: #FFFFFF;
+    border-radius: 45px;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+}
+form > .title{
+    font-weight: 700;
+    font-size: 45px;
+    margin-top: 40px;
+    margin-bottom: 10px;
+}
+form > .sub-title{ 
+    font-size: 20px;
+    color: #666666;
+    margin-bottom: 30px;
+}
+form > .input-container > input{
+    width: 400px;
+    height: 55px;
+    background: #FFFFFF;
+    border: 1px solid #888888;
+    border-radius: 10px;
+    padding-left: 15px;
+    margin: 15px 0px 15px 0px;
+}
+form > button{
+    width: 400px;
+    height: 55px;
+    font-weight: 700;
+    border-radius: 10px;
+    border: none;
+    margin: 15px 0px 15px 0px;
+    cursor: pointer;
+}
+form > .sign-in-btn{
+    background-color: #B6244F;
+    color: #FFFFFF;
+}
+form > .google-btn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #E5E5E5;
+    margin-bottom: 30px;
+}
+form > .google-btn > img{
+    width: 35px;
+    margin-right: 30px;
+}
+form > .sign-up-link, form > .sign-in-link{
+    cursor: pointer;
+}
+.hide-form{
+    display: none;
+}
