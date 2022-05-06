@@ -30,10 +30,32 @@ nav > .nav-container{
     align-items: center;
     justify-content: center;
 }
-.icon-container > img{
+.icon{
+    width: 75px;
+    height: 70px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.icon> img{
     width: 35px;
     cursor: pointer;
 }
-.message-icon{
-    margin-right: 30px;
+.message-title, .member-title, .logout-title{
+    position: absolute;
+    top: 50px;
+    width: 70px;
+    height: 30px;
+    font-size: 12px;
+    background-color: #888888;
+    color: #FFFFFF;
+    line-height: 30px;
+    text-align: center;
+    border-radius: 10px;
+    font-weight: 700;
+    display: none;
+}
+.show{
+    display: block;
 }

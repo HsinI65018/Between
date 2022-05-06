@@ -5,6 +5,8 @@
     font-family: 'Noto Sans Telugu UI';
     font-size: 18px;
 }
+
+/* user identity */
 header{
     height: 320px;
     display: flex;
@@ -75,6 +77,8 @@ header > .header-container{
 .hide{
     display: none;
 }
+
+/* personal information */
 main{
     max-width: 1200px;
     margin: 3rem auto;
@@ -84,7 +88,7 @@ main > .btn-container{
     margin: auto;
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: center;
 }
 .btn-container > button{
     width: 200px;

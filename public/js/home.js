@@ -1,3 +1,4 @@
+//// switch sign in form and sign up from
 const signUpContainer = document.querySelector('.sign-up-container');
 const signInContainer = document.querySelector('.sign-in-container');
 const signUpLink = document.querySelector('.sign-up-link');
@@ -16,3 +17,12 @@ const switchForm = (e) => {
 
 signUpLink.addEventListener('click', switchForm);
 signInLink.addEventListener('click', switchForm);
+
+//// check user identity, if true go to member page
+const signInForm = document.querySelector('.sign-in');
+const checkUserIdentity = (e) => {
+    e.preventDefault();
+    window.location = '/member';
+}
+
+signInForm.addEventListener('submit', checkUserIdentity);
