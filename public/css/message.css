@@ -1,0 +1,159 @@
+*{
+    margin: 0;
+    padding: 0;
+    color: #000000;
+    font-family: 'Noto Sans Telugu UI';
+    font-size: 18px;
+}
+main{
+    display: flex;
+}
+
+/* aside */
+main > aside{
+    width: 400px;
+    height: calc(100vh - 50px);
+    display: flex;
+}
+
+/* fb and ig */
+aside > .aside-tool-container{
+    width: 90px;
+    height: calc(100vh - 50px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #E8E8E8E8;
+    padding-top: 30px;
+}
+
+/* friend zone */
+aside > .aside-friend-container{
+    padding: 0px 5px 0px 5px;
+}
+.aside-friend-container > .aside-container{
+    margin-top: 30px;
+}
+/* search engine */
+.aside-container > .search-container{
+    height: 35px;
+    display: flex;
+    align-items: center;
+    border: 1px solid #888888;
+    border-radius: 10px;
+    margin: 25px 15px 20px 15px;
+}
+.search-container > img{
+    width: 25px;
+    height: 25px;
+    margin-left: 10px;
+}
+.search-container > input{
+    border: none;
+    padding: 5px 10px 5px 10px;
+    outline: none;
+}
+/* friend card */
+.friend-zone-container > .friend-card{
+    width: 280px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    padding: 0px 10px 0px 10px;
+}
+.friend-card:hover{
+    background-color: #E8E8E8E8;
+    border-radius: 10px;
+}
+.friend-card > .img-container{
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-right: 20px;
+    margin-left: 5px;
+}
+.img-container > img{
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* chatting room */
+main > section{
+    width: calc(100vw - 400px);
+    height: calc(100vh - 50px);
+    border-left: 1px solid #E8E8E8E8;
+}
+/* header */
+section > .section-header{
+    height: 40px;
+    background-color: #E8E8E8E8;
+    display: flex;
+    align-items: center;
+}
+.section-header > .title{
+    margin-left: 50px;
+    font-weight: 700;
+}
+/* main chatting room */
+section > .section-container{
+    height: calc(100vh - 50px - 40px - 130px - 40px);
+    padding: 20px 50px 20px 50px;
+    overflow: scroll;
+}
+.section-container> .message-container{
+    margin-bottom: 35px;
+    display: flex;
+    align-items: center;
+}
+.message-container > .img-container{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+.message-container > .img-container > img{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.message-container > .message-info-container{
+    margin-left: 20px;
+}
+.message-info-container > .message-user-info{
+    display: flex;
+}
+.message-user-info > .title{
+    display: flex;
+    align-items: flex-end;
+    text-align: center;
+    font-weight: 700;
+}
+.message-user-info > .msg-date{
+    height: 25px;
+    font-size: 12px;
+    margin-left: 20px;
+    display: flex;
+    align-items: flex-end;
+    color: #888888;
+}
+/* send msg */
+section > .section-footer{
+    width: calc(100vw - 400px);
+    height: 130px;
+    position: fixed;
+    bottom: 0;
+    background-color: #E8E8E8E8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.section-footer > input{
+    width: calc(100vw - 400px - 80px);
+    height: 50px;
+    outline: none;
+    border: 1px solid #888888;
+    border-radius: 10px;
+    padding: 0px 15px 0px 15px;
+}

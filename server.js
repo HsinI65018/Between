@@ -1,14 +1,24 @@
 const express = require('express');
-const engine = require('ejs-locals');
 
 const app = express();
 
-app.engine('ejs', engine);
-app.set('views', './views');
 app.set('view engine', 'ejs');
+app.use(express.static('./public'));
 
 app.get('/', (req, res) => {
-    res.render('index')
+    res.render('pages/home')
+})
+
+app.get('/member', (req, res) => {
+    res.render('pages/member')
+})
+
+app.get('/match', (req, res) => {
+    res.render('pages/match')
+})
+
+app.get('/message', (req, res) => {
+    res.render('pages/message')
 })
 
 const PORT = 3000;

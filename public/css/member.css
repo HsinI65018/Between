@@ -1,0 +1,101 @@
+*{
+    margin: 0;
+    padding: 0;
+    color: #000000;
+    font-family: 'Noto Sans Telugu UI';
+    font-size: 18px;
+}
+
+/* user identity */
+header{
+    height: 320px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+header > .header-container{
+    width: 800px;
+    height: 200px;
+    margin: 10px auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.header-container > .image-container{
+    flex: auto;
+    width: 200px;
+    height: 200px;
+    cursor: pointer;
+}
+.image-container > img{
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    object-position: center;
+}
+.header-container > .user-container{
+    width: 500px;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.user-container > .info-container{
+    display: flex;
+}
+.info-container > .title{
+    width: 86px;
+    margin-right: 50px;
+    display: flex;
+    align-items: center;
+}
+.info-container > .content{
+    width: 300px;
+    height: 37px;
+    line-height: 37px;
+    margin-right: auto;
+}
+.info-container > input{
+    width: 200px;
+    height: 25px;
+    background: #FFFFFF;
+    border: 1px solid #888888;
+    border-radius: 5px;
+    padding: 5px 15px 5px 15px;
+    margin-right: auto;
+}
+.info-container > .img-container{
+    width: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.img-container > img{
+    max-width: 100%;
+    cursor: pointer;
+}
+.hide{
+    display: none;
+}
+
+/* personal information */
+main{
+    max-width: 1200px;
+    margin: 3rem auto;
+}
+main > .btn-container{
+    width: 800px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.btn-container > button{
+    width: 200px;
+    height: 50px;
+    background: #B6244F;
+    border-radius: 15px;
+    border: none;
+    color: #FFFFFF;
+    cursor: pointer;
+}

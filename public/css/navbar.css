@@ -1,0 +1,61 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'Noto Sans Telugu UI';
+}
+nav{
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #E8E8E8E8;
+    margin: auto;
+}
+nav > .nav-container{
+    width: 1200px;
+    height: 34px;
+    margin: 10px auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.nav-container > .logo{
+    font-weight: 700;
+    font-size: 30px;
+    color: #B6244F;
+    cursor: pointer;
+}
+.nav-container > .icon-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.icon{
+    width: 75px;
+    height: 70px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.icon> img{
+    width: 35px;
+    cursor: pointer;
+}
+.message-title, .member-title, .logout-title{
+    position: absolute;
+    top: 50px;
+    width: 70px;
+    height: 30px;
+    font-size: 12px;
+    background-color: #888888;
+    color: #FFFFFF;
+    line-height: 30px;
+    text-align: center;
+    border-radius: 10px;
+    font-weight: 700;
+    display: none;
+}
+.show{
+    display: block;
+}

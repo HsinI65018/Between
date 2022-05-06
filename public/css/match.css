@@ -1,0 +1,172 @@
+*{
+    margin: 0;
+    padding: 0;
+    color: #000000;
+    font-family: 'Noto Sans Telugu UI';
+    font-size: 18px;
+}
+
+/* match card */
+main{
+    max-width: 1200px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+}
+main > .match-container{
+    width: 900px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.img-container{
+    background-image: url(https://d1dd0qmbf0xvcr.cloudfront.net/icon/person-1.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 650px;
+    height: calc(100vh - 50px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+}
+/* match success */
+.img-container > .show-match-container{
+    width: calc(100vw + 50px);
+    height: calc(100vh - 150px);
+    background: rgba(0, 0, 0, 0.6);
+}
+.show-match-container > .content-container{
+    width: 650px;
+    margin: auto;
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.content-container > .title{
+    font-weight: 700;
+    font-size: 40px;
+    color: #FFFFFF;
+    margin-bottom: 20px;
+}
+.content-container > .sub-title{
+    font-weight: 700;
+    color: #FFFFFF;
+    margin-bottom: 50px;
+}
+.content-container > .photo-container{
+    width: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 100px;
+}
+.photo-container > .person-container{
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+}
+.photo-container > .person-container > img{
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.content-container > button{
+    width: 250px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.6);
+    border: 0.5px solid #E8E8E8E8;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+button > img{
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+}
+.success-message-title, .success-playing-title{
+    width: 150px;
+    color: #FFFFFF;
+}
+/* introduction */
+.img-container > .introduction-container{
+    width: 650px;
+    height: 300px;
+    background: rgba(0, 0, 0, 0.6);
+}
+.introduction-container > .introduction{
+    width: 550px;
+    height: 250px;
+    margin: auto;
+    margin-top: 30px;
+    color: #FFFFFF;
+    text-align: justify;
+}
+/* user info */
+.img-container > .info-container{
+    width: 650px;
+    height: 120px;
+    background-color: #FFFFFF;
+    border: 1px solid #E8E8E8E8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.info-container > .user-img-container{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+.user-img-container > img{
+    width: 90px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+.info-container > .user-info-container{
+    width: 300px;
+    height: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    margin: 0px 10% 0px 5%;
+}
+.user-info-container > .user-name{
+    font-weight: 700;
+    font-size: 20px;
+}
+.user-info-container > .location{
+    display: flex;
+    align-items: center;
+}
+.location > img{
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+}
+.more-info-Btn{
+    cursor: pointer;
+}
+main > .next-btn-container, .next-btn-container > img{
+    width: 40px;
+    height: 40px;
+}
+/* next-person */
+.match-container > .next-person{
+    width: 30px;
+    height: 30px;
+    margin-left: 20px;
+    cursor: pointer;
+}
+.hide{
+    display: none;
+}
