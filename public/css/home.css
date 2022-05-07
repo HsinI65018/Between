@@ -24,12 +24,14 @@ body{
     max-width: 700px;
     height:100vh;
 }
-.logo-container > div{
+.logo-container > a{
     width: 222px;
     margin-left: 20px;
     font-weight: 700;
     font-size: 45px;
     color: #B6244F;
+    cursor: pointer;
+    text-decoration: none;
 }
 /* login/register form */
 .form-container{

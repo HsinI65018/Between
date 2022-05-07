@@ -22,9 +22,15 @@ header > .header-container{
     justify-content: space-between;
 }
 .header-container > .image-container{
-    flex: auto;
     width: 200px;
     height: 200px;
+    cursor: pointer;
+    background: #E8E8E8E8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.custom-file-upload > img{
     cursor: pointer;
 }
 .image-container > img{
@@ -82,7 +88,12 @@ header > .header-container{
 main{
     max-width: 1200px;
     margin: 3rem auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
+/* profile btn */
 main > .btn-container{
     width: 800px;
     margin: auto;
@@ -98,4 +109,137 @@ main > .btn-container{
     border: none;
     color: #FFFFFF;
     cursor: pointer;
+}
+/* profile content */
+main > .profile-container{
+    width: 800px;
+    margin: auto;
+}
+form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+/* about */
+.about-container{
+    margin-bottom: 20px;
+}
+.about-container > .title, .personality-container > .title, .sex-container > .title, .condition-container > .title{
+    font-weight: 700;
+    font-size: 25px;
+    margin-bottom: 30px;
+}
+.about-container > .location, .about-container > .introduction{
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+.location > .title, .introduction > .title{
+    width: 110px;
+    font-weight: 700;
+    margin-right: 50px;
+}
+.location > input{
+    outline: none;
+    width: 250px;
+    height: 20px;
+    background: #FFFFFF;
+    border: 1px solid #888888;
+    border-radius: 5px;
+    padding: 5px 15px 5px 15px;
+}
+.introduction > textarea{
+    outline: none;
+    width: 600px;
+    height: 100px;
+    background: #FFFFFF;
+    border: 1px solid #888888;
+    border-radius: 5px;
+    padding: 5px 15px 5px 15px;
+}
+/* personality */
+.personality-container > .type-container{
+    width: 800px;
+    display: flex;
+    flex-wrap: wrap;
+}
+.type-container > .type{
+    width: 180px;
+    padding: 10px 10px 10px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+.type:hover{
+    background-color: #E8E8E8E8;
+    border-radius: 10px;
+}
+.type > .latter{
+    width: 60px;
+    height: 60px;
+    background-color: #B6244F;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin-bottom: 10px;
+}
+.type > .title{
+    font-weight: 700;
+    font-size: 20px;
+}
+.type > .content{
+    width: 170px;
+    height: 210px;
+    text-align: left;
+    font-size: 17px;
+}
+/* sex */
+.sex-container, .condition-container{
+    width: 800px;
+}
+.sex-btn-container > button{
+    width: 100px;
+    height: 30px;
+    margin-right: 10px;
+    background: #E8E8E8E8;
+    color: #000000;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+}
+.sex-container > .sex-btn-container{
+    margin-bottom: 30px;
+}
+.sex-btn-container > button:hover{
+    color: #FFFFFF;
+    background: #B6244F;
+}
+/* condition */
+.condition-container > input{
+    outline: none;
+    width: 750px;
+    height: 25px;
+    background: #FFFFFF;
+    border: 1px solid #888888;
+    border-radius: 5px;
+    padding: 5px 15px 5px 15px;
+    margin-bottom: 30px;
+}
+/* save btn */
+.save-btn{
+    width: 200px;
+    height: 50px;
+    background: #B6244F;
+    border-radius: 15px;
+    border: none;
+    color: #FFFFFF;
+    cursor: pointer;
+}
+.hide{
+    display: none;
 }
