@@ -13,16 +13,22 @@ body{
     background: linear-gradient(223.73deg, #FBB7C0 0%, rgba(196, 196, 196, 0) 74.76%);
 }
 /* photo */
-.left-header-container{
-    flex: auto;
-    max-width: 700px;
-    height:100vh;
-}
 .img-container{
     background-image: url(https://d1dd0qmbf0xvcr.cloudfront.net/icon/home.jpg);
     background-size: cover;
     max-width: 700px;
     height:100vh;
+}
+
+/* content */
+.content-container{
+    width: 100vw;;
+    display: flex;
+}
+/* logo */
+.logo-container{
+    width: 700px;
+    height: 70px;
 }
 .logo-container > a{
     width: 222px;
@@ -35,9 +41,8 @@ body{
 }
 /* login/register form */
 .form-container{
+    margin-top: 40px;
     flex: auto;
-    max-width: 700px;
-    margin-bottom: 15px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -112,4 +117,26 @@ form > .sign-up-link, form > .sign-in-link{
 }
 .hide-form{
     display: none;
+}
+
+/* RWD */
+@media(min-width: 1650px){
+    .img-container{
+        max-width: 1000px;
+    }
+}
+@media(max-width: 1250px){
+    .img-container{
+       max-width: 1200px;
+    }
+    .content-container{
+        flex-direction: column;
+    }
+    .logo-container{
+        width: auto;
+        height: auto;
+    }
+    .slogan-container > div{
+        color: #FFFFFF;
+    }
 }
