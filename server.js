@@ -1,28 +1,26 @@
 const express = require('express');
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
+const render = require('./router/render');
+const user = require('./router/user');
+const passport = require('passport');
 
 const app = express();
 
 app.set('view engine', 'ejs');
+app.use(cookieParser());
 app.use(express.static('./public'));
+app.use(express.json());
 
-app.get('/', (req, res) => {
-    res.render('pages/home')
-})
+app.use(session({ secret: 'cats', resave: false, saveUninitialized: true }));
+app.use(passport.initialize());
+app.use(passport.session());
 
-app.get('/member', (req, res) => {
-    res.render('pages/member')
-})
-
-app.get('/match', (req, res) => {
-    res.render('pages/match')
-})
-
-app.get('/message', (req, res) => {
-    res.render('pages/message')
-})
+app.use('/', render);
+app.use('/api/user', user);
 
 const PORT = 3000;
-const HOST = '0.0.0.0';
+const HOST = 'localhost';
 
 app.listen(PORT, HOST);
-console.log('Server listen at port 3000');
+console.log('Server listen at port 3000...');

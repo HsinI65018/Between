@@ -21,16 +21,13 @@
                         <div class="title">Sign in</div>
                         <div class="sub-title">Sign in with your email here.</div>
                         <div class="input-container">
-                            <input type="email" placeholder="Email">
+                            <input type="email" placeholder="Email" class="sign-in-email" required>
                         </div>
                         <div class="input-container">
-                            <input type="password" placeholder="Password">
+                            <input type="password" placeholder="Password" class="sign-in-password" required>
                         </div>
                         <button class="sign-in-btn">Sign in</button>
-                        <button class="google-btn">
-                            <img src="https://d1dd0qmbf0xvcr.cloudfront.net/icon/google-logo.png">
-                            <div>Connect with Google</div>
-                        </button>
+                        <a href="/api/user/auth/google" class="google-btn"><img src="https://d1dd0qmbf0xvcr.cloudfront.net/icon/google-logo.png">Connect with Google</a>
                         <div class="sign-up-link">Don’t have an account? Sign up</div>
                     </form>
                 </div>
@@ -39,15 +36,16 @@
                         <div class="title">Sign up</div>
                         <div class="sub-title">Create a free account with your email.</div>
                         <div class="input-container">
-                            <input type="text" placeholder="Full Name">
+                            <input type="text" placeholder="Full Name" class="sign-up-name" required>
                         </div>
                         <div class="input-container">
-                            <input type="email" placeholder="Email">
+                            <input type="email" placeholder="Email" class="sign-up-email" required>
                         </div>
                         <div class="input-container">
-                            <input type="password" placeholder="Password">
+                            <input type="password" placeholder="Password" class="sign-up-password" required>
                         </div>
                         <button class="sign-in-btn">Create your free account</button>
+                        <div class="error-message"></div>
                         <div class="sign-in-link">Already have an account? Sign in</div>
                     </form>
                 </div>
