@@ -22,7 +22,7 @@ app.use('/', render);
 app.use('/api/user', user);
 
 const PORT = 3000;
-const HOST = 'localhost';
+const HOST = '0.0.0.0';
 
 app.listen(PORT, HOST);
 console.log('Server listen at port 3000...');

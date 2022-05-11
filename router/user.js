@@ -7,7 +7,7 @@ const passport = require('passport');
 
 //// google oauth
 const isLoggedIn = (req, res, next) => {
-    req.user ? next() : res.status(403).json({"success": false, "message": "Can't get authorization"});
+    req.user || req.cookies.jwt? next() : res.status(403).json({"success": false, "message": "Can't get authorization"});
 }
 
 router.get('/auth/google',
@@ -35,15 +35,14 @@ router.get('/google/callback',
 //// login and register
 router.get('/', isLoggedIn, async (req, res) => {
     const token = req.cookies.jwt;
-    // console.log(token)
     try {
-        if(req.user){
-            const email = req.user.emails[0].value;
+        if(token){
+            const email = jwt.verify(token, process.env.JWT_SECRET_KEY, {algorithms: "HS256"}).email;
             const data = await pool.query("SELECT id, username, email, image, userstatus FROM member WHERE email = ?", [email]);
             return res.status(200).json({"data": data[0]})
         }
-        if(token){
-            const email = jwt.verify(token, process.env.JWT_SECRET_KEY, {algorithms: "HS256"}).email;
+        if(req.user){
+            const email = req.user.emails[0].value;
             const data = await pool.query("SELECT id, username, email, image, userstatus FROM member WHERE email = ?", [email]);
             return res.status(200).json({"data": data[0]})
         }
@@ -92,9 +91,9 @@ router.post('/login', async (req, res) => {
 })
 
 router.delete('/logout', (req, res) => {
-    res.clearCookie("jwt");
     req.logout();
     req.session.destroy();
+    res.clearCookie("jwt");
     res.status(200).json({"success": true})
 })
 
