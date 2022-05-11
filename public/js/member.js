@@ -24,7 +24,8 @@ const editUserInfoController = (e) => {
 nameContainer.addEventListener('click', editUserInfoController);
 pwdContainer.addEventListener('click', editUserInfoController);
 
-//// click edit btn to show profile form
+
+//// click edit btn show profile form
 const editProfileBtn = document.querySelector('.edit-profile');
 const profileContainer = document.querySelector('.profile-container');
 const showProfile = () => {
@@ -32,6 +33,7 @@ const showProfile = () => {
     profileContainer.classList.remove('hide');
 }
 editProfileBtn.addEventListener('click', showProfile);
+
 
 //// profile form controller
 const profileForm = document.querySelector('form');

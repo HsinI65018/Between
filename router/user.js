@@ -4,49 +4,51 @@ const pool = require('../model/connection');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
-
 require('dotenv').config();
-require('../controller/auth');
 
-function isLoggedIn(req, res, next) {
-    req.user ? next() : res.sendStatus(401);
+//// google oauth
+const isLoggedIn = (req, res, next) => {
+    req.user ? next() : res.status(403).json({"success": false, "message": "Can't get authorization"});
 }
 
 router.get('/auth/google',
-  passport.authenticate('google', { scope: ['profile'] }));
+    passport.authenticate('google', {scope: ['email', 'profile']})
+)
 
-router.get('/google/callback', 
-  passport.authenticate('google', { failureRedirect: '/api/user/failure' }),
-  function(req, res) {
-    // Successful authentication, redirect home.
-    res.redirect('/api/user/protected');
-  });
+router.get('/google/callback',
+    passport.authenticate('google', {failureRedirect: '/'}),
+    async (req, res) => {
+        const username = req.user.displayName;
+        const email = req.user.emails[0].value;
+        const image = req.user.photos[0].value;
+        try {
+            const existUser = await pool.query("SELECT username FROM member WHERE email = ?", [email]);
+            if(existUser.length === 0){
+                pool.query("INSERT INTO member (username, email, image, userstatus) VALUES (?,?,?,?)", [username, email, image, 0]);
+            }
+        } catch (error) {
+            if(error) throw error;
+        }
+        res.redirect('/member');
+    }
+)
 
-router.get('/protected', isLoggedIn, (req, res) => {
-    res.send(`Hello ${req.user.displayName}`);
-});
-
-router.get('/logout', (req, res) => {
-  req.logout();
-  req.session.destroy();
-  res.send('Goodbye!');
-});
-
-router.get('/failure', (req, res) => {
-  res.send('Failed to authenticate..');
-});
-
-
-
-//////////////
-router.get('/', async (req, res) => {
+//// login and register
+router.get('/', isLoggedIn, async (req, res) => {
     const token = req.cookies.jwt;
     // console.log(token)
-    if(token){
-        const email = jwt.verify(token, process.env.JWT_SECRET_KEY, {algorithms: "HS256"}).email;
-        const data = await pool.query("SELECT id, username, email FROM member WHERE email = ?", [email]);
-        return res.status(200).json({"data": data[0]})
-    }else{
+    try {
+        if(req.user){
+            const email = req.user.emails[0].value;
+            const data = await pool.query("SELECT id, username, email, image, userstatus FROM member WHERE email = ?", [email]);
+            return res.status(200).json({"data": data[0]})
+        }
+        if(token){
+            const email = jwt.verify(token, process.env.JWT_SECRET_KEY, {algorithms: "HS256"}).email;
+            const data = await pool.query("SELECT id, username, email, image, userstatus FROM member WHERE email = ?", [email]);
+            return res.status(200).json({"data": data[0]})
+        }
+    } catch (error) {
         return res.status(403).json({"success": false, "message": "Can't get authorization"})
     }
 })
@@ -55,7 +57,7 @@ router.post('/signup', async (req, res) => {
     const {username, email, password} = req.body
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(password, salt);
-    const existUser = await pool.query("SELECT email FROM member WHERE email = ?", [email]);
+    const existUser = await pool.query("SELECT username FROM member WHERE email = ?", [email]);
 
     if(existUser.length !== 0) return res.status(400).json({"success": false, "message": "This email already exist"});
 
@@ -92,7 +94,13 @@ router.post('/login', async (req, res) => {
 
 router.delete('/logout', (req, res) => {
     res.clearCookie("jwt");
+    req.logout();
+    req.session.destroy();
     res.status(200).json({"success": true})
 })
+
+// pool.query("SELECT * FROM member",(err, result) => {
+//     console.log(result)
+// })
 
 module.exports = router;

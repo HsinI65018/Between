@@ -4,6 +4,8 @@ const session = require('express-session');
 const render = require('./router/render');
 const user = require('./router/user');
 const passport = require('passport');
+require('dotenv').config();
+require('./controller/auth');
 
 const app = express();
 

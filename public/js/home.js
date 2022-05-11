@@ -1,19 +1,28 @@
-//// check sigin status
+//// check sigin status to decide first page
 const checkSignInController = async () => {
     const response = await fetch('/api/user/');
     const data = await response.json();
-    if(data['data']) window.location = '/member';
+    if(data['success'] === false){
+        console.log(data)
+    }else{
+        const userStatus = data['data']['userstatus'];
+        if(userStatus === 0){
+            window.location = '/member';
+        }else{
+            window.location = '/match';
+        }
+    }
 }
 checkSignInController();
 
 
-//// switch sign in form and sign up from
+//// switch signin form and signup form
 const signUpContainer = document.querySelector('.sign-up-container');
 const signInContainer = document.querySelector('.sign-in-container');
 const signUpLink = document.querySelector('.sign-up-link');
 const signInLink = document.querySelector('.sign-in-link');
 
-const switchForm = (e) => {
+const switchFormController = (e) => {
     const target = e.target.className;
     if(target === 'sign-up-link'){
         signUpContainer.classList.remove('hide-form');
@@ -24,8 +33,8 @@ const switchForm = (e) => {
     }
 }
 
-signUpLink.addEventListener('click', switchForm);
-signInLink.addEventListener('click', switchForm);
+signUpLink.addEventListener('click', switchFormController);
+signInLink.addEventListener('click', switchFormController);
 
 
 //// fetch login api
