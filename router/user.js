@@ -4,7 +4,6 @@ const pool = require('../model/connection');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
-require('dotenv').config();
 
 //// google oauth
 const isLoggedIn = (req, res, next) => {

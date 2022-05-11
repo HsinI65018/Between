@@ -101,7 +101,7 @@ main{
 }
 /* profile btn */
 main > .btn-container{
-    width: 800px;
+    /* width: 800px; */
     margin: auto;
     display: flex;
     align-items: center;
@@ -128,6 +128,7 @@ form{
 }
 /* about */
 .about-container{
+    width: 800px;
     margin-bottom: 20px;
 }
 .about-container > .title, .personality-container > .title, .sex-container > .title, .condition-container > .title{
@@ -182,7 +183,12 @@ form{
     background-color: #E8E8E8E8;
     border-radius: 10px;
 }
-.type > .latter{
+.type > .type-block{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.type > .type-block > .latter{
     width: 60px;
     height: 60px;
     background-color: #B6244F;
@@ -194,7 +200,7 @@ form{
     color: #FFFFFF;
     margin-bottom: 10px;
 }
-.type > .title{
+.type > .type-block > .title{
     font-weight: 700;
     font-size: 20px;
 }
@@ -228,7 +234,7 @@ form{
 /* condition */
 .condition-container > input{
     outline: none;
-    width: 750px;
+    width: inherit;
     height: 25px;
     background: #FFFFFF;
     border: 1px solid #888888;
@@ -246,6 +252,92 @@ form{
     color: #FFFFFF;
     cursor: pointer;
 }
-.hide{
+.hide-hr{
     display: none;
+}
+
+/* RWD */
+@media(max-width: 850px){
+    header > .header-container{
+        width: 90%;
+    }
+    .header-container > .image-container, .upload{
+        width: 150px;
+        height: 150px;
+    }
+    .header-container > .user-container{
+        width: 70%;
+        height: 150px;
+    }
+    .info-container > .title{
+        margin-right: 20px;
+    }
+    .info-container > .content{
+        width: 70%;
+        margin-right: 5px;
+    }
+    .info-container > input{
+        width: 60%;
+    }
+    .introduction > textarea{
+        width: 500px;
+    }
+    main > .profile-container, .about-container, .personality-container, .sex-container, .condition-container{
+        width: 90%;
+    }
+    .personality-container >.type-container{
+        width: 90%;
+        margin: auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+}
+@media(max-width: 600px){
+    header > .header-container{
+        flex-direction: column;
+        height: inherit;
+    }
+    .header-container > .image-container{
+        margin-top: 60px;
+        margin-bottom: 30px;
+    }
+    .header-container > .user-container{
+        width: 90%;
+    }
+    .location > input{
+        width: 90%;
+    }
+    .introduction > .title{
+        margin-right: 20px;
+    }
+    .introduction > textarea{
+        height: 200px;
+    }
+    .type-container > .type{
+        height: auto;
+        flex-direction: row;
+        justify-content: space-around;
+        width: 100%;
+    }
+    .type > .content{
+        width: 50%;
+        height: auto;
+        overflow: scroll;
+    }
+    .hide-hr{
+        width: 100%;
+        margin-bottom: 30px;
+        display: block;
+    }
+}
+@media(max-width: 420px){
+    .type > .content{
+        width: 50%;
+        height: 170px;
+        overflow: scroll;
+    }
+    .sex-btn-container > button{
+        width: 80px;
+    }
 }

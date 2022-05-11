@@ -145,6 +145,24 @@ form > .sign-up-link, form > .sign-in-link{
         height: auto;
     }
     .slogan-container > div{
-        color: #FFFFFF;
+        display: none;
     }
+}
+@media(max-width: 560px){
+    .sign-in-container{
+        width: 90%;
+    }
+    form{
+        width: 100%;
+        height: 600px;
+    }
+    form > .input-container{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .input-container, form > .google-btn, form > button{
+        max-width: 80%;
+    }
+
 }
