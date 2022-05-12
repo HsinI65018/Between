@@ -55,19 +55,22 @@ header > .header-container{
 .user-container > .info-container{
     display: flex;
 }
-.info-container > .title{
+.user-container > .register-pwd{
+    display: flex;
+}
+.info-container > .title, .register-pwd > .title{
     width: 86px;
     margin-right: 50px;
     display: flex;
     align-items: center;
 }
-.info-container > .content{
+.info-container > .content, .register-pwd > .content{
     width: 300px;
     height: 37px;
     line-height: 37px;
     margin-right: auto;
 }
-.info-container > input{
+.info-container > input, .register-pwd > input{
     width: 200px;
     height: 25px;
     background: #FFFFFF;
@@ -76,7 +79,7 @@ header > .header-container{
     padding: 5px 15px 5px 15px;
     margin-right: auto;
 }
-.info-container > .img-container{
+.info-container > .img-container, .register-pwd > .img-container{
     width: 25px;
     display: flex;
     align-items: center;

@@ -12,13 +12,20 @@ checkSignInController();
 //// init memmer page
 const memberController = (data) => {
     const userData = data['data'];
-    const userName = document.querySelector('.save-user-name');
+    const userName = document.querySelector('.save-user-username');
     const userEmail = document.querySelector('.save-user-email');
     const userImage = document.querySelector('.upload-image');
+    const userPassword = document.querySelector('.register-pwd');
+
     userName.textContent = userData.username;
     userEmail.textContent = userData.email;
-    userImage.src = userData.image;
-    userImage.classList.add('upload');
+    
+    if(userData.image !== null){
+        userImage.src = userData.image;
+        userImage.classList.add('upload');
+    }
+
+    if(userData.register === 'google') userPassword.style.display = 'none';
 }
 
 //// switch the page throw the icon

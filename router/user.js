@@ -5,6 +5,8 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
 
+const {userLogout} = require('../controller/user');
+
 //// google oauth
 const isLoggedIn = (req, res, next) => {
     req.user || req.cookies.jwt? next() : res.status(403).json({"success": false, "message": "Can't get authorization"});
@@ -32,18 +34,19 @@ router.get('/google/callback',
     }
 )
 
+
 //// login and register
 router.get('/', isLoggedIn, async (req, res) => {
     const token = req.cookies.jwt;
     try {
         if(token){
             const email = jwt.verify(token, process.env.JWT_SECRET_KEY, {algorithms: "HS256"}).email;
-            const data = await pool.query("SELECT id, username, email, image, userstatus FROM member WHERE email = ?", [email]);
+            const data = await pool.query("SELECT id, username, email, image, register, userstatus FROM member WHERE email = ?", [email]);
             return res.status(200).json({"data": data[0]})
         }
         if(req.user){
             const email = req.user.emails[0].value;
-            const data = await pool.query("SELECT id, username, email, image, userstatus FROM member WHERE email = ?", [email]);
+            const data = await pool.query("SELECT id, username, email, image, register, userstatus FROM member WHERE email = ?", [email]);
             return res.status(200).json({"data": data[0]})
         }
     } catch (error) {
@@ -63,21 +66,17 @@ router.post('/signup', async (req, res) => {
         pool.query("INSERT INTO member (username, email, password, userstatus) VALUES (?,?,?,?)", [username, email, hash, 0]);
         res.status(200).json({"success": true})
     } catch (error) {
-        //console.log(error);
         res.status(500).json({"success": false, "message": "error message from server"})
     }
 })
 
 router.post('/login', async (req, res) => {
     const {email, password} = req.body;
-    // console.log(email, password);
     try {
         const hashPassword = await pool.query("SELECT password FROM member WHERE email = ?", [email]);
-        // console.log(hashPassword)
         if(hashPassword.length === 0) return res.status(400).json({"success": false, "message": "email does not exist"});
 
         const hashResult = bcrypt.compareSync(password, hashPassword[0].password);
-        // console.log(hashResult)
         if(hashResult){
             const token = jwt.sign({email: email}, process.env.JWT_SECRET_KEY, {algorithm: 'HS256'});
             res.cookie("jwt", token)
@@ -96,6 +95,27 @@ router.delete('/logout', (req, res) => {
     res.clearCookie("jwt");
     res.status(200).json({"success": true})
 })
+// router.delete('/logout', userLogout);
+
+
+//// edit register info
+router.post('/edit', async (req, res) => {
+    const {type, data, email} = req.body;
+    try {
+        if(type === 'username'){
+            pool.query("UPDATE member SET username = ?  WHERE email = ?", [data, email]);
+        }else{
+            const salt = bcrypt.genSaltSync(10);
+            const hash = bcrypt.hashSync(data, salt);
+            pool.query("UPDATE member SET password = ?  WHERE email = ?", [hash, email]);
+        }
+        return res.status(200).json({"success": true})
+    } catch (error) {
+        res.status(500).json({"success": false, "message": "error message from server"})
+    }
+})
+
+
 
 // pool.query("SELECT * FROM member",(err, result) => {
 //     console.log(result)

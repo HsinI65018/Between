@@ -3,6 +3,7 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const render = require('./router/render');
 const user = require('./router/user');
+const member = require('./router/member');
 const passport = require('passport');
 require('dotenv').config();
 require('./controller/auth');
@@ -20,6 +21,7 @@ app.use(passport.session());
 
 app.use('/', render);
 app.use('/api/user', user);
+app.use('/api/user/preference', member);
 
 const PORT = 3000;
 const HOST = '0.0.0.0';
