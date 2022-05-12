@@ -1,10 +1,28 @@
-//// switch sign in form and sign up from
+//// check sigin status to decide first page
+const checkSignInController = async () => {
+    const response = await fetch('/api/user/');
+    const data = await response.json();
+    if(data['success'] === false){
+        console.log(data)
+    }else{
+        const userStatus = data['data']['userstatus'];
+        if(userStatus === 0){
+            window.location = '/member';
+        }else{
+            window.location = '/match';
+        }
+    }
+}
+checkSignInController();
+
+
+//// switch signin form and signup form
 const signUpContainer = document.querySelector('.sign-up-container');
 const signInContainer = document.querySelector('.sign-in-container');
 const signUpLink = document.querySelector('.sign-up-link');
 const signInLink = document.querySelector('.sign-in-link');
 
-const switchForm = (e) => {
+const switchFormController = (e) => {
     const target = e.target.className;
     if(target === 'sign-up-link'){
         signUpContainer.classList.remove('hide-form');
@@ -15,14 +33,60 @@ const switchForm = (e) => {
     }
 }
 
-signUpLink.addEventListener('click', switchForm);
-signInLink.addEventListener('click', switchForm);
+signUpLink.addEventListener('click', switchFormController);
+signInLink.addEventListener('click', switchFormController);
 
-//// check user identity, if true go to member page
+
+//// fetch login api
 const signInForm = document.querySelector('.sign-in');
-const checkUserIdentity = (e) => {
+const signInController = async (e) => {
     e.preventDefault();
-    window.location = '/member';
+    const signInEmail = document.querySelector('.sign-in-email').value;
+    const signInPassword = document.querySelector('.sign-in-password').value;
+    // console.log(signInEmail, signInPassword)
+    const response = await fetch('/api/user/login', {
+        method: "POST",
+        body: JSON.stringify({
+            "email": signInEmail,
+            "password": signInPassword
+        }),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    });
+    const data = await response.json();
+    console.log(data)
+    if(data['success']){
+        window.location = '/member'
+    }
 }
+signInForm.addEventListener('submit', signInController);
 
-signInForm.addEventListener('submit', checkUserIdentity);
+
+//// fetch register api
+const signUpForm = document.querySelector('.sign-up');
+const signUpController = async (e) => {
+    e.preventDefault();
+    const signUpName = document.querySelector('.sign-up-name').value;
+    const signUpEmail = document.querySelector('.sign-up-email').value;
+    const signUpPassword = document.querySelector('.sign-up-password').value;
+    const errorMsg = document.querySelector('.error-message');
+    const response = await fetch('/api/user/signup', {
+        method: "POST",
+        body: JSON.stringify({
+            "username":signUpName,
+            "email": signUpEmail,
+            "password": signUpPassword
+        }),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    });
+    const data = await response.json();
+    if(data['success']){
+        window.location = '/';
+    }else{
+        errorMsg.textContent = data['message'];
+    }
+}
+signUpForm.addEventListener('submit', signUpController)

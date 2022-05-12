@@ -122,8 +122,8 @@ button > img{
     justify-content: center;
 }
 .info-container > .user-img-container{
-    width: 100px;
-    height: 100px;
+    width: 90px;
+    height: 90px;
     border-radius: 50%;
 }
 .user-img-container > img{
@@ -169,4 +169,28 @@ main > .next-btn-container, .next-btn-container > img{
 }
 .hide{
     display: none;
+}
+
+/* RWD */
+@media(max-width: 800px){
+    .img-container{
+        width: 100vw;
+    }
+    .img-container > .introduction-container{
+        width: 100vw;
+    }
+    .introduction-container > .introduction{
+        width: calc(100vw - 30px);
+        overflow: scroll;
+    }
+    .img-container > .info-container{
+        width: 100vw;
+    }
+    .info-container > .user-info-container{
+        width: 50%;
+        margin: 0px 0px 0px 2%;
+    }
+    .hide-btn{
+        display: none;
+    }
 }

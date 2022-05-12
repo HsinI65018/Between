@@ -42,19 +42,6 @@ nav > .nav-container{
     width: 35px;
     cursor: pointer;
 }
-/* .icon > .member{
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background-color: #B6244F;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-}
-.member > div{
-    color: #FFFFFF;
-} */
 .message-title, .member-title, .logout-title{
     position: absolute;
     top: 50px;
@@ -89,4 +76,11 @@ nav > .nav-container{
 }
 #message-container > img{
     margin-left: 0px;
+}
+
+/* RWD */
+@media(max-width: 1200px){
+    nav > .nav-container{
+        width: 90%;
+    }
 }

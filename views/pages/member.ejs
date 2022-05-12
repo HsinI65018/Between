@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <%- include('../partials/head'); %>
+    <%- include('../partials/head'); %> 
     <link rel="stylesheet" href="/css/member.css">
     <script src="/js/member.js" type="module"></script>
 </head>
@@ -12,9 +12,9 @@
             <div class="image-container">
                 <label class="custom-file-upload">
                     <input type="file" class="hide"/>
-                    <img src="https://d1dd0qmbf0xvcr.cloudfront.net/icon/upload.png">
+                    <img src="https://d1dd0qmbf0xvcr.cloudfront.net/icon/upload.png" class="upload-image">
                 </label>
-                <!-- <img src="https://d1dd0qmbf0xvcr.cloudfront.net/icon/person-1.jpg"> -->
+                <!-- <img src="" class="upload-image"> -->
             </div>
             <div class="user-container">
                 <div class="info-container">
@@ -28,7 +28,7 @@
                 </div>
                 <div class="info-container">
                     <div class="title">Email:</div>
-                    <div class="content">amanda@gmail.com</div>
+                    <div class="content save-user-email">amanda@gmail.com</div>
                 </div>
                 <div class="info-container">
                     <div class="title">Password:</div>
@@ -63,43 +63,62 @@
                     <div class="title">Personality</div>
                     <div class="type-container">
                         <div class="type">
-                            <div class="latter">E</div>
-                            <div class="title">Extroverts</div>
+                            <div class="type-block">
+                                <div class="latter">E</div>
+                                <div class="title">Extroverts</div>
+                            </div>
                             <div class="content">Extroverts are energized by people, enjoy a varity of tasks, a quick pace, and are good at multitasking.</div>
                         </div>
                         <div class="type">
-                            <div class="latter">S</div>
-                            <div class="title">Sensors</div>
+                            <div class="type-block">
+                                <div class="latter">I</div>
+                                <div class="title">Introverts</div>
+                            </div>
+                            <div class="content">Introverts often like working alone or in small groups, prefer a more deliberate pace, and like to focus on one task at a time.</div>
+                        </div>
+                        <hr class="hide-hr">
+                        <div class="type">
+                            <div class="type-block">
+                                <div class="latter">S</div>
+                                <div class="title">Sensors</div>
+                            </div>
                             <div class="content">Sensors are realistic people who like to focus on the facts and details They apply common sense and past experience to find practical solutions to problems.</div>
                         </div>
                         <div class="type">
-                            <div class="latter">T</div>
-                            <div class="title">Thinkers</div>
+                            <div class="type-block">
+                                <div class="latter">N</div>
+                                <div class="title">Intuitives</div>
+                            </div>
+                            <div class="content">Intuitives prefer to focus on possibilities and the big picture, easily see patterns, value innovation, and seek creative solutions to problems.</div>
+                        </div>
+                        <hr class="hide-hr">
+                        <div class="type">
+                            <div class="type-block">
+                                <div class="latter">T</div>
+                                <div class="title">Thinkers</div>
+                            </div>
                             <div class="content">Thinkers tend to make their decisions using logical analysis, objectively weigh ros and cons, and value honesty, consistency, and fairness.</div>
                         </div>
                         <div class="type">
-                            <div class="latter">J</div>
-                            <div class="title">Judgers</div>
+                            <div class="type-block">
+                                <div class="latter">F</div>
+                                <div class="title">Feelers</div>
+                            </div>
+                            <div class="content">Feelers tend to be sensitive and cooperative, and decide based on their own personal values and how others will be affected by their actions.</div>
+                        </div>
+                        <hr class="hide-hr">
+                        <div class="type">
+                            <div class="type-block">
+                                <div class="latter">J</div>
+                                <div class="title">Judgers</div>
+                            </div>
                             <div class="content">Judgers tend to be organized and prepared, like to make and stick to plans, and are confortable following most rules. </div>
                         </div>
                         <div class="type">
-                            <div class="latter">I</div>
-                            <div class="title">Introverts</div>
-                            <div class="content">Introverts often like working alone or in small groups, prefer a more deliberate pace, and like to focus on one task at a time.</div>
-                        </div>
-                        <div class="type">
-                            <div class="latter">N</div>
-                            <div class="title">Intuitives</div>
-                            <div class="content">Intuitives prefer to focus on possibilities and the big picture, easily see patterns, value innovation, and seek creative solutions to problems.</div>
-                        </div>
-                        <div class="type">
-                            <div class="latter">F</div>
-                            <div class="title">Feelers</div>
-                            <div class="content">Feelers tend to be sensitive and cooperative, and decide based on their own personal values and how others will be affected by their actions.</div>
-                        </div>
-                        <div class="type">
-                            <div class="latter">P</div>
-                            <div class="title">Perceivers</div>
+                            <div class="type-block">
+                                <div class="latter">P</div>
+                                <div class="title">Perceivers</div>
+                            </div>
                             <div class="content">Perceivers prefer to keep their options open, like to be able to act spontaneously, and like to be flexible with making plans.</div>
                         </div>
                     </div>

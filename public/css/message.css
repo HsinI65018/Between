@@ -24,15 +24,43 @@ aside > .aside-tool-container{
     flex-direction: column;
     align-items: center;
     background-color: #E8E8E8E8;
-    padding-top: 30px;
+    padding-top: 18px;
+}
+.aside-tool-container > .close> img{
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}
+.aside-tool-container > a > img{
+    width: 45px;
+    height: 45px;
+    cursor: pointer;
+    margin-top: 15px;
+}
+.aside-tool-container > .ig, .aside-tool-container > .close{
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #888888;
+    margin-top: 15px;
+    cursor: pointer;
+}
+.aside-tool-container > .close{
+    display: none;
+}
+.aside-tool-container > .ig > img{
+    width: 30px;
+    height: 30px;
+    margin-top: 0px;
+    cursor: pointer;
 }
 
 /* friend zone */
 aside > .aside-friend-container{
     padding: 0px 5px 0px 5px;
-}
-.aside-friend-container > .aside-container{
-    margin-top: 30px;
 }
 /* search engine */
 .aside-container > .search-container{
@@ -52,14 +80,21 @@ aside > .aside-friend-container{
     border: none;
     padding: 5px 10px 5px 10px;
     outline: none;
+    border-radius: 10px;
 }
 /* friend card */
+.friend-zone-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 .friend-zone-container > .friend-card{
-    width: 280px;
+    width: 230px;
     height: 120px;
     display: flex;
     align-items: center;
     padding: 0px 10px 0px 10px;
+    cursor: pointer;
 }
 .friend-card:hover{
     background-color: #E8E8E8E8;
@@ -95,6 +130,8 @@ section > .section-header{
 .section-header > .title{
     margin-left: 50px;
     font-weight: 700;
+    display: flex;
+    align-items: center;
 }
 /* main chatting room */
 section > .section-container{
@@ -156,4 +193,69 @@ section > .section-footer{
     border: 1px solid #888888;
     border-radius: 10px;
     padding: 0px 15px 0px 15px;
+}
+.show-friend{
+    width: 30px;
+    height: 30px;
+    margin-right: 20px;
+    display: none;
+    cursor: pointer;
+}
+.hide{
+    display: none;
+}
+
+/* RWD */
+@media(max-width: 900px){
+    .show-friend{
+        display: block;
+    }
+    section > .section-container{
+        padding: 20px 30px 20px 30px;
+    }
+    .section-header > .title{
+        margin-left: 30px;
+    }
+    main > aside{
+        width: 100vw;
+    }
+    aside > .aside-friend-container{
+        width: 100vw;
+    }
+    .aside-friend-container > .aside-container{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+    }
+    .aside-container > .search-container{
+        width: 92%;
+    }
+    .aside-tool-container > .close{
+        display: flex;
+    }
+    .search-container > input{
+        width: 100%;
+        padding: 5px;
+        border-radius: 10px;
+    }
+    .friend-zone-container{
+        width: 90%;
+        margin: auto;
+    }
+    .friend-zone-container > .friend-card{
+        width: 100%;
+    }
+    main > section{
+        width: 100vw;
+    }
+    section > .section-footer{
+        width: 100vw;
+    }
+    .section-footer > input{
+        width: calc(100vw - 80px);
+    }
+    .hide-aside{
+        display: none;
+    }
 }
