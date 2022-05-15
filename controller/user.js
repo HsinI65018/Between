@@ -21,7 +21,7 @@ const googleCallBack = async(req, res) => {
     res.redirect('/member');
 };
 
-const userSignIn = async(req, res) => {
+const checkUserLogIn = async(req, res) => {
     const token = req.cookies.jwt;
     try {
         if(token){
@@ -55,7 +55,7 @@ const userSignUp = async(req, res) => {
     }
 };
 
-const userLogin = async (req, res) => {
+const userLogIn = async (req, res) => {
     const {email, password} = req.body;
     try {
         const hashPassword = await pool.query("SELECT password FROM member WHERE email = ?", [email]);
@@ -64,7 +64,7 @@ const userLogin = async (req, res) => {
         const hashResult = bcrypt.compareSync(password, hashPassword[0].password);
         if(hashResult){
             const token = jwt.sign({email: email}, process.env.JWT_SECRET_KEY, {algorithm: 'HS256'});
-            res.cookie("jwt", token)
+            res.cookie("jwt", token, {httpOnly: true})
             return res.status(200).json({"success": true});
         }else{
             return res.status(400).json({"success": false, "message": "please enter connecr password"});
@@ -74,7 +74,7 @@ const userLogin = async (req, res) => {
     }
 };
 
-const userLogout = (req, res) => {
+const userLogOut = (req, res) => {
     req.logout();
     req.session.destroy();
     res.clearCookie("jwt");
@@ -100,9 +100,9 @@ const editUserInfo = async (req, res) => {
 module.exports = {
     isLoggedIn,
     googleCallBack,
-    userSignIn,
+    checkUserLogIn,
     userSignUp,
-    userLogin,
-    userLogout,
+    userLogIn,
+    userLogOut,
     editUserInfo
 };

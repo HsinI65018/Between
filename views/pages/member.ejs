@@ -14,7 +14,6 @@
                     <input type="file" class="hide"/>
                     <img src="https://d1dd0qmbf0xvcr.cloudfront.net/icon/upload.png" class="upload-image">
                 </label>
-                <!-- <img src="" class="upload-image"> -->
             </div>
             <div class="user-container">
                 <div class="info-container">
@@ -46,30 +45,30 @@
         <div class="btn-container">
             <button class="edit-profile">Edit Profile</button>
         </div>
-        <div class="profile-container hide">
+        <div class="profile-container">
             <form>
                 <div class="about-container">
                     <div class="title">About</div>
                     <div class="location">
                         <div class="title">Location:</div>
-                        <input type="text" placeholder="Taipei">
+                        <input type="text" placeholder="Taipei" class="location-value" required>
                     </div>
                     <div class="introduction">
                         <div class="title">Introduction:</div>
-                        <textarea placeholder="Please introduce yourself in 200 words."></textarea>
+                        <textarea placeholder="Please introduce yourself in 200 words." class="intro-value" required></textarea>
                     </div>
                 </div>
                 <div class="personality-container">
                     <div class="title">Personality</div>
                     <div class="type-container">
-                        <div class="type">
+                        <div class="type type-E">
                             <div class="type-block">
                                 <div class="latter">E</div>
                                 <div class="title">Extroverts</div>
                             </div>
                             <div class="content">Extroverts are energized by people, enjoy a varity of tasks, a quick pace, and are good at multitasking.</div>
                         </div>
-                        <div class="type">
+                        <div class="type type-I">
                             <div class="type-block">
                                 <div class="latter">I</div>
                                 <div class="title">Introverts</div>
@@ -77,14 +76,14 @@
                             <div class="content">Introverts often like working alone or in small groups, prefer a more deliberate pace, and like to focus on one task at a time.</div>
                         </div>
                         <hr class="hide-hr">
-                        <div class="type">
+                        <div class="type type-S">
                             <div class="type-block">
                                 <div class="latter">S</div>
                                 <div class="title">Sensors</div>
                             </div>
                             <div class="content">Sensors are realistic people who like to focus on the facts and details They apply common sense and past experience to find practical solutions to problems.</div>
                         </div>
-                        <div class="type">
+                        <div class="type type-N">
                             <div class="type-block">
                                 <div class="latter">N</div>
                                 <div class="title">Intuitives</div>
@@ -92,14 +91,14 @@
                             <div class="content">Intuitives prefer to focus on possibilities and the big picture, easily see patterns, value innovation, and seek creative solutions to problems.</div>
                         </div>
                         <hr class="hide-hr">
-                        <div class="type">
+                        <div class="type type-T">
                             <div class="type-block">
                                 <div class="latter">T</div>
                                 <div class="title">Thinkers</div>
                             </div>
                             <div class="content">Thinkers tend to make their decisions using logical analysis, objectively weigh ros and cons, and value honesty, consistency, and fairness.</div>
                         </div>
-                        <div class="type">
+                        <div class="type type-F">
                             <div class="type-block">
                                 <div class="latter">F</div>
                                 <div class="title">Feelers</div>
@@ -107,14 +106,14 @@
                             <div class="content">Feelers tend to be sensitive and cooperative, and decide based on their own personal values and how others will be affected by their actions.</div>
                         </div>
                         <hr class="hide-hr">
-                        <div class="type">
+                        <div class="type type-J">
                             <div class="type-block">
                                 <div class="latter">J</div>
                                 <div class="title">Judgers</div>
                             </div>
                             <div class="content">Judgers tend to be organized and prepared, like to make and stick to plans, and are confortable following most rules. </div>
                         </div>
-                        <div class="type">
+                        <div class="type type-P">
                             <div class="type-block">
                                 <div class="latter">P</div>
                                 <div class="title">Perceivers</div>
@@ -126,14 +125,14 @@
                 <div class="sex-container">
                     <div class="title">Looking For</div>
                     <div class="sex-btn-container">
-                        <button>Male</button>
-                        <button>Female</button>
-                        <button>Both</button>
+                        <button type="button" class="sex sex-M">Male</button>
+                        <button type="button" class="sex sex-F">Female</button>
+                        <button type="button" class="sex sex-B">Bisexual</button>
                     </div>
                 </div>
                 <div class="condition-container">
                     <div class="title">Who Is...</div>
-                    <input type="text" placeholder="Please write the condition that you are looking for.This will be shown at the profile.">
+                    <input type="text" class="condition-value" placeholder="Please write the condition that you are looking for.This will be shown at the profile." required>
                 </div>
                 <button class="save-btn">Save</button>
             </form>

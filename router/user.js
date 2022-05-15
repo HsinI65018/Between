@@ -1,8 +1,11 @@
 const express = require('express');
 const passport = require('passport');
 const router = express.Router();
-const { isLoggedIn, googleCallBack, userSignIn, userSignUp, userLogin, userLogout, editUserInfo } = require('../controller/user');
+const { isLoggedIn, googleCallBack, checkUserLogIn, userSignUp, userLogIn, userLogOut, editUserInfo } = require('../controller/user');
 const pool = require('../model/connection');
+const uploadToS3 = require('../controller/mutler');
+
+const jwt = require('jsonwebtoken');
 
 //// google oauth
 router.get('/auth/google',
@@ -14,17 +17,46 @@ router.get('/google/callback',
 )
 
 //// login and register
-router.get('/', isLoggedIn, userSignIn)
+router.get('/', isLoggedIn, checkUserLogIn)
 router.post('/signup', userSignUp);
-router.post('/login', userLogin);
-router.delete('/logout', userLogout);
+router.post('/login', userLogIn);
+router.delete('/logout', userLogOut);
 
 
 //// edit register info
 router.post('/edit', editUserInfo);
+router.post('/upload', uploadToS3.single('file'), async (req, res) => {
+    // console.log(req.file)
+    const fileURL = `${process.env.CLOUD_FRONT_URL}${req.file.originalname}`;
+    const token = req.cookies.jwt;
+    let email;
 
+    try {
+        if(token){ email = jwt.verify(token, process.env.JWT_SECRET_KEY, {algorithms: "HS256"}).email };
+        if(req.user){ email = req.user.emails[0].value };
+
+        pool.query("UPDATE member SET image = ? WHERE email = ?", [fileURL, email]);
+        return res.status(200).json({"success": true, "imgURL": fileURL})
+    } catch (error) {
+        res.status(500).json({"success": false, "message": "error message from server"})
+    }
+})
+router.post('/profile', async (req, res) => {
+    const {location, introduction, type, sex, condition} = req.body;
+    const token = req.cookies.jwt;
+    let email;
+
+    try {
+        if(token){ email = jwt.verify(token, process.env.JWT_SECRET_KEY, {algorithms: "HS256"}).email };
+        if(req.user){ email = req.user.emails[0].value };
+        // console.log(email)
+        pool.query("UPDATE member SET location = ?, introduction = ?, type = ?, sex = ?, searchCondition = ? WHERE email = ?", [location, introduction, type, sex, condition, email])
+        return res.status(200).json({"success": true})
+    } catch (error) {
+        res.status(500).json({"success": false, "message": "error message from server"})
+    }
+})
 // pool.query("SELECT * FROM member",(err, result) => {
 //     console.log(result)
 // })
-
 module.exports = router;

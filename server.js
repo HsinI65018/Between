@@ -15,7 +15,7 @@ app.use(cookieParser());
 app.use(express.static('./public'));
 app.use(express.json());
 
-app.use(session({ secret: 'cats', resave: false, saveUninitialized: true }));
+app.use(session({ secret: process.env.SESSION_SECRET_KEY, resave: true, saveUninitialized: false }));
 app.use(passport.initialize());
 app.use(passport.session());
 
