@@ -23,17 +23,13 @@ const googleCallBack = async(req, res) => {
 
 const checkUserLogIn = async(req, res) => {
     const token = req.cookies.jwt;
+    let email;
     try {
-        if(token){
-            const email = jwt.verify(token, process.env.JWT_SECRET_KEY, {algorithms: "HS256"}).email;
-            const data = await pool.query("SELECT id, username, email, image, register, userstatus FROM member WHERE email = ?", [email]);
-            return res.status(200).json({"data": data[0]})
-        }
-        if(req.user){
-            const email = req.user.emails[0].value;
-            const data = await pool.query("SELECT id, username, email, image, register, userstatus FROM member WHERE email = ?", [email]);
-            return res.status(200).json({"data": data[0]})
-        }
+        if(token){ email = jwt.verify(token, process.env.JWT_SECRET_KEY, {algorithms: "HS256"}).email };
+        if(req.user){ email = req.user.emails[0].value };
+        
+        const data = await pool.query("SELECT id, username, email, image, register, userstatus FROM member WHERE email = ?", [email]);
+        return res.status(200).json({"success": true,"data": data[0]})
     } catch (error) {
         return res.status(403).json({"success": false, "message": "Can't get authorization"})
     }
@@ -63,9 +59,10 @@ const userLogIn = async (req, res) => {
 
         const hashResult = bcrypt.compareSync(password, hashPassword[0].password);
         if(hashResult){
+            const userStatus = await pool.query("SELECT userstatus FROM member WHERE email = ?", [email]);
             const token = jwt.sign({email: email}, process.env.JWT_SECRET_KEY, {algorithm: 'HS256'});
             res.cookie("jwt", token, {httpOnly: true})
-            return res.status(200).json({"success": true});
+            return res.status(200).json({"success": true, "userStatus": userStatus[0]['userstatus']});
         }else{
             return res.status(400).json({"success": false, "message": "please enter connecr password"});
         }

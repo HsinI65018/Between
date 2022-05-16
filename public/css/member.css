@@ -33,12 +33,6 @@ header > .header-container{
 .custom-file-upload > img{
     cursor: pointer;
 }
-/* .image-container > img{
-    width: 200px;
-    height: 200px;
-    object-fit: cover;
-    object-position: center;
-} */
 .upload{
     width: 200px;
     height: 200px;
@@ -104,7 +98,6 @@ main{
 }
 /* profile btn */
 main > .btn-container{
-    /* width: 800px; */
     margin: auto;
     display: flex;
     align-items: center;
@@ -188,18 +181,10 @@ form{
     background-color: #E8E8E8E8;
     border-radius: 10px;
 }
-/* .test:hover{
-    background-color: #E8E8E8E8;
-    border-radius: 10px;
-} */
-.test2{
+.select{
     background-color: #E8E8E8E8;
     border-radius: 10px;
 }
-/* .hover{
-    background-color: #E8E8E8E8;
-    border-radius: 10px;
-} */
 .type > .type-block{
     display: flex;
     flex-direction: column;
@@ -230,9 +215,7 @@ form{
 .type-block, .type-block > .latter, .type-block > .title, .type > .content{
     pointer-events: none;
 }
-/* .block{
-    pointer-events: none;
-} */
+
 /* sex */
 .sex-container, .condition-container{
     width: 800px;
@@ -241,8 +224,6 @@ form{
     width: 100px;
     height: 30px;
     margin-right: 10px;
-    /* background: #E8E8E8E8;
-    color: #000000; */
     border-radius: 10px;
     border: none;
     cursor: pointer;

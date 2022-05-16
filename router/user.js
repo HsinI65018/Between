@@ -41,7 +41,7 @@ router.post('/upload', uploadToS3.single('file'), async (req, res) => {
         res.status(500).json({"success": false, "message": "error message from server"})
     }
 })
-router.post('/profile', async (req, res) => {
+router.post('/update', async (req, res) => {
     const {location, introduction, type, sex, condition} = req.body;
     const token = req.cookies.jwt;
     let email;
@@ -50,8 +50,22 @@ router.post('/profile', async (req, res) => {
         if(token){ email = jwt.verify(token, process.env.JWT_SECRET_KEY, {algorithms: "HS256"}).email };
         if(req.user){ email = req.user.emails[0].value };
         // console.log(email)
-        pool.query("UPDATE member SET location = ?, introduction = ?, type = ?, sex = ?, searchCondition = ? WHERE email = ?", [location, introduction, type, sex, condition, email])
+        pool.query("UPDATE member SET location = ?, introduction = ?, type = ?, sex = ?, searchCondition = ?, userstatus = ? WHERE email = ?", [location, introduction, type, sex, condition, 1, email])
         return res.status(200).json({"success": true})
+    } catch (error) {
+        res.status(500).json({"success": false, "message": "error message from server"})
+    }
+})
+router.get('/profile', async (req, res) => {
+    const token = req.cookies.jwt;
+    let email;
+    
+    try {
+        if(token){ email = jwt.verify(token, process.env.JWT_SECRET_KEY, {algorithms: "HS256"}).email };
+        if(req.user){ email = req.user.emails[0].value };
+
+        const data = await pool.query("SELECT location, introduction, type, sex, searchCondition FROM member WHERE email = ?", [email]);
+        return res.status(200).json({"success": true, "data": data[0]})
     } catch (error) {
         res.status(500).json({"success": false, "message": "error message from server"})
     }

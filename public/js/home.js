@@ -2,10 +2,8 @@
 const checkSignInController = async () => {
     const response = await fetch('/api/user/');
     const data = await response.json();
-    if(data['success'] === false){
-        console.log(data)
-    }else{
-        const userStatus = data['data']['userstatus'];
+    if(data.success === true){
+        const userStatus = data.data.userstatus;
         if(userStatus === 0){
             window.location = '/member';
         }else{
@@ -21,7 +19,6 @@ const signUpContainer = document.querySelector('.sign-up-container');
 const signInContainer = document.querySelector('.sign-in-container');
 const signUpLink = document.querySelector('.sign-up-link');
 const signInLink = document.querySelector('.sign-in-link');
-
 const switchFormController = (e) => {
     const target = e.target.className;
     if(target === 'sign-up-link'){
@@ -32,7 +29,6 @@ const switchFormController = (e) => {
         signUpContainer.classList.add('hide-form');
     }
 }
-
 signUpLink.addEventListener('click', switchFormController);
 signInLink.addEventListener('click', switchFormController);
 
@@ -43,7 +39,7 @@ const signInController = async (e) => {
     e.preventDefault();
     const signInEmail = document.querySelector('.sign-in-email').value;
     const signInPassword = document.querySelector('.sign-in-password').value;
-    // console.log(signInEmail, signInPassword)
+
     const response = await fetch('/api/user/login', {
         method: "POST",
         body: JSON.stringify({
@@ -55,10 +51,9 @@ const signInController = async (e) => {
         }
     });
     const data = await response.json();
-    console.log(data)
-    if(data['success']){
-        window.location = '/member'
-    }
+
+    if(data.success && data.userStatus === 0){ window.location = '/member' };
+    if(data.success && data.userStatus === 1){ window.location = '/match' };
 }
 signInForm.addEventListener('submit', signInController);
 
@@ -71,6 +66,7 @@ const signUpController = async (e) => {
     const signUpEmail = document.querySelector('.sign-up-email').value;
     const signUpPassword = document.querySelector('.sign-up-password').value;
     const errorMsg = document.querySelector('.error-message');
+
     const response = await fetch('/api/user/signup', {
         method: "POST",
         body: JSON.stringify({
@@ -83,10 +79,11 @@ const signUpController = async (e) => {
         }
     });
     const data = await response.json();
-    if(data['success']){
+
+    if(data.success){
         window.location = '/';
     }else{
-        errorMsg.textContent = data['message'];
+        errorMsg.textContent = data.message;
     }
 }
-signUpForm.addEventListener('submit', signUpController)
+signUpForm.addEventListener('submit', signUpController);
