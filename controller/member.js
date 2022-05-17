@@ -14,8 +14,21 @@ const getUserEmail = (req) => {
     return email
 }
 
+
+const getProfile = async (req, res) => {
+    const email = getUserEmail(req);
+    try {
+        const data = await member.getUserProfile(email);
+        res.status(200).json(response.getResponseSuccess(data[0]))
+    } catch (error) {
+        res.status(500).json(response.getServerError())
+    }
+};
+
+
 const editUserInfo = async (req, res) => {
-    const {type, data, email} = req.body;
+    const {type, data} = req.body;
+    const email = getUserEmail(req);
     try {
         if(type === 'username') member.updateUserName(data, email);
 
@@ -34,7 +47,6 @@ const editUserInfo = async (req, res) => {
 const uploadImage = async (req, res) => {
     const fileURL = `${process.env.CLOUD_FRONT_URL}${req.file.originalname}`;
     const email = getUserEmail(req);
-
     try {
         member.updateUserImage(fileURL, email);
         res.status(200).json({"success": true, "imgURL": fileURL})
@@ -47,22 +59,9 @@ const uploadImage = async (req, res) => {
 const updateProfile = async (req, res) => {
     const {location, introduction, type, sex, condition} = req.body;
     const email = getUserEmail(req);
-
     try {
         member.updateUserProfile(location, introduction, type, sex, condition, email);
         res.status(200).json(response.getSuccess())
-    } catch (error) {
-        res.status(500).json(response.getServerError())
-    }
-};
-
-
-const getProfile = async (req, res) => {
-    const email = getUserEmail(req);
-    
-    try {
-        const data = await member.getUserProfile(email);
-        res.status(200).json(response.getResponseSuccess(data[0]))
     } catch (error) {
         res.status(500).json(response.getServerError())
     }

@@ -166,7 +166,7 @@ form{
     display: flex;
     flex-wrap: wrap;
 }
-.type-container > .type{
+.type-container > #type{
     width: auto;
     padding: 10px 10px 10px 10px;
     display: flex;
@@ -177,7 +177,7 @@ form{
     cursor: pointer;
     margin-right: 2px;
 }
-.type:hover{
+#type:hover{
     background-color: #E8E8E8E8;
     border-radius: 10px;
 }
@@ -185,12 +185,12 @@ form{
     background-color: #E8E8E8E8;
     border-radius: 10px;
 }
-.type > .type-block{
+#type > .type-block{
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-.type > .type-block > .latter{
+#type > .type-block > .latter{
     width: 60px;
     height: 60px;
     background-color: #B6244F;
@@ -202,17 +202,17 @@ form{
     color: #FFFFFF;
     margin-bottom: 10px;
 }
-.type > .type-block > .title{
+#type > .type-block > .title{
     font-weight: 700;
     font-size: 20px;
 }
-.type > .content{
+#type > .content{
     width: 170px;
     height: 210px;
     text-align: left;
     font-size: 17px;
 }
-.type-block, .type-block > .latter, .type-block > .title, .type > .content{
+.type-block, .type-block > .latter, .type-block > .title, #type > .content{
     pointer-events: none;
 }
 

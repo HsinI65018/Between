@@ -52,8 +52,8 @@ const signInController = async (e) => {
     });
     const data = await response.json();
 
-    if(data.success && data.userStatus === 0){ window.location = '/member' };
-    if(data.success && data.userStatus === 1){ window.location = '/match' };
+    if(data.success && data.userStatus === 0) window.location = '/member';
+    if(data.success && data.userStatus === 1) window.location = '/match';
 }
 signInForm.addEventListener('submit', signInController);
 

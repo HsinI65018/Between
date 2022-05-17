@@ -26,7 +26,6 @@ editPasswordBtn.addEventListener('click', editUserInfoController);
 //// SAVE button controller
 const saveNameBtn = document.querySelector('.save-username');
 const savePasswordBtn = document.querySelector('.save-password');
-const userEmail = document.querySelector('.save-user-email');
 const saveUserInfoController = async (e) => {
     const target = e.target.className.slice(5);
     const {editBtn, saveBtn, editContent, saveContent} = getUserInfoElement(target);
@@ -37,7 +36,6 @@ const saveUserInfoController = async (e) => {
             body: JSON.stringify({
                 "type": target,
                 "data": editContent.value,
-                "email": userEmail.textContent
             }),
             headers: {
                 "Content-Type": "application/json"
@@ -50,8 +48,8 @@ const saveUserInfoController = async (e) => {
     }
 
     editContent.value = '';
-    editBtn.classList.remove('hide');
     saveBtn.classList.add('hide');
+    editBtn.classList.remove('hide');
     editContent.classList.add('hide');
     saveContent.classList.remove('hide');
 }
@@ -59,6 +57,7 @@ saveNameBtn.addEventListener('click', saveUserInfoController);
 savePasswordBtn.addEventListener('click', saveUserInfoController);
 
 //// upload photo
+const userEmail = document.querySelector('.save-user-email');
 const uploadFile = document.querySelector('input[type="file"]');
 const uploadFileController = async () => {
     const [fileName, path] = userEmail.textContent.split('@');
@@ -67,13 +66,17 @@ const uploadFileController = async () => {
 
     const response = await fetch('/api/user/profile/upload', {
         method: "POST",
-        body: fileData
+        body: fileData,
+        headers: {
+            "Content-Type": "application/json"
+        }
     });
+
     const data = await response.json();
     const userImage = document.querySelector('.upload-image');
+
     userImage.src = data.imgURL;
     userImage.classList.add('upload');
-    console.log(data)
 }
 uploadFile.addEventListener('change', uploadFileController)
 
@@ -86,7 +89,6 @@ const showProfileController = () => {
     profileContainer.classList.remove('hide');
 }
 editProfileBtn.addEventListener('click', showProfileController);
-
 
 
 //// fetch profile update API
@@ -109,24 +111,18 @@ const fetchUpdateAPI = async (typeValue) => {
         }
     });
     const data = await response.json();
-    
-    if(data.success === true){
-        window.location = '/member'
-    }
+    if(data.success === true) window.location = '/member';
 }
 
 
-//// profile form controller [Fix]
+//// profile form controller
 const profileForm = document.querySelector('form');
 const saveProfileController = async (e) => {
     e.preventDefault();
-    let  typeValue = [...new Set(typeList)].join('');
+    let typeValue = [...new Set(typeList)].join('');
 
     const response = await fetch('/api/user/profile/');
-
-    if(response.ok === false){
-        fetchUpdateAPI(typeValue);
-    }
+    if(response.ok === false) fetchUpdateAPI(typeValue);
 
     const data = await response.json();
     const profileData = data.data;
@@ -135,99 +131,77 @@ const saveProfileController = async (e) => {
         editProfileBtn.classList.remove('hide');
         profileContainer.classList.add('hide');
     }else{
-        if(typeValue === ''){ typeValue = profileData.type };
-        if(sexValue === undefined){ sexValue = profileData.sex };
+        if(sexValue === undefined) sexValue = profileData.sex;
+        if(typeValue === '') typeValue = profileData.type;
 
+        let prevType = [...profileData.type];
+        for(let i = 0; i < typeValue.length; i++){
+            if(typeValue[i] === 'E' || typeValue[i] === 'I'){
+                prevType[0] = typeValue[i]
+            }else if(typeValue[i] === 'S' || typeValue[i] === 'N'){
+                prevType[1] = typeValue[i]
+            }else if(typeValue[i] === 'T' || typeValue[i] === 'F'){
+                prevType[2] = typeValue[i]
+            }else if(typeValue[i] === 'J' || typeValue[i] === 'P'){
+                prevType[3] = typeValue[i]
+            }
+        }
+        typeValue = prevType.join('');
         fetchUpdateAPI(typeValue);
     }
 }
 profileForm.addEventListener('submit', saveProfileController);
 
 
-////
+//// switch personality type controller
 let typeList = [];
 const typeE = document.querySelector('.type-E');
 const typeI = document.querySelector('.type-I');
-const typeOneController  = (e)=> {
-    const target = e.target.className;
-    if(target.includes('type-E')){
-        typeList = typeList.filter((item) => item !== 'I')
-        typeList.push('E');
-        typeE.classList.add('select');
-        typeI.classList.remove('select')
-    }else{
-        typeList = typeList.filter((item) => item !== 'E')
-        typeList.push('I');
-        typeE.classList.remove('select');
-        typeI.classList.add('select')
-    }
-    
-}
-typeE.addEventListener('click', typeOneController);
-typeI.addEventListener('click', typeOneController);
-
 const typeS = document.querySelector('.type-S');
 const typeN = document.querySelector('.type-N');
-const typeTwoController  = (e)=> {
-    const target = e.target.className;
-    if(target.includes('type-S')){
-        typeList = typeList.filter((item) => item !== 'N')
-        typeList.push('S');
-        typeS.classList.add('select');
-        typeN.classList.remove('select')
-    }else{
-        typeList = typeList.filter((item) => item !== 'S')
-        typeList.push('N');
-        typeS.classList.remove('select');
-        typeN.classList.add('select')
-    }
-    
-}
-typeS.addEventListener('click', typeTwoController);
-typeN.addEventListener('click', typeTwoController);
-
 const typeT = document.querySelector('.type-T');
 const typeF = document.querySelector('.type-F');
-const typeThreeController  = (e)=> {
-    const target = e.target.className;
-    if(target.includes('type-T')){
-        typeList = typeList.filter((item) => item !== 'F')
-        typeList.push('T');
-        typeT.classList.add('select');
-        typeF.classList.remove('select')
-    }else{
-        typeList = typeList.filter((item) => item !== 'T')
-        typeList.push('F');
-        typeT.classList.remove('select');
-        typeF.classList.add('select')
-    }
-    
-}
-typeT.addEventListener('click', typeThreeController);
-typeF.addEventListener('click', typeThreeController);
-
 const typeJ = document.querySelector('.type-J');
 const typeP = document.querySelector('.type-P');
-const typeFourController  = (e)=> {
+const personalityController = (e)=> {
     const target = e.target.className;
-    if(target.includes('type-J')){
-        typeList = typeList.filter((item) => item !== 'P')
-        typeList.push('J');
-        typeJ.classList.add('select');
-        typeP.classList.remove('select')
-    }else{
-        typeList = typeList.filter((item) => item !== 'J')
-        typeList.push('P');
-        typeJ.classList.remove('select');
-        typeP.classList.add('select')
+    let removeItem;
+    if(target === 'type-E') removeItem = 'type-I';
+    if(target === 'type-I') removeItem = 'type-E';
+
+    if(target === 'type-S') removeItem = 'type-N';
+    if(target === 'type-N') removeItem = 'type-S';
+
+    if(target === 'type-T') removeItem = 'type-F';
+    if(target === 'type-F') removeItem = 'type-T';
+
+    if(target === 'type-J') removeItem = 'type-P';
+    if(target === 'type-P') removeItem = 'type-J';
+
+    try {
+        typeList = typeList.filter((item) => item !== removeItem[5])
+        typeList.push(target[5]);
+
+        const selectType = document.querySelector(`.${target}`);
+        const removeType = document.querySelector(`.${removeItem}`);
+
+        selectType.classList.add('select');
+        removeType.classList.remove('select');
+    } catch (error) {
+        console.log('HI')
     }
-    
 }
-typeJ.addEventListener('click', typeFourController);
-typeP.addEventListener('click', typeFourController);
+typeE.addEventListener('click', personalityController);
+typeI.addEventListener('click', personalityController);
+typeS.addEventListener('click', personalityController);
+typeN.addEventListener('click', personalityController);
+typeT.addEventListener('click', personalityController);
+typeF.addEventListener('click', personalityController);
+typeJ.addEventListener('click', personalityController);
+typeP.addEventListener('click', personalityController);
 
 
-/////
+//// switch sex btn controller
 let sexValue;
 const male = document.querySelector('.sex-M');
 const female = document.querySelector('.sex-F');
