@@ -2,7 +2,7 @@
 const checkSignInController = async () => {
     const response = await fetch('/api/user/');
     const data = await response.json();
-    // console.log(data)
+    console.log(data)
     if(data.success === false) window.location = '/';
 
     if(window.location.pathname === '/member') memberController(data);
@@ -43,6 +43,7 @@ const memberController = async (data) => {
         const response = await fetch('/api/user/profile');
         const data = await response.json();
         const profileData = data.data;
+        console.log(profileData)
 
         const location = document.querySelector('.location-value');
         const introduction = document.querySelector('.intro-value');

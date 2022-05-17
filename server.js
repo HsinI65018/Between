@@ -21,7 +21,7 @@ app.use(passport.session());
 
 app.use('/', render);
 app.use('/api/user', user);
-app.use('/api/user/preference', member);
+app.use('/api/user/profile', member);
 
 const PORT = 3000;
 const HOST = '0.0.0.0';

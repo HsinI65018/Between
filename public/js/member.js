@@ -32,7 +32,7 @@ const saveUserInfoController = async (e) => {
     const {editBtn, saveBtn, editContent, saveContent} = getUserInfoElement(target);
 
     if(editContent.value !== ''){
-        const response = await fetch('/api/user/edit', {
+        const response = await fetch('/api/user/profile/edit', {
             method: "POST",
             body: JSON.stringify({
                 "type": target,
@@ -61,10 +61,11 @@ savePasswordBtn.addEventListener('click', saveUserInfoController);
 //// upload photo
 const uploadFile = document.querySelector('input[type="file"]');
 const uploadFileController = async () => {
+    const [fileName, path] = userEmail.textContent.split('@');
     let fileData = new FormData();
     fileData.append('file', uploadFile.files[0], `${fileName}.jpg`);
 
-    const response = await fetch('/api/user/upload', {
+    const response = await fetch('/api/user/profile/upload', {
         method: "POST",
         body: fileData
     });
@@ -77,7 +78,6 @@ const uploadFileController = async () => {
 uploadFile.addEventListener('change', uploadFileController)
 
 
-
 //// click edit btn show profile form
 const editProfileBtn = document.querySelector('.edit-profile');
 const profileContainer = document.querySelector('.profile-container');
@@ -88,16 +88,46 @@ const showProfileController = () => {
 editProfileBtn.addEventListener('click', showProfileController);
 
 
-//// profile form controller
-const profileForm = document.querySelector('form');
-const saveProfileController = async (e) => {
-    e.preventDefault();
+
+//// fetch profile update API
+const fetchUpdateAPI = async (typeValue) => {
     const location = document.querySelector('.location-value').value;
     const introduction = document.querySelector('.intro-value').value;
     const condition = document.querySelector('.condition-value').value;
+
+    const response = await fetch('/api/user/profile/update', {
+        method: "POST",
+        body: JSON.stringify({
+            "location": location,
+            "introduction": introduction,
+            "type": typeValue,
+            "sex": sexValue,
+            "condition": condition
+        }),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    });
+    const data = await response.json();
+    
+    if(data.success === true){
+        window.location = '/member'
+    }
+}
+
+
+//// profile form controller [Fix]
+const profileForm = document.querySelector('form');
+const saveProfileController = async (e) => {
+    e.preventDefault();
     let  typeValue = [...new Set(typeList)].join('');
 
-    const response = await fetch('/api/user/profile');
+    const response = await fetch('/api/user/profile/');
+
+    if(response.ok === false){
+        fetchUpdateAPI(typeValue);
+    }
+
     const data = await response.json();
     const profileData = data.data;
     
@@ -108,24 +138,7 @@ const saveProfileController = async (e) => {
         if(typeValue === ''){ typeValue = profileData.type };
         if(sexValue === undefined){ sexValue = profileData.sex };
 
-        const response = await fetch('/api/user/update', {
-            method: "POST",
-            body: JSON.stringify({
-                "location": location,
-                "introduction": introduction,
-                "type": typeValue,
-                "sex": sexValue,
-                "condition": condition
-            }),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        });
-        const data = await response.json();
-        
-        if(data.success === true){
-            window.location = '/member'
-        }
+        fetchUpdateAPI(typeValue);
     }
 }
 profileForm.addEventListener('submit', saveProfileController);

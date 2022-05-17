@@ -1,98 +1,97 @@
-const pool = require('../model/connection');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const User = require('../model/user');
+const Response = require('./response');
+
+const user = new User();
+const response = new Response();
+
 
 const isLoggedIn = (req, res, next) => {
-    req.user || req.cookies.jwt? next() : res.status(403).json({"success": false, "message": "Can't get authorization"});
+    req.user || req.cookies.jwt? next() : res.status(403).json(response.getError("Can't get authorization"));
 }
+
+
+const getUserEmail = (req) => {
+    let email;
+    if(req.cookies.jwt) email = jwt.verify(req.cookies.jwt, process.env.JWT_SECRET_KEY, {algorithms: "HS256"}).email;
+    if(req.user) email = req.user.emails[0].value;
+    return email
+}
+
 
 const googleCallBack = async(req, res) => {
     const username = req.user.displayName;
     const email = req.user.emails[0].value;
     const image = req.user.photos[0].value;
     try {
-        const existUser = await pool.query("SELECT username FROM member WHERE email = ?", [email]);
-        if(existUser.length === 0){
-            pool.query("INSERT INTO member (username, email, image, userstatus) VALUES (?,?,?,?)", [username, email, image, 0]);
-        }
+        const existUser = await user.getExistUser(email);
+        if(existUser.length === 0) user.createGoogleUser(username, email, image);
     } catch (error) {
         if(error) throw error;
     }
     res.redirect('/member');
 };
 
+
 const checkUserLogIn = async(req, res) => {
-    const token = req.cookies.jwt;
-    let email;
+    const email = getUserEmail(req);
     try {
-        if(token){ email = jwt.verify(token, process.env.JWT_SECRET_KEY, {algorithms: "HS256"}).email };
-        if(req.user){ email = req.user.emails[0].value };
-        
-        const data = await pool.query("SELECT id, username, email, image, register, userstatus FROM member WHERE email = ?", [email]);
-        return res.status(200).json({"success": true,"data": data[0]})
+        const data = await user.getUserInfo(email);
+        res.status(200).json(response.getResponseSuccess(data[0]))
     } catch (error) {
-        return res.status(403).json({"success": false, "message": "Can't get authorization"})
+        res.status(403).json(response.getError("Can't get authorization"))
     }
 };
+
 
 const userSignUp = async(req, res) => {
     const {username, email, password} = req.body
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(password, salt);
-    const existUser = await pool.query("SELECT username FROM member WHERE email = ?", [email]);
+    const existUser = await user.getExistUser(email);
 
-    if(existUser.length !== 0) return res.status(400).json({"success": false, "message": "This email already exist"});
+    if(existUser.length !== 0) return res.status(400).json(response.getError("This email already exist"));
 
     try {
-        pool.query("INSERT INTO member (username, email, password, userstatus) VALUES (?,?,?,?)", [username, email, hash, 0]);
-        res.status(200).json({"success": true})
+        user.createUser(username, email, hash);
+        res.status(200).json(response.getSuccess())
     } catch (error) {
-        res.status(500).json({"success": false, "message": "error message from server"})
+        res.status(500).json(response.getServerError())
     }
 };
+
 
 const userLogIn = async (req, res) => {
     const {email, password} = req.body;
     try {
-        const hashPassword = await pool.query("SELECT password FROM member WHERE email = ?", [email]);
-        if(hashPassword.length === 0) return res.status(400).json({"success": false, "message": "email does not exist"});
+        const hashPassword = await user.getHashPassword(email);
+
+        if(hashPassword.length === 0) return res.status(400).json(response.getError("email does not exist"));
 
         const hashResult = bcrypt.compareSync(password, hashPassword[0].password);
+        
         if(hashResult){
-            const userStatus = await pool.query("SELECT userstatus FROM member WHERE email = ?", [email]);
+            const userStatus = await user.getUserStatus(email);
             const token = jwt.sign({email: email}, process.env.JWT_SECRET_KEY, {algorithm: 'HS256'});
             res.cookie("jwt", token, {httpOnly: true})
-            return res.status(200).json({"success": true, "userStatus": userStatus[0]['userstatus']});
+            res.status(200).json({"success": true, "userStatus": userStatus[0]['userstatus']});
         }else{
-            return res.status(400).json({"success": false, "message": "please enter connecr password"});
+            res.status(400).json(response.getError("please enter correct password"));
         }
     } catch (error) {
-        res.status(500).json({"success": false, "message": "error message from server"})
+        res.status(500).json(response.getServerError());
     }
 };
+
 
 const userLogOut = (req, res) => {
     req.logout();
     req.session.destroy();
     res.clearCookie("jwt");
-    res.status(200).json({"success": true})
+    res.status(200).json(response.getSuccess());
 };
 
-const editUserInfo = async (req, res) => {
-    const {type, data, email} = req.body;
-    try {
-        if(type === 'username'){
-            pool.query("UPDATE member SET username = ?  WHERE email = ?", [data, email]);
-        }else{
-            const salt = bcrypt.genSaltSync(10);
-            const hash = bcrypt.hashSync(data, salt);
-            pool.query("UPDATE member SET password = ?  WHERE email = ?", [hash, email]);
-        }
-        return res.status(200).json({"success": true})
-    } catch (error) {
-        res.status(500).json({"success": false, "message": "error message from server"})
-    }
-};
 
 module.exports = {
     isLoggedIn,
@@ -100,6 +99,5 @@ module.exports = {
     checkUserLogIn,
     userSignUp,
     userLogIn,
-    userLogOut,
-    editUserInfo
+    userLogOut
 };
