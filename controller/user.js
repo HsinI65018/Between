@@ -26,7 +26,9 @@ const googleCallBack = async(req, res) => {
     const image = req.user.photos[0].value;
     try {
         const existUser = await user.getExistUser(email);
-        if(existUser.length === 0) user.createGoogleUser(username, email, image);
+        if(existUser.length === 0){
+            await user.createGoogleUser(username, email, image);
+        }
     } catch (error) {
         if(error) throw error;
     }
@@ -37,7 +39,7 @@ const googleCallBack = async(req, res) => {
 const checkUserLogIn = async(req, res) => {
     const email = getUserEmail(req);
     try {
-        const data = await user.getUserInfo(email);
+        let data = await user.getUserInfo(email);
         res.status(200).json(response.getResponseSuccess(data[0]))
     } catch (error) {
         res.status(403).json(response.getError("Can't get authorization"))
@@ -54,7 +56,7 @@ const userSignUp = async(req, res) => {
     if(existUser.length !== 0) return res.status(400).json(response.getError("This email already exist"));
 
     try {
-        user.createUser(username, email, hash);
+        await user.createUser(username, email, hash);
         res.status(200).json(response.getSuccess())
     } catch (error) {
         res.status(500).json(response.getServerError())
@@ -67,7 +69,7 @@ const userLogIn = async (req, res) => {
     try {
         const hashPassword = await user.getHashPassword(email);
 
-        if(hashPassword.length === 0) return res.status(400).json(response.getError("email does not exist"));
+        if(hashPassword[0].length === 0) return res.status(400).json(response.getError("email does not exist"));
 
         const hashResult = bcrypt.compareSync(password, hashPassword[0].password);
         

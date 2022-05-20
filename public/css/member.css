@@ -8,6 +8,7 @@
 
 /* user identity */
 header{
+    margin-top: 50px;
     height: 320px;
     display: flex;
     align-items: center;
@@ -52,11 +53,14 @@ header > .header-container{
 .user-container > .register-pwd{
     display: flex;
 }
-.info-container > .title, .register-pwd > .title{
-    width: 86px;
+.info-container > .title{
+    /* width: 86px; */
     margin-right: 50px;
     display: flex;
     align-items: center;
+}
+.register-pwd > .title{
+    margin-right: 15px;
 }
 .info-container > .content, .register-pwd > .content{
     width: 300px;
@@ -73,7 +77,13 @@ header > .header-container{
     padding: 5px 15px 5px 15px;
     margin-right: auto;
 }
-.info-container > .img-container, .register-pwd > .img-container{
+.info-container > .img-container{
+    width: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.register-pwd > .img-container{
     width: 25px;
     display: flex;
     align-items: center;
@@ -161,6 +171,15 @@ form{
     padding: 5px 15px 5px 15px;
 }
 /* personality */
+.personality-container > .title{
+    margin-bottom: 20px;
+}
+.personality-container > .describe{
+    margin-bottom: 50px;
+}
+.personality-container > .describe > p, .describe >p> b{
+    font-size: 16px;
+}
 .personality-container > .type-container{
     width: 800px;
     display: flex;
@@ -177,14 +196,14 @@ form{
     cursor: pointer;
     margin-right: 2px;
 }
-#type:hover{
+#type:hover, .select{
     background-color: #E8E8E8E8;
     border-radius: 10px;
 }
-.select{
+/* .select{
     background-color: #E8E8E8E8;
     border-radius: 10px;
-}
+} */
 #type > .type-block{
     display: flex;
     flex-direction: column;
@@ -268,41 +287,6 @@ form{
 @media(max-width: 850px){
     header > .header-container{
         width: 90%;
-    }
-    .header-container > .image-container, .upload{
-        width: 150px;
-        height: 150px;
-    }
-    .header-container > .user-container{
-        width: 70%;
-        height: 150px;
-    }
-    .info-container > .title{
-        margin-right: 20px;
-    }
-    .info-container > .content{
-        width: 70%;
-        margin-right: 5px;
-    }
-    .info-container > input{
-        width: 60%;
-    }
-    .introduction > textarea{
-        width: 500px;
-    }
-    main > .profile-container, .about-container, .personality-container, .sex-container, .condition-container{
-        width: 90%;
-    }
-    .personality-container >.type-container{
-        width: 90%;
-        margin: auto;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-}
-@media(max-width: 850px){
-    header > .header-container{
         flex-direction: column;
         height: inherit;
     }
@@ -310,8 +294,19 @@ form{
         margin-top: 60px;
         margin-bottom: 30px;
     }
+    .header-container > .image-container, .upload{
+        width: 150px;
+        height: 150px;
+    }
     .header-container > .user-container{
         width: 90%;
+        height: 150px;
+    }
+    .info-container > input, .register-pwd > input, .info-container > .content, .register-pwd > .content{
+        min-width: 50%;
+    }
+    .introduction > textarea{
+        width: 500px;
     }
     .location > input{
         width: 90%;
@@ -322,16 +317,28 @@ form{
     .introduction > textarea{
         height: 200px;
     }
-    .type-container > .type{
+    main > .profile-container, .about-container, .personality-container, .sex-container, .condition-container{
+        width: 90%;
+    }
+    .personality-container >.type-container{
+        width: 100%;
+        margin: auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .type-container > #type{
         height: auto;
         flex-direction: row;
         justify-content: space-around;
+        align-items: center;
         width: 100%;
     }
-    .type > .content{
-        width: 50%;
+    #type > .content{
+        width: auto;
         height: auto;
         overflow: scroll;
+        margin-left: 30px;
     }
     .hide-hr{
         width: 100%;
@@ -340,11 +347,6 @@ form{
     }
 }
 @media(max-width: 420px){
-    .type > .content{
-        width: 50%;
-        height: 170px;
-        overflow: scroll;
-    }
     .sex-btn-container > button{
         width: 80px;
     }

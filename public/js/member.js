@@ -56,6 +56,7 @@ const saveUserInfoController = async (e) => {
 saveNameBtn.addEventListener('click', saveUserInfoController);
 savePasswordBtn.addEventListener('click', saveUserInfoController);
 
+
 //// upload photo
 const userEmail = document.querySelector('.save-user-email');
 const uploadFile = document.querySelector('input[type="file"]');
@@ -67,9 +68,6 @@ const uploadFileController = async () => {
     const response = await fetch('/api/user/profile/upload', {
         method: "POST",
         body: fileData,
-        headers: {
-            "Content-Type": "application/json"
-        }
     });
 
     const data = await response.json();
@@ -117,16 +115,24 @@ const fetchUpdateAPI = async (typeValue) => {
 
 //// profile form controller
 const profileForm = document.querySelector('form');
+const errorContainer = document.querySelector('.error-container');
 const saveProfileController = async (e) => {
     e.preventDefault();
     let typeValue = [...new Set(typeList)].join('');
 
     const response = await fetch('/api/user/profile/');
-    if(response.ok === false) fetchUpdateAPI(typeValue);
-
     const data = await response.json();
     const profileData = data.data;
-    
+
+    if(profileData.location === null && profileData.introduction === null && profileData.searchCondition === null && profileData.type === null && profileData.sex === null){
+        if(typeValue.length < 4 || sexValue === undefined){
+            errorContainer.classList.remove('hide');
+            // errorContainer.classList.add('show-animation');
+            return
+        }
+        fetchUpdateAPI(typeValue);
+    }
+
     if(profileData.location === location && profileData.introduction === introduction && profileData.searchCondition === condition && typeValue === '' && sexValue === undefined){
         editProfileBtn.classList.remove('hide');
         profileContainer.classList.add('hide');

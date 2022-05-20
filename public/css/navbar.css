@@ -5,11 +5,12 @@
 }
 nav{
     height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     border-bottom: 1px solid #E8E8E8E8;
     margin: auto;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #FFFFFF;
 }
 nav > .nav-container{
     width: 1200px;
@@ -78,9 +79,66 @@ nav > .nav-container{
     margin-left: 0px;
 }
 
+
+/* error container */
+.error-container{
+    transform: translateY(150px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.error{
+    width: 450px;
+    background: #FFFFFF;
+    box-shadow: 0px 4px 60px #AAAAAA;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-top: 25px solid #B6244F;
+    padding: 15px;
+}
+.error > .title{
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+.error > .message{
+    width: 400px;
+    text-align: center;
+    margin-bottom: 15px;
+}
+.error > button{
+    width: 200px;
+    height: 30px;
+    background: #B6244F;
+    border-radius: 5px;
+    margin: 15px 0px 15px 0px;
+    color: #FFFFFF;
+    border: none;
+    cursor: pointer;
+}
+.hide{
+    display: none;
+}
+.show-animation{
+    animation: 0.7s identifier;
+}
+@keyframes identifier {
+    0% {transform: translateY(-100%)}
+    100% {transform: translateY(0);}
+}
+
 /* RWD */
 @media(max-width: 1200px){
     nav > .nav-container{
         width: 90%;
+    }
+    .error{
+        max-width: 80%;
+    }
+    .error > .message{
+        max-width: 80%;
     }
 }

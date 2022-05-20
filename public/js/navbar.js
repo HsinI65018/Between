@@ -36,7 +36,7 @@ memberBtn.addEventListener('mouseover', showIconHintController);
 logoutBtn.addEventListener('mouseover', showIconHintController);
 
 
-//// mouseout od icon hide icon name
+//// mouseout the icon hide icon name
 const hideIconHintController = (e) => {
     const type = e.target.className;
     const target = document.querySelector(`.${type}-title`);
@@ -45,3 +45,12 @@ const hideIconHintController = (e) => {
 messageBtn.addEventListener('mouseout', hideIconHintController);
 memberBtn.addEventListener('mouseout', hideIconHintController);
 logoutBtn.addEventListener('mouseout', hideIconHintController);
+
+
+////
+const closeBtn = document.querySelector('.btn');
+const errorContainer = document.querySelector('.error-container');
+const closeErrorController = () => {
+    errorContainer.classList.add('hide');
+}
+closeBtn.addEventListener('click', closeErrorController)

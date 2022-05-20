@@ -30,12 +30,12 @@ const editUserInfo = async (req, res) => {
     const {type, data} = req.body;
     const email = getUserEmail(req);
     try {
-        if(type === 'username') member.updateUserName(data, email);
+        if(type === 'username') await member.updateUserName(data, email);
 
         if(type === 'password'){
             const salt = bcrypt.genSaltSync(10);
             const hash = bcrypt.hashSync(data, salt);
-            member.updateUserPassword(hash, email);
+            await member.updateUserPassword(hash, email);
         }
         res.status(200).json(response.getSuccess())
     } catch (error) {
@@ -48,7 +48,7 @@ const uploadImage = async (req, res) => {
     const fileURL = `${process.env.CLOUD_FRONT_URL}${req.file.originalname}`;
     const email = getUserEmail(req);
     try {
-        member.updateUserImage(fileURL, email);
+        await member.updateUserImage(fileURL, email);
         res.status(200).json({"success": true, "imgURL": fileURL})
     } catch (error) {
         res.status(500).json(response.getServerError())
@@ -60,7 +60,7 @@ const updateProfile = async (req, res) => {
     const {location, introduction, type, sex, condition} = req.body;
     const email = getUserEmail(req);
     try {
-        member.updateUserProfile(location, introduction, type, sex, condition, email);
+        await member.updateUserProfile(location, introduction, type, sex, condition, email);
         res.status(200).json(response.getSuccess())
     } catch (error) {
         res.status(500).json(response.getServerError())

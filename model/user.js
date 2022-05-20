@@ -1,35 +1,44 @@
-const pool = require('./utility');
+const transaction = require('./utility');
 
 class User{
-    getExistUser(email) {
-        const data = pool.query("SELECT username FROM member WHERE email = ?", [email]);
-        return data
+    async getExistUser(email) {
+        const sql = ["SELECT username FROM member WHERE email = ?"];
+        const value = [[email]];
+        const data = await transaction(sql, value);
+        return data[0]
     }
 
-    getUserInfo(email) {
-        const data = pool.query("SELECT id, username, email, image, register, userstatus FROM member WHERE email = ?", [email]);
-        return data
+    async getUserInfo(email) {
+        const sql = ["SELECT id, username, email, image, register, userstatus FROM member WHERE email = ?"];
+        const value = [[email]];
+        const data = await transaction(sql, value);
+        return data[0]
     }
 
-    getHashPassword(email) {
-        const data = pool.query("SELECT password FROM member WHERE email = ?", [email]);
-        return data
+    async getHashPassword(email) {
+        const sql = ["SELECT password FROM member WHERE email = ?"];
+        const value = [[email]];
+        const data = await transaction(sql, value);
+        return data[0]
     }
 
-    getUserStatus(email) {
-        const data = pool.query("SELECT userstatus FROM member WHERE email = ?", [email]);
-        return data
+    async getUserStatus(email) {
+        const sql = ["SELECT userstatus FROM member WHERE email = ?"];
+        const value = [[email]];
+        const data = await transaction(sql, value);
+        return data[0]
     }
 
-    createUser(username, email, hash) {
-        pool.query("INSERT INTO member (username, email, password, register, userstatus) VALUES (?,?,?,?)", [username, email, hash, 'local', 0]);
-        pool.query("INSERT INTO profile (user) VALUES (?)", [email]);
+    async createUser(username, email, hash) {
+        const sql = ["INSERT INTO member (username, email, password, register, userstatus) VALUES (?,?,?,?,?)", "INSERT INTO profile (user) VALUES (?)"];
+        const value = [[username, email, hash, 'local', 0], [email]];
+        await transaction(sql, value)
     }
 
-    createGoogleUser(username, email, image) {
-        pool.query("INSERT INTO member (username, email, image, register, userstatus) VALUES (?,?,?,?)", [username, email, image, 'google', 0]);
-        pool.query("INSERT INTO profile (user) VALUES (?)", [email]);
+    async createGoogleUser(username, email, image) {
+        const sql = ["INSERT INTO member (username, email, image, register, userstatus) VALUES (?, ?, ?, ?, ?)", "INSERT INTO profile (user) VALUES (?)"];
+        const value = [[username, email, image, 'google', 0], [email]];
+        await transaction(sql, value);
     }
 }
-
 module.exports = User;
