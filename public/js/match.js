@@ -10,6 +10,7 @@ const showMoreInfoController = () => {
 }
 moreInfoBtn.addEventListener('click', showMoreInfoController);
 
+
 //// controll match success block
 const sendMessageBtn = document.querySelector('.message-btn');
 const keepPlayingBtn = document.querySelector('.playing-btn');
@@ -23,4 +24,6 @@ const matchSuccessController = (e) => {
     }
 }
 sendMessageBtn.addEventListener('click', matchSuccessController);
-keepPlayingBtn.addEventListener('click', matchSuccessController)
+keepPlayingBtn.addEventListener('click', matchSuccessController);
+
+

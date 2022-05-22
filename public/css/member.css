@@ -142,12 +142,12 @@ form{
     font-size: 25px;
     margin-bottom: 30px;
 }
-.about-container > .location, .about-container > .introduction{
+.about-container > .location, .about-container > .introduction, .about-container > .facebook, .about-container > .instagram{
     display: flex;
     align-items: flex-start;
     margin-bottom: 20px;
 }
-.location > .title, .introduction > .title{
+.location > .title, .introduction > .title, .facebook > .title, .instagram > .title{
     width: 110px;
     font-weight: 700;
     margin-right: 50px;
@@ -155,6 +155,15 @@ form{
 .location > input{
     outline: none;
     width: 250px;
+    height: 20px;
+    background: #FFFFFF;
+    border: 1px solid #888888;
+    border-radius: 5px;
+    padding: 5px 15px 5px 15px;
+}
+.facebook > input, .instagram > input{
+    outline: none;
+    width: 500px;
     height: 20px;
     background: #FFFFFF;
     border: 1px solid #888888;
@@ -200,10 +209,6 @@ form{
     background-color: #E8E8E8E8;
     border-radius: 10px;
 }
-/* .select{
-    background-color: #E8E8E8E8;
-    border-radius: 10px;
-} */
 #type > .type-block{
     display: flex;
     flex-direction: column;
@@ -308,11 +313,14 @@ form{
     .introduction > textarea{
         width: 500px;
     }
-    .location > input{
-        width: 90%;
+    .location > input, .facebook > input, .instagram > input{
+        width: 100%;
     }
     .introduction > .title{
         margin-right: 20px;
+    }
+    .facebook > .title, .instagram > .title{
+        margin-right: 40px;
     }
     .introduction > textarea{
         height: 200px;

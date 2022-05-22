@@ -45,10 +45,14 @@ const memberController = async (data) => {
         const profileData = data.data;
 
         const location = document.querySelector('.location-value');
+        const facebook = document.querySelector('.fb-value');
+        const instagram = document.querySelector('.ig-value');
         const introduction = document.querySelector('.intro-value');
         const condition = document.querySelector('.condition-value');
         
         location.value = profileData.location;
+        facebook.value = profileData.facebook;
+        instagram.value = profileData.instagram;
         introduction.value = profileData.introduction;
         condition.value = profileData.searchCondition;
 
@@ -68,3 +72,41 @@ const memberController = async (data) => {
         editBtn.classList.remove('hide');
     }
 }
+
+
+////
+let dataList;
+const userName = document.querySelector('.user-name');
+const userIcon = document.querySelector('.user-image');
+const userImage = document.querySelector('.img-container');
+const userLocation = document.querySelector('.location-name');
+const introduction = document.querySelector('.introduction');
+const matchController = async () => {
+    const response = await fetch('/api/user/match');
+    const data = await response.json();
+    // console.log(data);
+    dataList = data['data'];
+
+    userName.textContent = data['data'][0]['username'];
+    userIcon.src = data['data'][0]['image'];
+    userImage.style.backgroundImage = `url(${data['data'][0]['image']})`;
+    userLocation.textContent = data['data'][0]['location'];
+    introduction.textContent = data['data'][0]['introduction'];
+}
+matchController();
+
+
+let index = 1;
+const nextBtn = document.querySelector('.next-btn');
+const nextPersonController = () => {
+    // console.log(dataList)
+    // console.log(dataList.length)
+    
+    userName.textContent = dataList[index]['username'];
+    userIcon.src = dataList[index]['image'];
+    userImage.style.backgroundImage = `url(${dataList[index]['image']})`;
+    userLocation.textContent = dataList[index]['location'];
+    introduction.textContent = dataList[index]['introduction'];
+    index++
+}
+nextBtn.addEventListener('click', nextPersonController)

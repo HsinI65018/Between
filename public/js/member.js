@@ -94,11 +94,15 @@ const fetchUpdateAPI = async (typeValue) => {
     const location = document.querySelector('.location-value').value;
     const introduction = document.querySelector('.intro-value').value;
     const condition = document.querySelector('.condition-value').value;
+    const fb = document.querySelector('.fb-value').value;
+    const ig = document.querySelector('.ig-value').value;
 
     const response = await fetch('/api/user/profile/update', {
         method: "POST",
         body: JSON.stringify({
             "location": location,
+            "facebook": fb,
+            "instagram": ig,
             "introduction": introduction,
             "type": typeValue,
             "sex": sexValue,
@@ -127,7 +131,6 @@ const saveProfileController = async (e) => {
     if(profileData.location === null && profileData.introduction === null && profileData.searchCondition === null && profileData.type === null && profileData.sex === null){
         if(typeValue.length < 4 || sexValue === undefined){
             errorContainer.classList.remove('hide');
-            // errorContainer.classList.add('show-animation');
             return
         }
         fetchUpdateAPI(typeValue);

@@ -57,10 +57,10 @@ const uploadImage = async (req, res) => {
 
 
 const updateProfile = async (req, res) => {
-    const {location, introduction, type, sex, condition} = req.body;
+    const {location, facebook, instagram, introduction, type, sex, condition} = req.body;
     const email = getUserEmail(req);
     try {
-        await member.updateUserProfile(location, introduction, type, sex, condition, email);
+        await member.updateUserProfile(location, facebook, instagram, introduction, type, sex, condition, email);
         res.status(200).json(response.getSuccess())
     } catch (error) {
         res.status(500).json(response.getServerError())
