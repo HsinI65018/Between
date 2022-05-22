@@ -1,26 +1,3 @@
-//// check sigin status
-const checkSignInController = async () => {
-    const response = await fetch('/api/user/');
-    const data = await response.json();
-    // console.log(data)
-    if(data['success'] === false) window.location = '/';
-    if(window.location.pathname === '/member') memberController(data);
-}
-checkSignInController();
-
-
-//// init memmer page
-const memberController = (data) => {
-    const userData = data['data'];
-    const userName = document.querySelector('.save-user-name');
-    const userEmail = document.querySelector('.save-user-email');
-    const userImage = document.querySelector('.upload-image');
-    userName.textContent = userData.username;
-    userEmail.textContent = userData.email;
-    userImage.src = userData.image;
-    userImage.classList.add('upload');
-}
-
 //// switch the page throw the icon
 const logoBtn = document.querySelector('.logo');
 const messageBtn = document.querySelector('.message');
@@ -43,9 +20,7 @@ const logoutBtn = document.querySelector('.logout');
 const logoutController = async() => {
     const response = await fetch('/api/user/logout', {method: "DELETE"});
     const data = await response.json();
-    if(data['success']){
-        window.location = '/';
-    }
+    if(data.success) window.location = '/';
 }
 logoutBtn.addEventListener('click', logoutController);
 
@@ -61,7 +36,7 @@ memberBtn.addEventListener('mouseover', showIconHintController);
 logoutBtn.addEventListener('mouseover', showIconHintController);
 
 
-//// mouseout od icon hide icon name
+//// mouseout the icon hide icon name
 const hideIconHintController = (e) => {
     const type = e.target.className;
     const target = document.querySelector(`.${type}-title`);
@@ -70,3 +45,12 @@ const hideIconHintController = (e) => {
 messageBtn.addEventListener('mouseout', hideIconHintController);
 memberBtn.addEventListener('mouseout', hideIconHintController);
 logoutBtn.addEventListener('mouseout', hideIconHintController);
+
+
+////
+const closeBtn = document.querySelector('.btn');
+const errorContainer = document.querySelector('.error-container');
+const closeErrorController = () => {
+    errorContainer.classList.add('hide');
+}
+closeBtn.addEventListener('click', closeErrorController)

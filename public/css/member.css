@@ -8,6 +8,7 @@
 
 /* user identity */
 header{
+    margin-top: 50px;
     height: 320px;
     display: flex;
     align-items: center;
@@ -33,12 +34,6 @@ header > .header-container{
 .custom-file-upload > img{
     cursor: pointer;
 }
-/* .image-container > img{
-    width: 200px;
-    height: 200px;
-    object-fit: cover;
-    object-position: center;
-} */
 .upload{
     width: 200px;
     height: 200px;
@@ -55,19 +50,25 @@ header > .header-container{
 .user-container > .info-container{
     display: flex;
 }
+.user-container > .register-pwd{
+    display: flex;
+}
 .info-container > .title{
-    width: 86px;
+    /* width: 86px; */
     margin-right: 50px;
     display: flex;
     align-items: center;
 }
-.info-container > .content{
+.register-pwd > .title{
+    margin-right: 15px;
+}
+.info-container > .content, .register-pwd > .content{
     width: 300px;
     height: 37px;
     line-height: 37px;
     margin-right: auto;
 }
-.info-container > input{
+.info-container > input, .register-pwd > input{
     width: 200px;
     height: 25px;
     background: #FFFFFF;
@@ -77,6 +78,12 @@ header > .header-container{
     margin-right: auto;
 }
 .info-container > .img-container{
+    width: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.register-pwd > .img-container{
     width: 25px;
     display: flex;
     align-items: center;
@@ -101,7 +108,6 @@ main{
 }
 /* profile btn */
 main > .btn-container{
-    /* width: 800px; */
     margin: auto;
     display: flex;
     align-items: center;
@@ -165,30 +171,45 @@ form{
     padding: 5px 15px 5px 15px;
 }
 /* personality */
+.personality-container > .title{
+    margin-bottom: 20px;
+}
+.personality-container > .describe{
+    margin-bottom: 50px;
+}
+.personality-container > .describe > p, .describe >p> b{
+    font-size: 16px;
+}
 .personality-container > .type-container{
     width: 800px;
     display: flex;
     flex-wrap: wrap;
 }
-.type-container > .type{
-    width: 180px;
+.type-container > #type{
+    width: auto;
     padding: 10px 10px 10px 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     margin-bottom: 30px;
+    cursor: pointer;
+    margin-right: 2px;
 }
-.type:hover{
+#type:hover, .select{
     background-color: #E8E8E8E8;
     border-radius: 10px;
 }
-.type > .type-block{
+/* .select{
+    background-color: #E8E8E8E8;
+    border-radius: 10px;
+} */
+#type > .type-block{
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-.type > .type-block > .latter{
+#type > .type-block > .latter{
     width: 60px;
     height: 60px;
     background-color: #B6244F;
@@ -200,16 +221,20 @@ form{
     color: #FFFFFF;
     margin-bottom: 10px;
 }
-.type > .type-block > .title{
+#type > .type-block > .title{
     font-weight: 700;
     font-size: 20px;
 }
-.type > .content{
+#type > .content{
     width: 170px;
     height: 210px;
     text-align: left;
     font-size: 17px;
 }
+.type-block, .type-block > .latter, .type-block > .title, #type > .content{
+    pointer-events: none;
+}
+
 /* sex */
 .sex-container, .condition-container{
     width: 800px;
@@ -218,8 +243,6 @@ form{
     width: 100px;
     height: 30px;
     margin-right: 10px;
-    background: #E8E8E8E8;
-    color: #000000;
     border-radius: 10px;
     border: none;
     cursor: pointer;
@@ -228,6 +251,10 @@ form{
     margin-bottom: 30px;
 }
 .sex-btn-container > button:hover{
+    color: #FFFFFF;
+    background: #B6244F;
+}
+.click-btn{
     color: #FFFFFF;
     background: #B6244F;
 }
@@ -260,41 +287,6 @@ form{
 @media(max-width: 850px){
     header > .header-container{
         width: 90%;
-    }
-    .header-container > .image-container, .upload{
-        width: 150px;
-        height: 150px;
-    }
-    .header-container > .user-container{
-        width: 70%;
-        height: 150px;
-    }
-    .info-container > .title{
-        margin-right: 20px;
-    }
-    .info-container > .content{
-        width: 70%;
-        margin-right: 5px;
-    }
-    .info-container > input{
-        width: 60%;
-    }
-    .introduction > textarea{
-        width: 500px;
-    }
-    main > .profile-container, .about-container, .personality-container, .sex-container, .condition-container{
-        width: 90%;
-    }
-    .personality-container >.type-container{
-        width: 90%;
-        margin: auto;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-}
-@media(max-width: 600px){
-    header > .header-container{
         flex-direction: column;
         height: inherit;
     }
@@ -302,8 +294,19 @@ form{
         margin-top: 60px;
         margin-bottom: 30px;
     }
+    .header-container > .image-container, .upload{
+        width: 150px;
+        height: 150px;
+    }
     .header-container > .user-container{
         width: 90%;
+        height: 150px;
+    }
+    .info-container > input, .register-pwd > input, .info-container > .content, .register-pwd > .content{
+        min-width: 50%;
+    }
+    .introduction > textarea{
+        width: 500px;
     }
     .location > input{
         width: 90%;
@@ -314,16 +317,28 @@ form{
     .introduction > textarea{
         height: 200px;
     }
-    .type-container > .type{
+    main > .profile-container, .about-container, .personality-container, .sex-container, .condition-container{
+        width: 90%;
+    }
+    .personality-container >.type-container{
+        width: 100%;
+        margin: auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .type-container > #type{
         height: auto;
         flex-direction: row;
         justify-content: space-around;
+        align-items: center;
         width: 100%;
     }
-    .type > .content{
-        width: 50%;
+    #type > .content{
+        width: auto;
         height: auto;
         overflow: scroll;
+        margin-left: 30px;
     }
     .hide-hr{
         width: 100%;
@@ -332,11 +347,6 @@ form{
     }
 }
 @media(max-width: 420px){
-    .type > .content{
-        width: 50%;
-        height: 170px;
-        overflow: scroll;
-    }
     .sex-btn-container > button{
         width: 80px;
     }

@@ -3,6 +3,7 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const render = require('./router/render');
 const user = require('./router/user');
+const member = require('./router/member');
 const passport = require('passport');
 require('dotenv').config();
 require('./controller/auth');
@@ -14,12 +15,13 @@ app.use(cookieParser());
 app.use(express.static('./public'));
 app.use(express.json());
 
-app.use(session({ secret: 'cats', resave: false, saveUninitialized: true }));
+app.use(session({ secret: process.env.SESSION_SECRET_KEY, resave: true, saveUninitialized: false }));
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/', render);
 app.use('/api/user', user);
+app.use('/api/user/profile', member);
 
 const PORT = 3000;
 const HOST = '0.0.0.0';
