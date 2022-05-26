@@ -7,7 +7,7 @@ const member = require('./router/member');
 const match = require('./router/match');
 const passport = require('passport');
 require('dotenv').config();
-require('./controller/auth');
+require('./controller/googleAuth');
 
 const app = express();
 

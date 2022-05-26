@@ -50,7 +50,14 @@ logoutBtn.addEventListener('mouseout', hideIconHintController);
 ////
 const closeBtn = document.querySelector('.btn');
 const errorContainer = document.querySelector('.error-container');
-const closeErrorController = () => {
-    errorContainer.classList.add('hide');
+const closeErrorController = async () => {
+    console.log(window.location)
+    if(window.location.pathname === '/match'){
+        const response = await fetch('/api/user/match/refresh', {method: "DELETE"});
+        const data = await response.json();
+        window.location = '/match'
+    }else{
+        errorContainer.classList.add('hide');
+    }
 }
 closeBtn.addEventListener('click', closeErrorController)

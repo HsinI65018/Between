@@ -33,6 +33,9 @@ main > .match-container{
     align-items: center;
     justify-content: flex-end;
 }
+.like{
+    transform: translateY(-300px);
+}
 /* match success */
 .img-container > .show-match-container{
     width: calc(100vw + 50px);

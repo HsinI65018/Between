@@ -1,21 +1,18 @@
-const passport = require('passport');
-const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const jwt = require('jsonwebtoken');
 
-passport.use(new GoogleStrategy({
-  clientID: process.env.GOOGLE_CLIENT_ID,
-  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: "/api/user/google/callback"
-  //change to process.env.CALLBACK_URL
-},
-  (accessToken, refreshToken, profile, cb) => {
-    return cb(null, profile);
-  }
-));
+const isLoggedIn = (req, res, next) => {
+    req.user || req.cookies.jwt? next() : res.status(403).json(response.getError("Can't get authorization"));
+}
 
-passport.serializeUser((user, cb) => {
-  cb(null, user)
-});
 
-passport.deserializeUser((obj, cb) => {
-  cb(null, obj);
-});
+const getUserEmail = (req) => {
+    let email;
+    if(req.cookies.jwt) email = jwt.verify(req.cookies.jwt, process.env.JWT_SECRET_KEY, {algorithms: "HS256"}).email;
+    if(req.user) email = req.user.emails[0].value;
+    return email
+}
+
+module.exports = {
+    isLoggedIn,
+    getUserEmail
+}
