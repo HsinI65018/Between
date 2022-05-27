@@ -202,8 +202,96 @@ router.delete('/refresh', async (req, res) => {
 
 
 ////
-router.post('/panding', async (req, res) => {
+router.post('/pending', async (req, res) => {
+    const email = getUserEmail(req);
+    let {pendingList} = req.body;
+    console.log(pendingList)
+    const data = await transaction(["SELECT pending FROM matching WHERE user = ?"], [[email]]);
+    // console.log('data[0][0]=',data[0][0])
+    if(data[0][0]['pending'] !== null){
+        const newPending = JSON.parse(data[0][0]['pending']);
+        for(let i = 0; i < pendingList.length; i++){
+            newPending.push(Number(pendingList[i]))
+        }
+        pendingList = newPending
+    }
+    const pendingStr = "[" + pendingList.toString() + "]";
+    await transaction(["UPDATE matching SET pending = ? WHERE user = ?"], [[pendingStr, email]]);
+    res.status(200).json({"success": true, "message": "add pending"})
+})
+
+
+router.post('/check/pending', async (req, res) => {
+    const email = getUserEmail(req);
+    const sql = ["SELECT matched, pending, id, image FROM matching INNER JOIN member ON matching.user = member.email WHERE user = ?"];
+    const value = [email];
+    const data = await transaction(sql, [value]);
+    const {matched, pending, id, image} = data[0][0]
+
+    let responseData = null;
+
+    if(matched !== null){
+        const friendData = await transaction(["SELECT friends FROM message WHERE user = ?"], [[email]]);
+        const {friends} = friendData[0][0];
+
+        if(friends === null){
+            const friendList = [];
+            friendList.push(matched);
+            const friendsStr = "[" + friendList.toString() + "]";
+            await transaction(["UPDATE message SET friends = ? WHERE user = ?"], [[friendsStr, email]])
+        }else{
+            const friendList = JSON.parse(friends);
+            friendList.push(matched)
+            const friendsStr = "[" + friendList.toString() + "]";
+            await transaction(["UPDATE message SET friends = ? WHERE user = ?"], [[friendsStr, email]])
+        }
+
+        const sql = ["SELECT username, image FROM member INNER JOIN matching ON member.email = matching.user WHERE id = ?"];
+        const value = [matched]
+        const data = await transaction(sql, [value])
+        console.log(data)
+        responseData = {
+            "matchUser": data[0][0]['username'],
+            "matchImage": data[0][0]['image'],
+            "image": image
+        }
+        await transaction(["UPDATE matching SET matched = NULL WHERE user = ?"], [[email]]);
+        return res.status(200).json({"success": true, "responseData": responseData})
+    }
+   
+    const pendingList = JSON.parse(pending);
+    let updatePendingList;
+    let updatePendingUser;
     
+    if(pendingList !== null){
+        for(let i = 0; i < pendingList.length; i++){
+            const sql = ["SELECT pending FROM matching INNER JOIN member ON matching.user = member.email WHERE id = ?"];
+            const value = [pendingList[i]]
+            const data = await transaction(sql, [value])
+            const {pending} = data[0][0];
+            const pendingUser = JSON.parse(pending)
+            
+            if(pendingUser !== null && pendingUser.includes(id)){
+                console.log('match!!!')
+                const data = await transaction(["SELECT email FROM member WHERE id = ?"], [[pendingList[i]]]);
+                const matchEmail = data[0][0]['email']
+
+                await transaction(["UPDATE matching SET matched = ? WHERE user = ?"], [[pendingList[i], email]]);
+                await transaction(["UPDATE matching SET matched = ? WHERE user = ?"], [[id, matchEmail]]);
+
+                updatePendingList = pendingList.filter((item) => item !== pendingList[i])
+                const updatePendingStr = "[" + updatePendingList.toString() + "]";
+                await transaction(["UPDATE matching SET pending = ? WHERE user = ?"], [[updatePendingStr, email]])
+
+                updatePendingUser = pendingUser.filter((item) => item !== id)
+                const updatePendingUserStr = "[" + updatePendingUser.toString() + "]";
+                await transaction(["UPDATE matching SET pending = ? WHERE user = ?"], [[updatePendingUserStr, matchEmail]])
+
+                break
+            }
+        }
+    }
+    res.status(200).json({"success": true, "responseData": responseData})
 })
 
 module.exports = router;

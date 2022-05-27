@@ -21,26 +21,113 @@ const matchSuccessController = (e) => {
         window.location = '/message';
     }else{
         matchSuccess.classList.add('hide');
+        startMatching();
     }
 }
 sendMessageBtn.addEventListener('click', matchSuccessController);
 keepPlayingBtn.addEventListener('click', matchSuccessController);
 
 
+//// Add front-end pendingList in every 4 second
 //// like the person controller
+let pendingList = [];
 const imgContainer = document.querySelector('.img-container');
 const likeIcon = document.querySelector('.like');
-const likeController = (e) => {
+const likeController = async () => {
     likeIcon.classList.remove('hide');
     setTimeout(() => {
         likeIcon.classList.add('hide');
     }, 500)
-    console.log(userName.id)
+    pendingList.push(userName.id);
 }
-imgContainer.addEventListener('dblclick', likeController)
+imgContainer.addEventListener('dblclick', likeController);
 
 
-//// [In progress.....]
+//// send pendingList to back-end
+const pendingController = async () => {
+    const response = await fetch('/api/user/match/pending', {
+        method: "POST",
+        body: JSON.stringify({
+            "pendingList": pendingList
+        }),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    });
+    const data = await response.json();
+    console.log('pending=',data)
+}
+
+
+//// if pendingList.lengh > 3 send to back-end every 4 second
+const startAddPending = async () => {
+    setInterval(async () => {
+        if(window.location.pathname !== '/match'){
+            clearInterval(startAddPending)
+        }
+        if(pendingList.length >= 3){
+            await pendingController();
+            pendingList = [];
+        }
+    }, 4000)
+};
+startAddPending();
+
+
+
+//// check if there is a match success
+//// check matching, if seuuess show the success block
+const showMatch = document.querySelector('.show-match-container');
+const subTitle = document.querySelector('.sub-title');
+const matchPerson = document.querySelector('.person-1 > img');
+const user = document.querySelector('.person-2 > img');
+const checkMatchingController = async () => {
+    console.log('start match!!!!!')
+    const response = await fetch('/api/user/match/check/pending', {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+    const data = await response.json();
+    const matchData = data.responseData;
+    if(matchData !== null ){
+        showMatch.classList.remove('hide');
+        subTitle.textContent = `You and ${matchData.matchUser} have liked each other`;
+        matchPerson.src = matchData.matchImage;
+        user.src = matchData.image;
+        clearInterval(startMatching);
+
+    }
+}
+
+
+//// check matching erery 6 second
+const startMatching = async () => {
+    setInterval(async () => {
+        if(window.location.pathname !== '/match'){
+            clearInterval(startMatching);
+        }
+        await checkMatchingController();
+    }, 6000)
+};
+startMatching();
+
+
+//// show matching candidate
+//// display candidate info
+const showCandidateInfo = () => {
+    userName.id = dataList[0]['id'];
+    userName.textContent = dataList[0]['username'];
+    userIcon.src = dataList[0]['image'];
+    userImage.style.backgroundImage = `url(${dataList[0]['image']})`;
+    userLocation.textContent = dataList[0]['location'];
+    introduction.textContent = dataList[0]['introduction'];
+    dataList.shift();
+}
+
+
+//// every time access in match page first time
 let dataList = [];
 const userName = document.querySelector('.user-name');
 const userIcon = document.querySelector('.user-image');
@@ -50,7 +137,7 @@ const introduction = document.querySelector('.introduction');
 const matchController = async () => {
     const response = await fetch('/api/user/match');
     const data = await response.json();
-    console.log(data)
+    // console.log(data)
     if(data['data'] === null){
         initMatchCandidate();
     }else if(data['data'].length === 0){
@@ -60,13 +147,7 @@ const matchController = async () => {
         for(let i = 0; i < data['data'].length; i++){
             dataList.push(data['data'][i])
         }
-        userName.id = dataList[0]['id'];
-        userName.textContent = dataList[0]['username'];
-        userIcon.src = dataList[0]['image'];
-        userImage.style.backgroundImage = `url(${dataList[0]['image']})`;
-        userLocation.textContent = dataList[0]['location'];
-        introduction.textContent = dataList[0]['introduction'];
-        dataList.shift();
+        showCandidateInfo();
     }
 }
 matchController();
@@ -81,19 +162,11 @@ const initMatchCandidate = async () => {
         }
     });
     const data = await response.json();
-    if(data['data'] === null){
-        clearInterval(start)
-    }
+    if(data['data'] === null) clearInterval(start);
     for(let i = 0; i < data['data'].length; i++){
         dataList.push(data['data'][i])
     }
-
-    userName.textContent = dataList[0]['username'];
-    userIcon.src = dataList[0]['image'];
-    userImage.style.backgroundImage = `url(${dataList[0]['image']})`;
-    userLocation.textContent = dataList[0]['location'];
-    introduction.textContent = dataList[0]['introduction'];
-    dataList.shift();
+    showCandidateInfo();
 }
 
 
@@ -107,9 +180,7 @@ const generateMatchCandidate = async () => {
     });
     const data = await response.json();
 
-    if(data['data'] === null){
-        clearInterval(start)
-    }else{
+    if(data['data'] !== null){
         for(let i = 0; i < data['data'].length; i++){
             dataList.push(data['data'][i])
         }
@@ -117,14 +188,16 @@ const generateMatchCandidate = async () => {
 }
 
 
-//// auto generate candidate
-const start = setInterval(async () => {
-    if(window.location.pathname !== '/match'){
-        clearInterval(start)
-    }
-    await generateMatchCandidate();
-}, 4000)
-start;
+//// auto generate candidate in erery 5 second
+const start = async () => {
+    setInterval(async () => {
+        if(window.location.pathname !== '/match'){
+            clearInterval(start)
+        }
+        await generateMatchCandidate();
+    }, 5000)
+};
+start();
 
 
 //// next button controller
@@ -136,12 +209,7 @@ const nextPersonController = async () => {
         errorContainer.classList.remove('hide');
         errorMessage.textContent = 'Oops, something went wrong. You seem playing to fast. Click the button to refresh the page.'
     }else{
-        userName.textContent = dataList[0]['username'];
-        userIcon.src = dataList[0]['image'];
-        userImage.style.backgroundImage = `url(${dataList[0]['image']})`;
-        userLocation.textContent = dataList[0]['location'];
-        introduction.textContent = dataList[0]['introduction'];
-        dataList.shift();
+        showCandidateInfo();
 
         const updateResponse = await fetch('/api/user/match/update', {
             method: "PATCH",

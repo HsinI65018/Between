@@ -2,7 +2,6 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../model/user');
 const Response = require('./response');
-const { getUserEmail } = require('../controller/auth');
 
 const user = new User();
 const response = new Response();
@@ -10,6 +9,13 @@ const response = new Response();
 
 const isLoggedIn = (req, res, next) => {
     req.user || req.cookies.jwt? next() : res.status(403).json(response.getError("Can't get authorization"));
+}
+
+const getUserEmail = (req) => {
+    let email;
+    if(req.cookies.jwt) email = jwt.verify(req.cookies.jwt, process.env.JWT_SECRET_KEY, {algorithms: "HS256"}).email;
+    if(req.user) email = req.user.emails[0].value;
+    return email
 }
 
 const googleCallBack = async(req, res) => {
@@ -74,6 +80,7 @@ const userLogIn = async (req, res) => {
             res.status(400).json(response.getError("please enter correct password"));
         }
     } catch (error) {
+        console.log(error)
         res.status(500).json(response.getServerError());
     }
 };
