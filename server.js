@@ -5,6 +5,7 @@ const render = require('./router/render');
 const user = require('./router/user');
 const member = require('./router/member');
 const match = require('./router/match');
+const message = require('./router/message');
 const passport = require('passport');
 require('dotenv').config();
 require('./controller/googleAuth');
@@ -24,6 +25,7 @@ app.use('/', render);
 app.use('/api/user', user);
 app.use('/api/user/profile', member);
 app.use('/api/user/match', match);
+app.use('/api/user/message', message)
 
 const PORT = 3000;
 const HOST = '0.0.0.0';
