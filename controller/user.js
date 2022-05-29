@@ -21,11 +21,11 @@ const getUserEmail = (req) => {
 const googleCallBack = async(req, res) => {
     const username = req.user.displayName;
     const email = req.user.emails[0].value;
-    const image = req.user.photos[0].value;
+    // const image = req.user.photos[0].value;
     try {
         const existUser = await user.getExistUser(email);
         if(existUser.length === 0){
-            await user.createGoogleUser(username, email, image);
+            await user.createGoogleUser(username, email);
         }
     } catch (error) {
         if(error) throw error;

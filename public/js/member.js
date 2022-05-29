@@ -94,15 +94,11 @@ const fetchUpdateAPI = async (typeValue) => {
     const location = document.querySelector('.location-value').value;
     const introduction = document.querySelector('.intro-value').value;
     const condition = document.querySelector('.condition-value').value;
-    const fb = document.querySelector('.fb-value').value;
-    const ig = document.querySelector('.ig-value').value;
 
     const response = await fetch('/api/user/profile/update', {
         method: "POST",
         body: JSON.stringify({
             "location": location,
-            "facebook": fb,
-            "instagram": ig,
             "introduction": introduction,
             "type": typeValue,
             "sex": sexValue,

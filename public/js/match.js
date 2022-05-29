@@ -15,7 +15,7 @@ moreInfoBtn.addEventListener('click', showMoreInfoController);
 const sendMessageBtn = document.querySelector('.message-btn');
 const keepPlayingBtn = document.querySelector('.playing-btn');
 const matchSuccess = document.querySelector('.show-match-container');
-const matchSuccessController = (e) => {
+const matchSuccessController = async (e) => {
     const target = e.target.className
     if(target.includes('message')){
         window.location = '/message';
@@ -55,21 +55,22 @@ const pendingController = async () => {
         }
     });
     const data = await response.json();
-    console.log('pending=',data)
+    // console.log('pending=',data)
 }
 
 
-//// if pendingList.lengh > 3 send to back-end every 4 second
+//// if pendingList.lengh > 3 send to back-end every 6 second
+let autoPending;
 const startAddPending = async () => {
-    setInterval(async () => {
+    autoPending = setInterval(async () => {
         if(window.location.pathname !== '/match'){
-            clearInterval(startAddPending)
+            clearInterval(autoPending)
         }
         if(pendingList.length >= 3){
             await pendingController();
             pendingList = [];
         }
-    }, 4000)
+    }, 6000)
 };
 startAddPending();
 
@@ -83,33 +84,38 @@ const matchPerson = document.querySelector('.person-1 > img');
 const user = document.querySelector('.person-2 > img');
 const checkMatchingController = async () => {
     console.log('start match!!!!!')
-    const response = await fetch('/api/user/match/check/pending', {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        }
-    })
+    const response = await fetch('/api/user/match');
     const data = await response.json();
     const matchData = data.responseData;
-    if(matchData !== null ){
+    if(matchData !== null){
+        clearInterval(autoMatching);
+        // clearInterval(autoPending)
         showMatch.classList.remove('hide');
         subTitle.textContent = `You and ${matchData.matchUser} have liked each other`;
         matchPerson.src = matchData.matchImage;
         user.src = matchData.image;
-        clearInterval(startMatching);
-
+    }else{
+        const response = await fetch('/api/user/match/check/pending', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        const data = await response.json();
+        console.log(data)
     }
 }
 
 
-//// check matching erery 6 second
+//// check matching erery 15 second
+let autoMatching;
 const startMatching = async () => {
-    setInterval(async () => {
+    autoMatching = setInterval(async () => {
         if(window.location.pathname !== '/match'){
-            clearInterval(startMatching);
+            clearInterval(autoMatching);
         }
         await checkMatchingController();
-    }, 6000)
+    }, 15000)
 };
 startMatching();
 
@@ -135,11 +141,12 @@ const userImage = document.querySelector('.img-container');
 const userLocation = document.querySelector('.location-name');
 const introduction = document.querySelector('.introduction');
 const matchController = async () => {
-    const response = await fetch('/api/user/match');
+    const response = await fetch('/api/user/match/candidate');
     const data = await response.json();
     // console.log(data)
     if(data['data'] === null){
-        initMatchCandidate();
+        await generateMatchCandidate();
+        await showCandidateInfo();
     }else if(data['data'].length === 0){
         errorContainer.classList.remove('hide');
         errorMessage.textContent = 'Oops, something went wrong. You seem playing to fast. Click the button to refresh the page.'
@@ -150,37 +157,27 @@ const matchController = async () => {
         showCandidateInfo();
     }
 }
-matchController();
-
-
-//// first time generage candidate
-const initMatchCandidate = async () => {
-    const response = await fetch('/api/user/match', {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        }
-    });
-    const data = await response.json();
-    if(data['data'] === null) clearInterval(start);
-    for(let i = 0; i < data['data'].length; i++){
-        dataList.push(data['data'][i])
-    }
-    showCandidateInfo();
-}
+setTimeout(async () => {await matchController();}, 2000)
+// matchController();
 
 
 //// generate candidate
 const generateMatchCandidate = async () => {
-    const response = await fetch('/api/user/match', {
+    const response = await fetch('/api/user/match/generate', {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         }
     });
     const data = await response.json();
-
-    if(data['data'] !== null){
+    // console.log(data)
+    if(data['data'] === null){
+        clearInterval(autoGenerate);
+        setTimeout(() => {
+            console.log('start again!')
+            startGenerateCandidate()
+        }, 20000)
+    }else{
         for(let i = 0; i < data['data'].length; i++){
             dataList.push(data['data'][i])
         }
@@ -188,16 +185,17 @@ const generateMatchCandidate = async () => {
 }
 
 
-//// auto generate candidate in erery 5 second
-const start = async () => {
-    setInterval(async () => {
+//// auto generate candidate in erery 10 second
+let autoGenerate;
+const startGenerateCandidate = async () => {
+    autoGenerate = setInterval(async () => {
         if(window.location.pathname !== '/match'){
-            clearInterval(start)
+            clearInterval(autoGenerate)
         }
         await generateMatchCandidate();
-    }, 5000)
+    }, 8000)
 };
-start();
+startGenerateCandidate();
 
 
 //// next button controller
@@ -209,6 +207,7 @@ const nextPersonController = async () => {
         errorContainer.classList.remove('hide');
         errorMessage.textContent = 'Oops, something went wrong. You seem playing to fast. Click the button to refresh the page.'
     }else{
+        // console.log(dataList)
         showCandidateInfo();
 
         const updateResponse = await fetch('/api/user/match/update', {
