@@ -5,25 +5,25 @@ const { getUserEmail } = require('../controller/auth');
 
 router.get('/friend/list', async (req, res) => {
     const email = getUserEmail(req);
-    const sql = ["SELECT friends FROM message WHERE user = ?"];
-    const value = [email];
-    const data = await transaction(sql, [value])
+    const data = await transaction(["SELECT friends FROM message WHERE user = ?"], [[email]])
     const {friends} = data[0][0];
     const friendList = JSON.parse(friends);
+    const friendSet = new Set(friendList)
+    const newFriendList = [...friendSet]
     const responseData = [];
-    for(let i = 0; i < friendList.length; i++){
+
+    for(let i = 0; i < newFriendList.length; i++){
         const sql = ["SELECT username, image FROM member WHERE id = ?"];
-        const value = [friendList[i]];
+        const value = [newFriendList[i]];
         const data = await transaction(sql, [value])
         const friendData = data[0][0];
         const friendInfo = {
-            "id": friendList[i],
+            "id": newFriendList[i],
             "username": friendData.username,
             "image": friendData.image
         };
         responseData.push(friendInfo)
     }
-    console.log(friends);
     res.status(200).json({"success": true, "data": responseData})
 })
 

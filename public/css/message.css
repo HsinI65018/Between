@@ -91,13 +91,15 @@ aside > .aside-friend-container{
 }
 /* friend card */
 .friend-zone-container{
+    height: 650px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    overflow: scroll;
 }
 .friend-zone-container > .friend-card{
     width: 230px;
-    height: 120px;
+    min-height: 110px;
     display: flex;
     align-items: center;
     padding: 0px 10px 0px 10px;

@@ -194,7 +194,26 @@ main > .next-btn-container, .next-btn-container > img{
         width: 50%;
         margin: 0px 0px 0px 2%;
     }
+    .img-container > .show-match-container{
+        width: 100vw;
+    }
+    .show-match-container > .content-container{
+        width: auto;
+    }
     .hide-btn{
         display: none;
+    }
+}
+@media(max-width: 500px){
+    .content-container > .photo-container{
+        width: 300px;
+    }
+    .photo-container > .person-container{
+        width: 120px;
+        height: 120px;
+    }
+    .photo-container > .person-container > img{
+        width: 120px;
+        height: 120px;
     }
 }
