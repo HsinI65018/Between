@@ -280,7 +280,7 @@ router.get('/', async (req, res) => {
         // await transaction(["UPDATE matching SET matched_status = 1 WHERE user = ?"], [[email]]);
         // await transaction(["UPDATE matching SET matched_status = 1 WHERE user = ?"], [[matchEmail]]);
 
-        const friendData = await transaction(["SELECT friends FROM message WHERE user = ?"], [[email]]);
+        const friendData = await transaction(["SELECT friends FROM matching WHERE user = ?"], [[email]]);
         const {friends} = friendData[0][0];
 
         if(friends === null){
@@ -288,16 +288,16 @@ router.get('/', async (req, res) => {
             // friendList.push(matched);
             friendList.push(matchedList[1]);
             const friendsStr = "[" + friendList.toString() + "]";
-            await transaction(["UPDATE message SET friends = ? WHERE user = ?"], [[friendsStr, email]])
+            await transaction(["UPDATE matching SET friends = ? WHERE user = ?"], [[friendsStr, email]])
         }else{
             const friendList = JSON.parse(friends);
             // friendList.push(matched)
             friendList.push(matchedList[1]);
             const friendsStr = "[" + friendList.toString() + "]";
-            await transaction(["UPDATE message SET friends = ? WHERE user = ?"], [[friendsStr, email]])
+            await transaction(["UPDATE matching SET friends = ? WHERE user = ?"], [[friendsStr, email]])
         }
 
-        const sql = ["SELECT username, image FROM member INNER JOIN matching ON member.email = matching.user WHERE id = ?"];
+        const sql = ["SELECT email, username, image FROM member INNER JOIN matching ON member.email = matching.user WHERE id = ?"];
         // const value = [matched]
         const value = [matchedList[1]]
         const matchData = await transaction(sql, [value])
@@ -308,12 +308,21 @@ router.get('/', async (req, res) => {
             "image": image
         }
 
+        const friendEmail = matchData[0][0]['email']
+        if(email > friendEmail){
+            roomId = email + friendEmail
+        }else{
+            roomId = friendEmail + email
+        }
+        // console.log(roomId)
+        await transaction(["INSERT INTO room (room, userA, userB) VALUES (?, ?, ?)"], [[roomId, email, friendEmail]])
+
         // await transaction(["UPDATE matching SET matched = NULL WHERE user = ?"], [[email]]);
         const newMatch = JSON.parse(matched)
         newMatch.splice(1, 1)
         console.log(newMatch)
         const newStr = "[" + newMatch.toString() + "]";
-        console.log('test=',newStr)
+        // console.log('test=',newStr)
         await transaction(["UPDATE matching SET matched = ? WHERE user = ?"], [[newStr, email]])
     }
     return res.status(200).json({"success": true, "responseData": responseData})

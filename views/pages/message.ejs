@@ -3,7 +3,9 @@
 <head>
     <%- include('../partials/head'); %>
     <link rel="stylesheet" href="/css/message.css">
+    <script src="/socket.io/socket.io.js"></script>
     <script src="/js/message.js" type="module"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@3.0.3/dist/index.min.js"></script>
 </head>
 <body><%- include('../partials/navbar'); %>
     <main>
@@ -23,7 +25,7 @@
                 <div class="aside-container">
                     <div class="search-container">
                         <img src="https://d1dd0qmbf0xvcr.cloudfront.net/icon/search.png">
-                        <input type="text" placeholder="Search">
+                        <input class="search-input" type="text" placeholder="Search">
                     </div>
                     <div class="friend-zone-container">
                         <!-- <div class="friend-card">
@@ -32,9 +34,10 @@
                             </div>
                             <div class="friend-info">
                                 <div class="name">David Smith</div>
+                                <div class="un-read-msg">1</div>
                             </div>
-                        </div>
-                        <div class="friend-card">
+                        </div> -->
+                        <!-- <div class="friend-card">
                             <div class="img-container">
                                 <img src="https://d1dd0qmbf0xvcr.cloudfront.net/icon/person-3.jpg">
                             </div>
@@ -46,27 +49,28 @@
                 </div>
             </div>
         </aside>
-        <section class="message-room">
+        <section class="default-room hide-default"></section>
+        <section class="message-room hide">
             <div class="section-header">
                 <div class="title">
                     <img src="https://d1dd0qmbf0xvcr.cloudfront.net/icon/menu.png" class="show-friend">
-                    <div>David Smith</div>
+                    <div class="chat-name">David Smith</div>
                 </div>
             </div>
             <div class="section-container">
-                <div class="message-container">
+                <!-- <div class="message-container">
                     <div class="img-container">
                         <img src="https://d1dd0qmbf0xvcr.cloudfront.net/icon/person-1.jpg">
                     </div>
                     <div class="message-info-container">
                         <div class="message-user-info">
                             <div class="title">Amanda Jonse</div>
-                            <div class="msg-date">2022/05/04</div>
+                            <div class="msg-date">2022/05/04 10:20 pm</div>
                         </div>
                         <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam porta neque eget at et, elementum.</div>
                     </div>
-                </div>
-                <div class="message-container">
+                </div> -->
+                <!-- <div class="message-container">
                     <div class="img-container">
                         <img src="https://d1dd0qmbf0xvcr.cloudfront.net/icon/person-3.jpg">
                     </div>
@@ -77,10 +81,16 @@
                         </div>
                         <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam porta neque eget at et, elementum.</div>
                     </div>
-                </div>
+                </div> -->
             </div>
             <div class="section-footer">
-                <input type="text" placeholder="Send a message">
+                <form class="msg-form">
+                    <div class="input-container">
+                        <input type="text" placeholder="Send a message" class="message-value">
+                        <img class="emoji" src="https://d1dd0qmbf0xvcr.cloudfront.net/icon/smile.png">
+                    </div>
+                    <button>Send</button>
+                </form>
             </div>
         </section>
     </main>

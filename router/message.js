@@ -2,10 +2,11 @@ const express = require('express');
 const router = express.Router();
 const transaction = require('../model/utility');
 const { getUserEmail } = require('../controller/auth');
+// const {EmojiButton} = require('../node_modules/@joeattardi/emoji-button')
 
 router.get('/friend/list', async (req, res) => {
     const email = getUserEmail(req);
-    const data = await transaction(["SELECT friends FROM message WHERE user = ?"], [[email]])
+    const data = await transaction(["SELECT friends FROM matching WHERE user = ?"], [[email]])
     const {friends} = data[0][0];
     const friendList = JSON.parse(friends);
     const friendSet = new Set(friendList)

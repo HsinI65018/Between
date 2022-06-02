@@ -5,6 +5,11 @@ const checkSignInController = async () => {
     console.log(data)
     if(data.success === false) window.location = '/';
 
+    if(window.location.pathname !== '/'){
+        const profile = document.querySelector('.profile-icon');
+        profile.id = data['data']['id']
+    }
+
     if(window.location.pathname === '/member') memberController(data);
 
     if(data.data.userstatus !== 1){
