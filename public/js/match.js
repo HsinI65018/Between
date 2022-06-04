@@ -127,6 +127,7 @@ const showCandidateInfo = () => {
     userName.textContent = dataList[0]['username'];
     userIcon.src = dataList[0]['image'];
     userImage.style.backgroundImage = `url(${dataList[0]['image']})`;
+    userImage.style.backgroundSize = 'cover';
     userLocation.textContent = dataList[0]['location'];
     introduction.textContent = dataList[0]['introduction'];
     dataList.shift();

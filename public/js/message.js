@@ -143,7 +143,7 @@ const createChatRoom = async (e) => {
     unReadUser.classList.add('hide');
 
     // send connect
-    socket.emit('user_connected', userId, friendId)
+    socket.emit('user_connected', userId)
 
     // history message
     const historyResponse = await fetch('/history', {
@@ -173,7 +173,6 @@ const msgForm = document.querySelector('.msg-form');
 const message = document.querySelector('.message-value');
 const sendMsgController = async (e) => {
     e.preventDefault();
-    // console.log(sender, receiver)
     const current = new Date();
     const time = current.toLocaleTimeString('en-US',{timeStyle: 'short'});
 
@@ -189,7 +188,6 @@ const sendMsgController = async (e) => {
     
     message.value = '';
     message.focus();
-    // sectionContainer.scrollTop = sectionContainer.scrollHeight;
 }
 msgForm.addEventListener('submit', sendMsgController)
 
@@ -215,7 +213,7 @@ socket.on('new_message', (data) => {
 })
 
 
-////
+//// search controller
 const search = document.querySelector('.search-input');
 const searchController = () => {
     const filter = search.value.toUpperCase()

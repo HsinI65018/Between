@@ -83,11 +83,13 @@ app.post('/people', async (req, res) => {
 const users = [];
 io.on('connection', (socket) => {
     console.log('a user connected');
-    socket.on('user_connected', async (userId, friendId) => {
+    socket.on('user_connected', async (userId) => {
+        console.log('prev=',users)
         const data = await transaction(["SELECT email FROM member WHERE id = ?"], [[userId]]);
         const {email} = data[0][0]
 
         users[email] = socket.id;
+        console.log('users=',users)
     })
 
     socket.on('send_message', async (data) => {
@@ -99,5 +101,11 @@ io.on('connection', (socket) => {
 
         io.to(id).emit('new_message', response)
         await transaction(["INSERT INTO message (sender, receiver, message, time) VALUES (?, ?, ?, ?)"], [[data.sender, data.receiver, data.message, data.time]])
+    })
+
+    socket.on('disconnect', () => {
+        console.log('a user disconnected');
+        // const user = socket.id;
+        // console.log(user)
     })
 })

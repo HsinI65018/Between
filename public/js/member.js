@@ -129,17 +129,7 @@ const saveProfileController = async (e) => {
             errorContainer.classList.remove('hide');
             return
         }
-        fetchUpdateAPI(typeValue);
-    }
-
-    if(profileData.location === location && profileData.introduction === introduction && profileData.searchCondition === condition && typeValue === '' && sexValue === undefined){
-        editProfileBtn.classList.remove('hide');
-        profileContainer.classList.add('hide');
-    }else{
-        if(sexValue === undefined) sexValue = profileData.sex;
-        if(typeValue === '') typeValue = profileData.type;
-
-        let prevType = [...profileData.type];
+        let prevType = [];
         for(let i = 0; i < typeValue.length; i++){
             if(typeValue[i] === 'E' || typeValue[i] === 'I'){
                 prevType[0] = typeValue[i]
@@ -152,8 +142,60 @@ const saveProfileController = async (e) => {
             }
         }
         typeValue = prevType.join('');
+        // console.log(typeValue)
+        console.log('first')
         fetchUpdateAPI(typeValue);
+    }else{
+        if(profileData.location === location && profileData.introduction === introduction && profileData.searchCondition === condition && typeValue === '' && sexValue === undefined){
+            editProfileBtn.classList.remove('hide');
+            profileContainer.classList.add('hide');
+        }else{
+            if(sexValue === undefined) sexValue = profileData.sex;
+            if(typeValue === '') typeValue = profileData.type;
+    
+            let prevType = [...profileData.type];
+            for(let i = 0; i < typeValue.length; i++){
+                if(typeValue[i] === 'E' || typeValue[i] === 'I'){
+                    prevType[0] = typeValue[i]
+                }else if(typeValue[i] === 'S' || typeValue[i] === 'N'){
+                    prevType[1] = typeValue[i]
+                }else if(typeValue[i] === 'T' || typeValue[i] === 'F'){
+                    prevType[2] = typeValue[i]
+                }else if(typeValue[i] === 'J' || typeValue[i] === 'P'){
+                    prevType[3] = typeValue[i]
+                }
+            }
+            typeValue = prevType.join('');
+            // console.log(typeValue)
+            console.log('second')
+            fetchUpdateAPI(typeValue);
+        }
     }
+
+    // if(profileData.location === location && profileData.introduction === introduction && profileData.searchCondition === condition && typeValue === '' && sexValue === undefined){
+    //     editProfileBtn.classList.remove('hide');
+    //     profileContainer.classList.add('hide');
+    // }else{
+    //     if(sexValue === undefined) sexValue = profileData.sex;
+    //     if(typeValue === '') typeValue = profileData.type;
+
+    //     let prevType = [...profileData.type];
+    //     for(let i = 0; i < typeValue.length; i++){
+    //         if(typeValue[i] === 'E' || typeValue[i] === 'I'){
+    //             prevType[0] = typeValue[i]
+    //         }else if(typeValue[i] === 'S' || typeValue[i] === 'N'){
+    //             prevType[1] = typeValue[i]
+    //         }else if(typeValue[i] === 'T' || typeValue[i] === 'F'){
+    //             prevType[2] = typeValue[i]
+    //         }else if(typeValue[i] === 'J' || typeValue[i] === 'P'){
+    //             prevType[3] = typeValue[i]
+    //         }
+    //     }
+    //     typeValue = prevType.join('');
+    //     // console.log(typeValue)
+    //     console.log('second')
+    //     fetchUpdateAPI(typeValue);
+    // }
 }
 profileForm.addEventListener('submit', saveProfileController);
 

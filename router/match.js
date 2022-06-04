@@ -277,9 +277,6 @@ router.get('/', async (req, res) => {
         // const data = await transaction(["SELECT email FROM member WHERE id = ?"], [[matched]]);
         const matchEmail = data[0][0]['email'];
 
-        // await transaction(["UPDATE matching SET matched_status = 1 WHERE user = ?"], [[email]]);
-        // await transaction(["UPDATE matching SET matched_status = 1 WHERE user = ?"], [[matchEmail]]);
-
         const friendData = await transaction(["SELECT friends FROM matching WHERE user = ?"], [[email]]);
         const {friends} = friendData[0][0];
 
@@ -297,7 +294,7 @@ router.get('/', async (req, res) => {
             await transaction(["UPDATE matching SET friends = ? WHERE user = ?"], [[friendsStr, email]])
         }
 
-        const sql = ["SELECT email, username, image FROM member INNER JOIN matching ON member.email = matching.user WHERE id = ?"];
+        const sql = ["SELECT username, image FROM member INNER JOIN matching ON member.email = matching.user WHERE id = ?"];
         // const value = [matched]
         const value = [matchedList[1]]
         const matchData = await transaction(sql, [value])
@@ -308,14 +305,14 @@ router.get('/', async (req, res) => {
             "image": image
         }
 
-        const friendEmail = matchData[0][0]['email']
-        if(email > friendEmail){
-            roomId = email + friendEmail
-        }else{
-            roomId = friendEmail + email
-        }
-        // console.log(roomId)
-        await transaction(["INSERT INTO room (room, userA, userB) VALUES (?, ?, ?)"], [[roomId, email, friendEmail]])
+        // const friendEmail = matchData[0][0]['email']
+        // if(email > friendEmail){
+        //     roomId = email + friendEmail
+        // }else{
+        //     roomId = friendEmail + email
+        // }
+        // // console.log(roomId)
+        // await transaction(["INSERT INTO room (room, userA, userB) VALUES (?, ?, ?)"], [[roomId, email, friendEmail]])
 
         // await transaction(["UPDATE matching SET matched = NULL WHERE user = ?"], [[email]]);
         const newMatch = JSON.parse(matched)

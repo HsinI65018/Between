@@ -22,8 +22,8 @@ main > .match-container{
     justify-content: center;
 }
 .img-container{
-    background-image: url(https://d1dd0qmbf0xvcr.cloudfront.net/icon/person-1.jpg);
-    background-size: cover;
+    background-image: url(https://d1dd0qmbf0xvcr.cloudfront.net/icon/loading.gif);
+    /* background-size: cover; */
     background-position: center;
     background-repeat: no-repeat;
     width: 650px;
