@@ -7,6 +7,20 @@ class Member{
         const data = await transaction(sql ,value)
         return data[0]
     }
+
+    async getUserImage(email) {
+        const sql = ["SELECT image FROM member WHERE email = ?"];
+        const value = [[email]];
+        const data = await transaction(sql ,value)
+        return data[0]
+    }
+
+    async getUserStatus(email) {
+        const sql = ["SELECT userstatus FROM member WHERE email = ?"];
+        const value = [[email]];
+        const data = await transaction(sql ,value)
+        return data[0]
+    }
     
     async updateUserName(data, email) {
         const sql = ["UPDATE member SET username = ?  WHERE email = ?"];
@@ -27,9 +41,15 @@ class Member{
     }
 
     async updateUserProfile(location, introduction, type, sex, condition, email) {
-        const sql = ["UPDATE profile SET location = ?, introduction = ?, type = ?, sex = ?, searchCondition = ? WHERE user = ?", "UPDATE member SET userstatus = ? WHERE email = ?"];
-        const value = [[location, introduction, type, sex, condition, email], [1, email]];
+        const sql = ["UPDATE profile SET location = ?, introduction = ?, type = ?, sex = ?, searchCondition = ? WHERE user = ?"];
+        const value = [[location, introduction, type, sex, condition, email]];
         await transaction(sql ,value);
+    }
+
+    async updateUserStatus(statusCode, email) {
+        const sql = ["UPDATE member SET userstatus = ? WHERE email = ?"];
+        const value = [[statusCode, email]];
+        await transaction(sql, value)
     }
 }
 

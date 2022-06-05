@@ -12,7 +12,7 @@ main{
 
 /* aside */
 main > aside{
-    width: 400px;
+    width: 450px;
     height: calc(100vh - 50px);
     display: flex;
 }
@@ -25,7 +25,7 @@ aside > .aside-tool-container{
     flex-direction: column;
     align-items: center;
     background-color: #E8E8E8E8;
-    padding-top: 18px;
+    /* padding-top: 18px; */
 }
 .aside-tool-container > .close> img{
     width: 25px;
@@ -46,7 +46,7 @@ aside > .aside-tool-container{
     align-items: center;
     justify-content: center;
     background-color: #888888;
-    margin-top: 15px;
+    margin-top: 20px;
     cursor: pointer;
 }
 .aside-tool-container > .close{
@@ -67,11 +67,13 @@ aside > .aside-tool-container{
 
 /* friend zone */
 aside > .aside-friend-container{
-    padding: 0px 5px 0px 5px;
+    /* padding: 0px 5px 0px 5px; */
+    margin: 0px auto 0px auto;
 }
 /* search engine */
 .aside-container > .search-container{
     height: 35px;
+    width: 290px;
     display: flex;
     align-items: center;
     border: 1px solid #888888;
@@ -88,16 +90,19 @@ aside > .aside-friend-container{
     padding: 5px 10px 5px 10px;
     outline: none;
     border-radius: 10px;
+    width: 220px;
 }
 /* friend card */
 .friend-zone-container{
+    height: 650px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    overflow: scroll;
 }
 .friend-zone-container > .friend-card{
-    width: 230px;
-    height: 120px;
+    width: 280px;
+    min-height: 110px;
     display: flex;
     align-items: center;
     padding: 0px 10px 0px 10px;
@@ -120,10 +125,38 @@ aside > .aside-friend-container{
     border-radius: 50%;
     object-fit: cover;
 }
+.friend-card > .img-container, .img-container > img, .friend-card > .friend-info, .friend-info > div{
+    pointer-events: none;
+}
+.friend-info{
+    display: flex;
+}
+.friend-info > .name{
+    width: 150px;
+}
+.un-read-msg{
+    width: 23px;
+    height: 23px;
+    border-radius: 50%;
+    background-color: green;
+    text-align: center;
+    line-height: 23px;
+    color: #FFFFFF;
+    font-size: 13px;
+    font-weight: 600;
+}
+.hide{
+    display: none;
+}
 
 /* chatting room */
+main > .default-room{
+    width: calc(100vw - 450px);
+    height: calc(100vh - 50px);
+    border-left: 1px solid #E8E8E8E8;
+}
 main > section{
-    width: calc(100vw - 400px);
+    width: calc(100vw - 450px);
     height: calc(100vh - 50px);
     border-left: 1px solid #E8E8E8E8;
 }
@@ -184,7 +217,7 @@ section > .section-container{
 }
 /* send msg */
 section > .section-footer{
-    width: calc(100vw - 400px);
+    width: calc(100vw - 450px);
     height: 130px;
     position: fixed;
     bottom: 0;
@@ -193,13 +226,43 @@ section > .section-footer{
     align-items: center;
     justify-content: center;
 }
-.section-footer > input{
-    width: calc(100vw - 400px - 80px);
-    height: 50px;
+.section-footer > form{
+    display: flex;
+    justify-content: space-between;
+    /* width: calc(100vw - 400px - 80px); */
+}
+.section-footer > form > .input-container{
+    width: calc(100vw - 450px - 80px - 120px);
+    height: 40px;
     outline: none;
     border: 1px solid #888888;
     border-radius: 10px;
     padding: 0px 15px 0px 15px;
+    margin-right: 15px;
+    display: flex;
+    align-items: center;
+    background-color: #FFFFFF;
+}
+.section-footer > form > .input-container > input{
+    height: 40px;
+    width: calc(100vw - 450px - 80px - 120px);
+    background-color: #FFFFFF;
+    border: none;
+    margin-right: 20px;
+    outline: none;
+}
+.input-container > .emoji{
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}
+.section-footer > form > button{
+    width: 90px;
+    height: 40px;
+    border-radius: 10px;
+    background: #333;
+    color: #FFFFFF;
+    cursor: pointer;
 }
 .show-friend{
     width: 30px;
@@ -248,10 +311,12 @@ section > .section-footer{
     }
     .friend-zone-container{
         width: 90%;
+        height: auto;
         margin: auto;
     }
     .friend-zone-container > .friend-card{
         width: 100%;
+        padding: 0;
     }
     main > section{
         width: 100vw;
@@ -259,10 +324,16 @@ section > .section-footer{
     section > .section-footer{
         width: 100vw;
     }
-    .section-footer > input{
-        width: calc(100vw - 80px);
+    .section-footer > form > .input-container{
+        width: calc(100vw - 80px - 90px);
     }
-    .hide-aside{
+    .section-footer > form > .input-container > input{
+        width: calc(100vw - 80px - 140px);
+    }
+    .section-footer > form > button{
+        width: 80px;
+    }
+    .hide-default{
         display: none;
     }
 }

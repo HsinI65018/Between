@@ -11,7 +11,6 @@ const isLoggedIn = (req, res, next) => {
     req.user || req.cookies.jwt? next() : res.status(403).json(response.getError("Can't get authorization"));
 }
 
-
 const getUserEmail = (req) => {
     let email;
     if(req.cookies.jwt) email = jwt.verify(req.cookies.jwt, process.env.JWT_SECRET_KEY, {algorithms: "HS256"}).email;
@@ -19,15 +18,14 @@ const getUserEmail = (req) => {
     return email
 }
 
-
 const googleCallBack = async(req, res) => {
     const username = req.user.displayName;
     const email = req.user.emails[0].value;
-    const image = req.user.photos[0].value;
+    // const image = req.user.photos[0].value;
     try {
         const existUser = await user.getExistUser(email);
         if(existUser.length === 0){
-            await user.createGoogleUser(username, email, image);
+            await user.createGoogleUser(username, email);
         }
     } catch (error) {
         if(error) throw error;
@@ -82,6 +80,7 @@ const userLogIn = async (req, res) => {
             res.status(400).json(response.getError("please enter correct password"));
         }
     } catch (error) {
+        console.log(error)
         res.status(500).json(response.getServerError());
     }
 };

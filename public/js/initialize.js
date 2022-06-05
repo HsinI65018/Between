@@ -5,12 +5,28 @@ const checkSignInController = async () => {
     console.log(data)
     if(data.success === false) window.location = '/';
 
+    if(window.location.pathname !== '/'){
+        const profile = document.querySelector('.profile-icon');
+        profile.id = data['data']['id']
+    }
+
     if(window.location.pathname === '/member') memberController(data);
 
-    if(data.data.userstatus === 0){
+    if(data.data.userstatus !== 1){
         if(window.location.pathname === '/match' || window.location.pathname === '/message'){
             window.location = '/member';
         }
+    }
+
+    const previousURL = document.referrer;
+    if(window.location.pathname !== '/match' && previousURL.includes('/match')){
+        const defaultResponse = await fetch('/api/user/match/update/default', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+        const defaultdata = await defaultResponse.json();
     }
 }
 checkSignInController();
@@ -45,10 +61,14 @@ const memberController = async (data) => {
         const profileData = data.data;
 
         const location = document.querySelector('.location-value');
+        // const facebook = document.querySelector('.fb-value');
+        // const instagram = document.querySelector('.ig-value');
         const introduction = document.querySelector('.intro-value');
         const condition = document.querySelector('.condition-value');
         
         location.value = profileData.location;
+        // facebook.value = profileData.facebook;
+        // instagram.value = profileData.instagram;
         introduction.value = profileData.introduction;
         condition.value = profileData.searchCondition;
 

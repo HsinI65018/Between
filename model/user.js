@@ -30,14 +30,14 @@ class User{
     }
 
     async createUser(username, email, hash) {
-        const sql = ["INSERT INTO member (username, email, password, register, userstatus) VALUES (?,?,?,?,?)", "INSERT INTO profile (user) VALUES (?)"];
-        const value = [[username, email, hash, 'local', 0], [email]];
+        const sql = ["INSERT INTO member (username, email, password, register, userstatus) VALUES (?,?,?,?,?)", "INSERT INTO profile (user) VALUES (?)", "INSERT INTO matching (user) VALUES (?)", "INSERT INTO message (user) VALUES (?)"];
+        const value = [[username, email, hash, 'local', 0], [email], [email], [email]];
         await transaction(sql, value)
     }
 
-    async createGoogleUser(username, email, image) {
-        const sql = ["INSERT INTO member (username, email, image, register, userstatus) VALUES (?, ?, ?, ?, ?)", "INSERT INTO profile (user) VALUES (?)"];
-        const value = [[username, email, image, 'google', 0], [email]];
+    async createGoogleUser(username, email) {
+        const sql = ["INSERT INTO member (username, email, register, userstatus) VALUES (?, ?, ?, ?, ?)", "INSERT INTO profile (user) VALUES (?)", "INSERT INTO matching (user) VALUES (?)", "INSERT INTO message (user) VALUES (?)"];
+        const value = [[username, email, 'google', 0], [email], [email], [email]];
         await transaction(sql, value);
     }
 }

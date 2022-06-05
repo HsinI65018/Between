@@ -49,6 +49,10 @@ const uploadImage = async (req, res) => {
     const email = getUserEmail(req);
     try {
         await member.updateUserImage(fileURL, email);
+        const data = await member.getUserStatus(email);
+        const userStatus = data[0]['userstatus'];
+        console.log(userStatus)
+        if(userStatus === 2) await member.updateUserStatus(1, email);
         res.status(200).json({"success": true, "imgURL": fileURL})
     } catch (error) {
         res.status(500).json(response.getServerError())
@@ -61,8 +65,16 @@ const updateProfile = async (req, res) => {
     const email = getUserEmail(req);
     try {
         await member.updateUserProfile(location, introduction, type, sex, condition, email);
+        const data = await member.getUserImage(email);
+        const image = data[0]['image'];
+        if(image !== null) {
+            await member.updateUserStatus(1, email);
+        }else{
+            await member.updateUserStatus(2, email);
+        }
         res.status(200).json(response.getSuccess())
     } catch (error) {
+        console.log(error)
         res.status(500).json(response.getServerError())
     }
 };

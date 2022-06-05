@@ -127,7 +127,6 @@ const saveProfileController = async (e) => {
     if(profileData.location === null && profileData.introduction === null && profileData.searchCondition === null && profileData.type === null && profileData.sex === null){
         if(typeValue.length < 4 || sexValue === undefined){
             errorContainer.classList.remove('hide');
-            // errorContainer.classList.add('show-animation');
             return
         }
         fetchUpdateAPI(typeValue);
