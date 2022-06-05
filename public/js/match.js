@@ -86,7 +86,7 @@ const checkMatchingController = async () => {
     console.log('start match!!!!!')
     const response = await fetch('/api/user/match');
     const data = await response.json();
-    const matchData = data.responseData;
+    const matchData = data.data;
     if(matchData !== null){
         clearInterval(autoMatching);
         // clearInterval(autoPending)
@@ -142,7 +142,7 @@ const userImage = document.querySelector('.img-container');
 const userLocation = document.querySelector('.location-name');
 const introduction = document.querySelector('.introduction');
 const matchController = async () => {
-    const response = await fetch('/api/user/match/candidate');
+    const response = await fetch('/api/user/candidate');
     const data = await response.json();
     // console.log(data)
     if(data['data'] === null){
@@ -164,7 +164,7 @@ setTimeout(async () => {await matchController();}, 2000)
 
 //// generate candidate
 const generateMatchCandidate = async () => {
-    const response = await fetch('/api/user/match/generate', {
+    const response = await fetch('/api/user/candidate/generate', {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -211,7 +211,7 @@ const nextPersonController = async () => {
         // console.log(dataList)
         showCandidateInfo();
 
-        const updateResponse = await fetch('/api/user/match/update', {
+        const updateResponse = await fetch('/api/user/candidate/update', {
             method: "PATCH",
             body: JSON.stringify({
                 "data": dataList

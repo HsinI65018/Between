@@ -20,7 +20,7 @@ const checkSignInController = async () => {
 
     const previousURL = document.referrer;
     if(window.location.pathname !== '/match' && previousURL.includes('/match')){
-        const defaultResponse = await fetch('/api/user/match/update/default', {
+        const defaultResponse = await fetch('/api/user/candidate/update/default', {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

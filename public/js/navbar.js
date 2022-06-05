@@ -53,7 +53,7 @@ const errorContainer = document.querySelector('.error-container');
 const closeErrorController = async () => {
     console.log(window.location)
     if(window.location.pathname === '/match'){
-        const response = await fetch('/api/user/match/refresh', {method: "DELETE"});
+        const response = await fetch('/api/user/candidate/refresh', {method: "DELETE"});
         const data = await response.json();
         window.location = '/match'
     }else{
