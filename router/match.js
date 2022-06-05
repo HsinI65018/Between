@@ -124,8 +124,8 @@ router.get('/candidate', async (req, res) => {
 //// generate candidate main function
 router.post('/generate', isLoggedIn, async (req, res) => {
     const email = getUserEmail(req);
-    const typeData = await transaction(["SELECT type, sex FROM profile WHERE user = ?"], [email]);
-    const {type, sex} = typeData[0][0];
+    const typeData = await transaction(["SELECT type, sex, id FROM member INNER JOIN profile ON member.email = profile.user WHERE user = ?"], [email]);
+    const {type, sex, id} = typeData[0][0];
 
     if(sex === 'Male'){
         sexOption = 'Female';
@@ -139,8 +139,14 @@ router.post('/generate', isLoggedIn, async (req, res) => {
 
     const sql = ["SELECT id FROM member INNER JOIN profile ON member.email = profile.user WHERE userstatus = 1 AND sex = ? AND type = ?"];
     const value = [sexOption, type]
-    const initData = await transaction(sql, [value]);
+    let initData = await transaction(sql, [value]);
     const skip = await transaction(["SELECT stp_skip FROM matching WHERE user = ?"], [[email]])
+
+    let bisexualData = initData[0]
+    if(sexOption === 'Bisexual'){
+        bisexualData = bisexualData.filter((item) => item.id !== id)
+        initData[0] = bisexualData
+    }
     // console.log('init-data=',initData[0])
     // console.log('init-skip=',skip)
 
