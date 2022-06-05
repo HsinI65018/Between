@@ -36,7 +36,7 @@ class User{
     }
 
     async createGoogleUser(username, email) {
-        const sql = ["INSERT INTO member (username, email, register, userstatus) VALUES (?, ?, ?, ?, ?)", "INSERT INTO profile (user) VALUES (?)", "INSERT INTO matching (user) VALUES (?)"];
+        const sql = ["INSERT INTO member (username, email, register, userstatus) VALUES (?, ?, ?, ?)", "INSERT INTO profile (user) VALUES (?)", "INSERT INTO matching (user) VALUES (?)"];
         const value = [[username, email, 'google', 0], [email], [email]];
         await transaction(sql, value);
     }
