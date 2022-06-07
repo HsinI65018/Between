@@ -118,7 +118,10 @@ startMatching();
 //// show matching candidate
 //// display candidate info
 let currentCandidate;
+const infoContainer = document.querySelector('.info-container');
 const showCandidateInfo = async () => {
+    infoContainer.style.display = 'flex';
+    nextBtn.classList.remove('hide');
     likeContainer.classList.remove('liked')
     userName.id = dataList[0]['id'];
     userName.textContent = dataList[0]['username'];

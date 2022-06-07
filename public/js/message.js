@@ -9,12 +9,18 @@ const friendMenuController = (e) => {
 showMenu.addEventListener('click', friendMenuController);
 closeMenu.addEventListener('click', friendMenuController);
 
+
+////
+const main = document.querySelector('main');
+const loading = document.querySelector('.loading');
 const friendListContainer = document.querySelector('.friend-zone-container');
 const friendListController = async () => {
     const response = await fetch('/api/user/message/friend/list');
     const data = await response.json();
     const friendList = data.data
     // console.log(friendList)
+    main.style.display = 'flex';
+    loading.style.display = 'none';
     for(let i = 0; i < friendList.length; i++){
         const friendCard = document.createElement('div');
         const imgContainer = document.createElement('div');

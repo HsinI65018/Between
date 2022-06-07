@@ -25,7 +25,6 @@ const getMatchSuccessInfo = async (req, res) => {
     try {
         const { image } = await match.getUserImage(email)
         const data = await match.getUserMatch(email)
-        console.log(data[0].length)
 
         let responseData = null;
 

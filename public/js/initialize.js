@@ -22,7 +22,14 @@ checkSignInController();
 
 
 //// init member page
+const header = document.querySelector('.header-container');
+const main = document.querySelector('main');
+const loading = document.querySelector('.loading');
 const memberController = async (data) => {
+    header.style.display = 'flex';
+    main.style.display = 'flex';
+    loading.style.display = 'none';
+
     const userData = data['data'];
     const userName = document.querySelector('.save-user-username');
     const userEmail = document.querySelector('.save-user-email');

@@ -5,8 +5,17 @@
     font-family: 'Noto Sans Telugu UI';
     font-size: 18px;
 }
-main{
+body{
     display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.loading{
+    margin-top: 20%;
+}
+main{
+    /* display: flex; */
+    display: none;
     margin-top: 50px;
 }
 
