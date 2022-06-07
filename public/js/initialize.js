@@ -17,17 +17,6 @@ const checkSignInController = async () => {
             window.location = '/member';
         }
     }
-
-    // const previousURL = document.referrer;
-    // if(window.location.pathname !== '/match' && previousURL.includes('/match')){
-    //     const defaultResponse = await fetch('/api/user/candidate/update/default', {
-    //         method: "POST",
-    //         headers: {
-    //             "Content-Type": "application/json"
-    //         }
-    //     });
-    //     const defaultdata = await defaultResponse.json();
-    // }
 }
 checkSignInController();
 

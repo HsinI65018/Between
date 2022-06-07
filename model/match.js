@@ -1,63 +1,68 @@
 const transaction = require('../model/utility');
 
 class Match{
+    async getUserImage(email) {
+        const sql = ["SELECT image FROM member WHERE email = ?"];
+        const value = [[email]];
+        const data = await transaction(sql, value)
+        return data[0][0]
+    }
+
+    async getUserId(email) {
+        const sql = ["SELECT id FROM member WHERE email = ?"];
+        const value = [[email]];
+        const data = await transaction(sql, value)
+        return data[0][0]
+    }
+
     async getUserPending(email) {
-        const sql = ["SELECT pending FROM matching WHERE user = ?"];
+        const sql = ["SELECT pending FROM pending WHERE user = ?"];
         const value = [[email]];
         const data = await transaction(sql, value)
-        return data[0]
+        return data
     }
 
-    async getUserMatched(email) {
-        const sql = ["SELECT matched, image FROM matching INNER JOIN member ON matching.user = member.email WHERE user = ?"];
-        const value = [[email]];
-        const data = await transaction(sql, value)
-        return data[0]
-    }
-
-    async getUserFriendList(email) {
-        const sql = ["SELECT friends FROM matching WHERE user = ?"];
-        const value = [[email]];
-        const data = await transaction(sql, value)
-        return data[0]
-    }
-
-    async getMatchSuccessInfo(id) {
-        const sql = ["SELECT username, image FROM member INNER JOIN matching ON member.email = matching.user WHERE id = ?"];
+    async getCandidatePending(id) {
+        const sql = ["SELECT user, pending FROM pending INNER JOIN member ON pending.user = member.email WHERE id = ?"];
         const value = [[id]];
         const data = await transaction(sql, value)
-        return data[0]
+        return data
     }
 
-    async getUserChecking(email) {
-        const sql = ["SELECT matched, pending, id FROM matching INNER JOIN member ON matching.user = member.email WHERE user = ?"];
+    async getUserMatch(email) {
+        const sql = ["SELECT matched FROM matched WHERE user = ?"];
         const value = [[email]];
         const data = await transaction(sql, value)
         return data[0]
     }
 
-    async getCandidateChecking(id) {
-        const sql = ["SELECT pending, matched, email FROM matching INNER JOIN member ON matching.user = member.email WHERE id = ?"];
-        const value = [[id]];
-        const data = await transaction(sql, value)
-        return data[0]
-    }
-
-    async updateUserPending(pending, email) {
-        const sql = ["UPDATE matching SET pending = ? WHERE user = ?"];
-        const value = [[pending, email]];
+    async createUserPrnding(email, id) {
+        const sql = ["INSERT INTO pending (user, pending) VALUES (?, ?)"];
+        const value = [[email, id]];
         await transaction(sql, value)
     }
 
-    async updateUserFriendList(friend, email) {
-        const sql = ["UPDATE matching SET friends = ? WHERE user = ?"];
-        const value = [[friend, email]];
+    async createUserFriend(email, id) {
+        const sql = ["INSERT INTO friend (user, friend) VALUES (?, ?)"];
+        const value = [[email, id]];
         await transaction(sql, value)
     }
 
-    async updateUserMatched(matched, email) {
-        const sql = ["UPDATE matching SET matched = ? WHERE user = ?"];
-        const value = [[matched, email]];
+    async createUserMatch(email, id){
+        const sql = ["INSERT INTO matched (user, matched) VALUES (?, ?)"];
+        const value = [[email, id]];
+        await transaction(sql, value)
+    }
+
+    async deleteUserMatch(email, id) {
+        const sql = ["DELETE FROM matched WHERE user = ? AND matched = ?"];
+        const value = [[email, id]];
+        await transaction(sql, value)
+    }
+
+    async deleteUserPending(email, id) {
+        const sql = ["DELETE FROM pending WHERE user = ? AND pending = ?"];
+        const value = [[email, id]];
         await transaction(sql, value)
     }
 }

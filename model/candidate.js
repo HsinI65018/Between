@@ -1,16 +1,16 @@
 const transaction = require('./utility');
 
 class Candidate {
-    async getUserType (email){
-        const sql = ["SELECT type, sex, id FROM member INNER JOIN profile ON member.email = profile.user WHERE user = ?"];
-        const value = [[email]];
+    async getCandidateInfo(id) {
+        const sql = ["SELECT id, username, image, location, introduction FROM member INNER JOIN profile ON member.email = profile.user WHERE id = ?"];
+        const value = [[id]];
         const data = await transaction(sql, value)
         return data[0]
     }
 
-    async getCandidateInfo(id) {
-        const sql = ["SELECT id, username, image, location, introduction FROM member INNER JOIN profile ON member.email = profile.user WHERE id = ?"];
-        const value = [[id]];
+    async getUserType (email){
+        const sql = ["SELECT type, sex, id FROM member INNER JOIN profile ON member.email = profile.user WHERE user = ?"];
+        const value = [[email]];
         const data = await transaction(sql, value)
         return data[0]
     }
@@ -23,17 +23,17 @@ class Candidate {
     }
 
     async getUserUnMatch(email) {
-        const sql = ["SELECT un_match FROM matching WHERE user = ?"];
+        const sql = ["SELECT un_match FROM un_match WHERE user = ?"];
         const value = [[email]];
         const data = await transaction(sql, value)
         return data[0]
     }
 
-    async getUserSkip(column ,email) {
-        const sql = [`SELECT ${column} FROM matching WHERE user = ?`];
+    async getUserSkip(table ,email) {
+        const sql = [`SELECT skip FROM ${table} WHERE user = ?`];
         const value = [[email]];
         const data = await transaction(sql, value)
-        return data[0]
+        return data
     }
 
     async getOTPCandidateId(sex, type) {
@@ -43,33 +43,26 @@ class Candidate {
         return data
     }
 
-    async getUnMatchStatus(email) {
-        const sql = ["SELECT un_match_status FROM matching WHERE user = ?"];
-        const value = [[email]];
-        const data = await transaction(sql, value)
-        return data[0]
-    }
-
-    async updateUserSkip(column, skip, email) {
-        const sql = [`UPDATE matching SET ${column} = ? WHERE user = ?`];
-        const value = [[skip, email]];
+    async createUserSkip(table, email, id) {
+        const sql = [`INSERT INTO ${table} (user, skip) VALUES (?, ?)`];
+        const value = [[email, id]];
         await transaction(sql, value)
     }
 
-    async updateUnMatch(unMatch, email) {
-        const sql = ["UPDATE matching SET un_match = ? WHERE user = ?"];
-        const value = [[unMatch, email]];
+    async createUserUnMatch(email, id) {
+        const sql = ["INSERT INTO un_match (user, un_match) VALUES (?, ?)"];
+        const value = [[email, id]];
         await transaction(sql, value)
     }
 
-    async updateUnMatchStatus(status, email) {
-        const sql = ["UPDATE matching SET un_match_status = ? WHERE user = ?"];
-        const value = [[status, email]];
+    async deleteUserUnMatch(email, id) {
+        const sql = ["DELETE FROM un_match WHERE user = ? AND un_match = ?"];
+        const value = [[email, id]];
         await transaction(sql, value)
     }
 
-    async updateUserMatching(email) {
-        const sql = ["UPDATE matching SET stp_skip = NULL, otp_skip = NULL, un_match = NULL , un_match_status = 0 WHERE user = ?"];
+    async deleteAll(table, email) {
+        const sql = [`DELETE FROM ${table} WHERE user = ?`];
         const value = [[email]];
         await transaction(sql, value)
     }

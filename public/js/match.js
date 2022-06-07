@@ -45,7 +45,7 @@ imgContainer.addEventListener('dblclick', likeController);
 
 //// send pendingList to back-end
 const pendingController = async () => {
-    const response = await fetch('/api/user/match/pending', {
+    await fetch('/api/user/match/pending', {
         method: "POST",
         body: JSON.stringify({
             "pendingList": pendingList
@@ -54,8 +54,6 @@ const pendingController = async () => {
             "Content-Type": "application/json"
         }
     });
-    const data = await response.json();
-    // console.log('pending=',data)
 }
 
 
@@ -66,16 +64,11 @@ const startAddPending = async () => {
         if(window.location.pathname !== '/match'){
             clearInterval(autoPending)
         }
-        // if(pendingList.length >= 3){
-        //     await pendingController();
-        //     pendingList = [];
-        // }
         await pendingController();
         pendingList = [];
-    }, 6000)
+    }, 10000)
 };
 startAddPending();
-
 
 
 //// check if there is a match success
@@ -134,8 +127,8 @@ const showCandidateInfo = async () => {
     userImage.style.backgroundSize = 'cover';
     userLocation.textContent = dataList[0]['location'];
     introduction.textContent = dataList[0]['introduction'];
-    // currentCandidate = dataList[0]['id']
-    const updateResponse = await fetch('/api/user/candidate/update', {
+
+    await fetch('/api/user/candidate/update', {
         method: "PATCH",
         body: JSON.stringify({
             "data": dataList,
@@ -145,6 +138,7 @@ const showCandidateInfo = async () => {
             "Content-Type": "application/json"
         }
     });
+
     dataList.shift();
 }
 
@@ -168,41 +162,8 @@ const matchController = async () => {
         for(let i = 0; i < data['data'].length; i++){
             dataList.push(data['data'][i])
         }
-        // const updateResponse = await fetch('/api/user/candidate/update', {
-        //     method: "PATCH",
-        //     body: JSON.stringify({
-        //         "data": dataList,
-        //         "currentId": dataList[0]['id']
-        //     }),
-        //     headers: {
-        //         "Content-Type": "application/json"
-        //     }
-        // });
         showCandidateInfo();
     }
-    /*if(data['data'] === null){
-        await generateMatchCandidate();
-        await showCandidateInfo();
-    }else if(data['data'].length === 0){
-        console.log('here')
-        // errorContainer.classList.remove('hide');
-        // errorMessage.textContent = 'Oops, something went wrong. You seem playing to fast. Click the button to refresh the page.'
-    }else{
-        for(let i = 0; i < data['data'].length; i++){
-            dataList.push(data['data'][i])
-        }
-        const updateResponse = await fetch('/api/user/candidate/update', {
-            method: "PATCH",
-            body: JSON.stringify({
-                "data": dataList,
-                "currentId": dataList[0]['id']
-            }),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        });
-        showCandidateInfo();
-    }*/
 }
 setTimeout(async () => {await matchController();}, 2000)
 // matchController();
@@ -254,18 +215,7 @@ const nextPersonController = async () => {
         errorContainer.classList.remove('hide');
         errorMessage.textContent = 'Oops, something went wrong. You seem playing to fast. Click the button to refresh the page.'
     }else{
-        // console.log(dataList)
         showCandidateInfo();
-        // const updateResponse = await fetch('/api/user/candidate/update', {
-        //     method: "PATCH",
-        //     body: JSON.stringify({
-        //         "currentId": currentCandidate
-        //     }),
-        //     headers: {
-        //         "Content-Type": "application/json"
-        //     }
-        // });
-        // const updateData = await updateResponse.json();
     }
     
 }
