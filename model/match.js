@@ -33,6 +33,13 @@ class Match{
         const sql = ["SELECT matched FROM matched WHERE user = ?"];
         const value = [[email]];
         const data = await transaction(sql, value)
+        return data
+    }
+
+    async getMatchSuccessInfo(id) {
+        const sql = ["SELECT username, image FROM member WHERE id = ?"];
+        const value = [[id]];
+        const data = await transaction(sql, value)
         return data[0]
     }
 

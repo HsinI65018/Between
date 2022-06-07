@@ -1,5 +1,5 @@
 //// show person introduction throw the dots icon
-const moreInfoBtn = document.querySelector('.more-info-Btn');
+const moreInfoBtn = document.querySelector('.more-btn');
 const showMoreInfoController = () => {
     const introduction = document.querySelector('.introduction-container');
     if(introduction.className.includes('hide')){
@@ -21,6 +21,9 @@ const matchSuccessController = async (e) => {
         window.location = '/message';
     }else{
         matchSuccess.classList.add('hide');
+        nextBtn.classList.remove('disabled');
+        likeContainer.classList.remove('disabled');
+        moreInfoBtn.classList.remove('disabled');
         startMatching();
     }
 }
@@ -30,16 +33,12 @@ keepPlayingBtn.addEventListener('click', matchSuccessController);
 
 //// like the person controller
 let pendingList = [];
-const imgContainer = document.querySelector('.img-container');
-const likeIcon = document.querySelector('.like');
+const likeContainer = document.querySelector('.like-container');
 const likeController = async () => {
-    likeIcon.classList.remove('hide');
-    setTimeout(() => {
-        likeIcon.classList.add('hide');
-    }, 500)
+    likeContainer.classList.add('liked')
     pendingList.push(userName.id);
 }
-imgContainer.addEventListener('dblclick', likeController);
+likeContainer.addEventListener('click', likeController);
 
 
 //// send pendingList to back-end
@@ -76,6 +75,7 @@ const showMatch = document.querySelector('.show-match-container');
 const subTitle = document.querySelector('.sub-title');
 const matchPerson = document.querySelector('.person-1 > img');
 const user = document.querySelector('.person-2 > img');
+const nextBtn = document.querySelector('.next-btn');
 const checkMatchingController = async () => {
     console.log('start match!!!!!')
     const response = await fetch('/api/user/match');
@@ -88,15 +88,16 @@ const checkMatchingController = async () => {
         subTitle.textContent = `You and ${matchData.matchUser} have liked each other`;
         matchPerson.src = matchData.matchImage;
         user.src = matchData.image;
+        nextBtn.classList.add('disabled');
+        likeContainer.classList.add('disabled');
+        moreInfoBtn.classList.add('disabled');
     }else{
-        const response = await fetch('/api/user/match/check/pending', {
+        await fetch('/api/user/match/check/pending', {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             }
         })
-        const data = await response.json();
-        console.log(data)
     }
 }
 
@@ -118,6 +119,7 @@ startMatching();
 //// display candidate info
 let currentCandidate;
 const showCandidateInfo = async () => {
+    likeContainer.classList.remove('liked')
     userName.id = dataList[0]['id'];
     userName.textContent = dataList[0]['username'];
     userIcon.src = dataList[0]['image'];
@@ -205,7 +207,7 @@ startGenerateCandidate();
 
 
 //// next button controller
-const nextBtn = document.querySelector('.next-btn');
+const imgContainer = document.querySelector('.test');
 const errorContainer = document.querySelector('.error-container');
 const errorMessage = document.querySelector('.error > .message');
 const nextPersonController = async () => {
@@ -216,5 +218,9 @@ const nextPersonController = async () => {
         showCandidateInfo();
     }
 }
+console.log(window.screen.width)
 nextBtn.addEventListener('click', nextPersonController);
-// imgContainer.addEventListener('touchend', nextPersonController);
+if(window.screen.width < 800){
+    imgContainer.classList.remove('hide');
+    imgContainer.addEventListener('touchstart', nextPersonController);
+}

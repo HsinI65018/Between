@@ -25,20 +25,20 @@ const getMatchSuccessInfo = async (req, res) => {
     try {
         const { image } = await match.getUserImage(email)
         const data = await match.getUserMatch(email)
+        console.log(data[0].length)
 
         let responseData = null;
 
-        if(data.length !== 0){
-            await match.createUserFriend(email, data[0]['matched'])
+        if(data[0].length !== 0){
+            await match.createUserFriend(email, data[0][0]['matched'])
 
-            const matchData = await match.getMatchSuccessInfo(data[0]['matched'])
+            const matchData = await match.getMatchSuccessInfo(data[0][0]['matched'])
             responseData = {
                 "matchUser": matchData[0]['username'],
                 "matchImage": matchData[0]['image'],
                 "image": image
             }
-
-            await match.deleteUserMatch(email, data[0]['matched'])
+            await match.deleteUserMatch(email, data[0][0]['matched'])
             res.status(200).json(response.getResponseSuccess(responseData))
         }else{
             res.status(200).json(response.getResponseSuccess(null))

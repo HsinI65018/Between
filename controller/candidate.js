@@ -159,7 +159,6 @@ const generateMatchCandidate = async (req, res) => {
             }
     
             if(newArr.length < 20){
-                // console.log('Hello');
                 responseData = await randomCandidate(newArr, newArr.length, 'stp_skip', email);
                 return res.status(200).json({"type":type, "data": responseData})
             }
