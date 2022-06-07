@@ -28,7 +28,6 @@ sendMessageBtn.addEventListener('click', matchSuccessController);
 keepPlayingBtn.addEventListener('click', matchSuccessController);
 
 
-//// Add front-end pendingList in every 4 second
 //// like the person controller
 let pendingList = [];
 const imgContainer = document.querySelector('.img-container');
@@ -57,7 +56,7 @@ const pendingController = async () => {
 }
 
 
-//// if pendingList.lengh > 3 send to back-end every 6 second
+//// send to back-end every 6 second
 let autoPending;
 const startAddPending = async () => {
     autoPending = setInterval(async () => {
@@ -85,7 +84,6 @@ const checkMatchingController = async () => {
     console.log(data)
     if(matchData !== null){
         clearInterval(autoMatching);
-        // clearInterval(autoPending)
         showMatch.classList.remove('hide');
         subTitle.textContent = `You and ${matchData.matchUser} have liked each other`;
         matchPerson.src = matchData.matchImage;
@@ -165,8 +163,8 @@ const matchController = async () => {
         showCandidateInfo();
     }
 }
-setTimeout(async () => {await matchController();}, 2000)
-// matchController();
+// setTimeout(async () => {await matchController();}, 2000)
+matchController();
 
 
 //// generate candidate
@@ -178,7 +176,7 @@ const generateMatchCandidate = async () => {
         }
     });
     const data = await response.json();
-    // console.log(data)
+
     if(data['data'] === null){
         clearInterval(autoGenerate);
         setTimeout(() => {
@@ -217,7 +215,6 @@ const nextPersonController = async () => {
     }else{
         showCandidateInfo();
     }
-    
 }
 nextBtn.addEventListener('click', nextPersonController);
 // imgContainer.addEventListener('touchend', nextPersonController);

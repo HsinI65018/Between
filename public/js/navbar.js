@@ -47,11 +47,10 @@ memberBtn.addEventListener('mouseout', hideIconHintController);
 logoutBtn.addEventListener('mouseout', hideIconHintController);
 
 
-////
+//// refresh candidates data
 const closeBtn = document.querySelector('.btn');
 const errorContainer = document.querySelector('.error-container');
 const closeErrorController = async () => {
-    console.log(window.location)
     if(window.location.pathname === '/match'){
         await fetch('/api/user/candidate/refresh', {method: "DELETE"});
         window.location = '/match'

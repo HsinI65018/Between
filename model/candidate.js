@@ -37,7 +37,7 @@ class Candidate {
     }
 
     async getOTPCandidateId(sex, type) {
-        const sql = ["SELECT id FROM member INNER JOIN profile ON member.email = profile.user WHERE userstatus = 1 AND sex = ? AND type NOt IN (?)"];
+        const sql = ["SELECT id FROM member INNER JOIN profile ON member.email = profile.user WHERE userstatus = 1 AND sex = ? AND type NOT IN (?)"];
         const value = [[sex, type]];
         const data = await transaction(sql, value)
         return data

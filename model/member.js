@@ -53,8 +53,8 @@ class Member{
     }
 
     async updateMatching(email) {
-        const sql = ["UPDATE matching SET stp_skip = NULL, otp_skip = NULL, un_match = NULL, un_match_status = 0 WHERE user = ?"];
-        const value = [[ email]];
+        const sql = ["DELETE FROM stp_skip WHERE user = ?", "DELETE FROM otp_skip WHERE user = ?", "DELETE FROM un_match WHERE user = ?"];
+        const value = [[email], [email], [email]];
         await transaction(sql, value)
     }
 }

@@ -50,14 +50,10 @@ const memberController = async (data) => {
         const profileData = data.data;
 
         const location = document.querySelector('.location-value');
-        // const facebook = document.querySelector('.fb-value');
-        // const instagram = document.querySelector('.ig-value');
         const introduction = document.querySelector('.intro-value');
         const condition = document.querySelector('.condition-value');
         
         location.value = profileData.location;
-        // facebook.value = profileData.facebook;
-        // instagram.value = profileData.instagram;
         introduction.value = profileData.introduction;
         condition.value = profileData.searchCondition;
 

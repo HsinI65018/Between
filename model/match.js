@@ -1,4 +1,4 @@
-const transaction = require('../model/utility');
+const transaction = require('./utility');
 
 class Match{
     async getUserImage(email) {
