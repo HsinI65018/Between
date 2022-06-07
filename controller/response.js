@@ -12,6 +12,15 @@ class Response{
         return response
     }
 
+    getOthereSuccess(img, data) {
+        const response = {
+            "success": true,
+            "people": img,
+            "data": data
+        };
+        return response
+    }
+
     getError(message) {
         const response = {
             "success": false,

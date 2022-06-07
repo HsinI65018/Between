@@ -16,6 +16,6 @@ router.patch('/update', updateUnMatchCandidate)
 router.delete('/refresh', updateMatching)
 
 //// check default un_match to prevent un_match will not be wrong when going to another page (api called in init.js)
-router.post('/update/default', updateDefaultUnMatch)
+// router.post('/update/default', updateDefaultUnMatch)
 
 module.exports = router;

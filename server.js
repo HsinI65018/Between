@@ -46,43 +46,6 @@ console.log('Server listen at port 3000...');
 
 const io = socketio(server);
 
-
-app.post('/history', async (req, res) => {
-    const {sender, receiver} = req.body;
-    // console.log(sender, receiver)
-    const sql = ["SELECT sender, receiver, message, time FROM message WHERE sender = ? AND receiver = ? OR sender = ? AND receiver = ?"];
-    const value = [[sender, receiver, receiver, sender]]
-    const data = await transaction(sql, value);
-    const message = data[0];
-    // console.log(message)
-
-    const senderData = await transaction(["SELECT image, username FROM member WHERE email = ?"], [[sender]])
-    const receiverData = await transaction(["SELECT image, username FROM member WHERE email = ?"], [[receiver]])
-    // console.log(imgData[0])
-    const imgResponse = {};
-    imgResponse[sender] = senderData[0][0];
-    imgResponse[receiver] = receiverData[0][0];
-    // console.log('re=',imgResponse)
-    res.status(200).json({'people': imgResponse, 'data': message})
-})
-
-app.post('/people', async (req, res) => {
-    const {userId, friendId} = req.body;
-    const data = await transaction(["SELECT username, email, image FROM member WHERE id = ?"], [[userId]]);
-    const {username, email, image} = data[0][0]
-
-    const friendData = await transaction(["SELECT email FROM member WHERE id = ?"], [[friendId]]);
-    const friendEmail = friendData[0][0]['email']
-
-    const response = {
-        'sender': email,
-        'username': username,
-        'image': image,
-        'receiver': friendEmail
-    }
-    res.status(200).json({'success': true, 'data': response})
-})
-
 const users = [];
 io.on('connection', (socket) => {
     console.log('a user connected');

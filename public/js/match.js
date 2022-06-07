@@ -66,10 +66,12 @@ const startAddPending = async () => {
         if(window.location.pathname !== '/match'){
             clearInterval(autoPending)
         }
-        if(pendingList.length >= 3){
-            await pendingController();
-            pendingList = [];
-        }
+        // if(pendingList.length >= 3){
+        //     await pendingController();
+        //     pendingList = [];
+        // }
+        await pendingController();
+        pendingList = [];
     }, 6000)
 };
 startAddPending();
@@ -87,6 +89,7 @@ const checkMatchingController = async () => {
     const response = await fetch('/api/user/match');
     const data = await response.json();
     const matchData = data.data;
+    console.log(data)
     if(matchData !== null){
         clearInterval(autoMatching);
         // clearInterval(autoPending)
@@ -122,7 +125,8 @@ startMatching();
 
 //// show matching candidate
 //// display candidate info
-const showCandidateInfo = () => {
+let currentCandidate;
+const showCandidateInfo = async () => {
     userName.id = dataList[0]['id'];
     userName.textContent = dataList[0]['username'];
     userIcon.src = dataList[0]['image'];
@@ -130,6 +134,17 @@ const showCandidateInfo = () => {
     userImage.style.backgroundSize = 'cover';
     userLocation.textContent = dataList[0]['location'];
     introduction.textContent = dataList[0]['introduction'];
+    // currentCandidate = dataList[0]['id']
+    const updateResponse = await fetch('/api/user/candidate/update', {
+        method: "PATCH",
+        body: JSON.stringify({
+            "data": dataList,
+            "currentId": dataList[0]['id']
+        }),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    });
     dataList.shift();
 }
 
@@ -144,19 +159,50 @@ const introduction = document.querySelector('.introduction');
 const matchController = async () => {
     const response = await fetch('/api/user/candidate');
     const data = await response.json();
-    // console.log(data)
-    if(data['data'] === null){
+    console.log(data)
+
+    if(data['data'].length === 0){
         await generateMatchCandidate();
         await showCandidateInfo();
-    }else if(data['data'].length === 0){
-        errorContainer.classList.remove('hide');
-        errorMessage.textContent = 'Oops, something went wrong. You seem playing to fast. Click the button to refresh the page.'
     }else{
         for(let i = 0; i < data['data'].length; i++){
             dataList.push(data['data'][i])
         }
+        // const updateResponse = await fetch('/api/user/candidate/update', {
+        //     method: "PATCH",
+        //     body: JSON.stringify({
+        //         "data": dataList,
+        //         "currentId": dataList[0]['id']
+        //     }),
+        //     headers: {
+        //         "Content-Type": "application/json"
+        //     }
+        // });
         showCandidateInfo();
     }
+    /*if(data['data'] === null){
+        await generateMatchCandidate();
+        await showCandidateInfo();
+    }else if(data['data'].length === 0){
+        console.log('here')
+        // errorContainer.classList.remove('hide');
+        // errorMessage.textContent = 'Oops, something went wrong. You seem playing to fast. Click the button to refresh the page.'
+    }else{
+        for(let i = 0; i < data['data'].length; i++){
+            dataList.push(data['data'][i])
+        }
+        const updateResponse = await fetch('/api/user/candidate/update', {
+            method: "PATCH",
+            body: JSON.stringify({
+                "data": dataList,
+                "currentId": dataList[0]['id']
+            }),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+        showCandidateInfo();
+    }*/
 }
 setTimeout(async () => {await matchController();}, 2000)
 // matchController();
@@ -210,17 +256,16 @@ const nextPersonController = async () => {
     }else{
         // console.log(dataList)
         showCandidateInfo();
-
-        const updateResponse = await fetch('/api/user/candidate/update', {
-            method: "PATCH",
-            body: JSON.stringify({
-                "data": dataList
-            }),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        });
-        const updateData = await updateResponse.json();
+        // const updateResponse = await fetch('/api/user/candidate/update', {
+        //     method: "PATCH",
+        //     body: JSON.stringify({
+        //         "currentId": currentCandidate
+        //     }),
+        //     headers: {
+        //         "Content-Type": "application/json"
+        //     }
+        // });
+        // const updateData = await updateResponse.json();
     }
     
 }

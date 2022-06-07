@@ -1,4 +1,4 @@
-const transaction = require('../model/utility');
+const transaction = require('./utility');
 
 class Candidate {
     async getUserType (email){

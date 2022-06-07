@@ -112,7 +112,7 @@ const createChatRoom = async (e) => {
     const [username, friendId] = e.target.id.split('-');
     const unReadUser = document.querySelector(`#${username}-msg`);
 
-    const response = await fetch('/people', {
+    const response = await fetch('api/user/message/people', {
         method: "POST",
         body: JSON.stringify({
             "userId": userId,
@@ -146,7 +146,7 @@ const createChatRoom = async (e) => {
     socket.emit('user_connected', userId)
 
     // history message
-    const historyResponse = await fetch('/history', {
+    const historyResponse = await fetch('api/user/message/history', {
         method: "POST",
         body: JSON.stringify({
             "sender": sender,
