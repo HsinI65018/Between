@@ -1,6 +1,14 @@
 const transaction = require('./utility');
 
 class Match{
+    ////
+    async getHistoryUser(email) {
+        const sql = ["SELECT image, username FROM member WHERE email = ?"];
+        const value = [[email]];
+        const data = await transaction(sql ,value)
+        return data[0]
+    }
+    ////
     async getUserImage(email) {
         const sql = ["SELECT image FROM member WHERE email = ?"];
         const value = [[email]];
@@ -37,7 +45,7 @@ class Match{
     }
 
     async getMatchSuccessInfo(id) {
-        const sql = ["SELECT username, image FROM member WHERE id = ?"];
+        const sql = ["SELECT username, image, email FROM member WHERE id = ?"];
         const value = [[id]];
         const data = await transaction(sql, value)
         return data[0]

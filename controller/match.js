@@ -1,4 +1,5 @@
 const { getUserEmail } = require('./auth');
+const client = require('../model/redisConnection');
 const Match = require('../model/match');
 const Response = require('./response');
 
@@ -19,7 +20,6 @@ const updatePending = async (req, res) => {
     }   
 }
 
-
 const getMatchSuccessInfo = async (req, res) => {
     const email = getUserEmail(req);
     try {
@@ -37,12 +37,47 @@ const getMatchSuccessInfo = async (req, res) => {
                 "matchImage": matchData[0]['image'],
                 "image": image
             }
+
+
+            ///////////
+            const friendData = await client.hget("friends", email);
+            const friendList = JSON.parse(friendData);
+
+            if(friendList === null){
+                const initFriendList = [
+                    {
+                        "id": data[0][0]['matched'],
+                        "username": matchData[0]['username'],
+                        "image": matchData[0]['image']
+                    }
+                ]
+                client.hset("friends", email, JSON.stringify(initFriendList))
+            }else{
+                friendList.push({
+                    "id": data[0][0]['matched'],
+                    "username": matchData[0]['username'],
+                    "image": matchData[0]['image']
+                })
+                client.hset("friends", email, JSON.stringify(friendList));
+            }
+            
+            const senderData = await match.getHistoryUser(email);
+            const receiverData = await match.getHistoryUser(matchData[0]['email']);
+
+            const imgResponse = {};
+            imgResponse[email] = senderData[0];
+            imgResponse[matchData[0]['email']] = receiverData[0];
+            client.hset("image", `${email}-${matchData[0]['email']}`, JSON.stringify(imgResponse));
+            ///////
+
+
             await match.deleteUserMatch(email, data[0][0]['matched'])
             res.status(200).json(response.getResponseSuccess(responseData))
         }else{
             res.status(200).json(response.getResponseSuccess(null))
         }
     } catch (error) {
+        console.log(error)
         res.status(500).json(response.getServerError())
     }
 }

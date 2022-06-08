@@ -1,3 +1,4 @@
+const client = require('../model/redisConnection');
 const SocketIo = require('../model/socket');
 const Formate = require('./formatData');
 

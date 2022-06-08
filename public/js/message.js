@@ -165,7 +165,10 @@ const createChatRoom = async (e) => {
     const historyData = await historyResponse.json();
     const senderList = historyData.people;
     const messageList = historyData.data;
+    console.log(senderList)
+    console.log(messageList)
 
+    /////bugggggggggggg
     for(let i = 0; i < messageList.length; i++){
         const image = senderList[messageList[i]['sender']]['image'];
         const username = senderList[messageList[i]['sender']]['username'];
