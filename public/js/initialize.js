@@ -22,10 +22,12 @@ checkSignInController();
 
 
 //// init member page
-const header = document.querySelector('.header-container');
+const body = document.querySelector('body');
+const header = document.querySelector('header');
 const main = document.querySelector('main');
 const loading = document.querySelector('.loading');
 const memberController = async (data) => {
+    body.style.display = 'block';
     header.style.display = 'flex';
     main.style.display = 'flex';
     loading.style.display = 'none';

@@ -5,12 +5,21 @@
     font-family: 'Noto Sans Telugu UI';
     font-size: 18px;
 }
+body{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.loading{
+    margin-top: 20%;
+}
 
 /* user identity */
 header{
     margin-top: 50px;
     height: 320px;
-    display: flex;
+    /* display: flex; */
+    display: none;
     align-items: center;
     justify-content: center;
 }
@@ -18,8 +27,8 @@ header > .header-container{
     width: 800px;
     height: 200px;
     margin: 10px auto;
-    /* display: flex; */
-    display: none;
+    display: flex;
+    /* display: none; */
     align-items: center;
     justify-content: space-between;
 }
