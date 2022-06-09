@@ -206,18 +206,25 @@ form{
     flex-wrap: wrap;
 }
 .type-container > #type{
-    width: auto;
+    width: 370px;
+    height: auto;
     padding: 10px 10px 10px 10px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: space-around;
     align-items: center;
-    justify-content: center;
     margin-bottom: 30px;
     cursor: pointer;
-    margin-right: 2px;
+    margin-right: 10px;
+}
+.hide-hr{
+    width: 100%;
+    margin-bottom: 30px;
+    display: block;
+    border: 1px solid #E8E8E8;
 }
 #type:hover, .select{
-    background-color: #E8E8E8E8;
+    background-color: #E8E8E8;
     border-radius: 10px;
 }
 #type > .type-block{
@@ -242,10 +249,14 @@ form{
     font-size: 20px;
 }
 #type > .content{
-    width: 170px;
-    height: 210px;
+    width: auto;
     text-align: left;
     font-size: 17px;
+
+    width: auto;
+    height: auto;
+    overflow: scroll;
+    margin-left: 30px;
 }
 .type-block, .type-block > .latter, .type-block > .title, #type > .content{
     pointer-events: none;
@@ -294,9 +305,7 @@ form{
     border: none;
     color: #FFFFFF;
     cursor: pointer;
-}
-.hide-hr{
-    display: none;
+    margin-top: 40px;
 }
 
 /* RWD */
@@ -347,22 +356,7 @@ form{
         justify-content: space-between;
     }
     .type-container > #type{
-        height: auto;
-        flex-direction: row;
-        justify-content: space-around;
-        align-items: center;
         width: 100%;
-    }
-    #type > .content{
-        width: auto;
-        height: auto;
-        overflow: scroll;
-        margin-left: 30px;
-    }
-    .hide-hr{
-        width: 100%;
-        margin-bottom: 30px;
-        display: block;
     }
 }
 @media(max-width: 420px){

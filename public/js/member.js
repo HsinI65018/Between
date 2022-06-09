@@ -93,7 +93,7 @@ editProfileBtn.addEventListener('click', showProfileController);
 const fetchUpdateAPI = async (typeValue) => {
     const location = document.querySelector('.location-value').value;
     const introduction = document.querySelector('.intro-value').value;
-    const condition = document.querySelector('.condition-value').value;
+    // const condition = document.querySelector('.condition-value').value;
 
     const response = await fetch('/api/user/profile/update', {
         method: "POST",
@@ -102,7 +102,6 @@ const fetchUpdateAPI = async (typeValue) => {
             "introduction": introduction,
             "type": typeValue,
             "sex": sexValue,
-            "condition": condition
         }),
         headers: {
             "Content-Type": "application/json"
@@ -118,13 +117,15 @@ const profileForm = document.querySelector('form');
 const errorContainer = document.querySelector('.error-container');
 const saveProfileController = async (e) => {
     e.preventDefault();
+    const location = document.querySelector('.location-value').value;
+    const introduction = document.querySelector('.intro-value').value;
     let typeValue = [...new Set(typeList)].join('');
 
     const response = await fetch('/api/user/profile/');
     const data = await response.json();
     const profileData = data.data;
 
-    if(profileData.location === null && profileData.introduction === null && profileData.searchCondition === null && profileData.type === null && profileData.sex === null){
+    if(profileData.location === null && profileData.introduction === null && profileData.type === null && profileData.sex === null){
         if(typeValue.length < 4 || sexValue === undefined){
             errorContainer.classList.remove('hide');
             return
@@ -146,7 +147,7 @@ const saveProfileController = async (e) => {
         console.log('first')
         fetchUpdateAPI(typeValue);
     }else{
-        if(profileData.location === location && profileData.introduction === introduction && profileData.searchCondition === condition && typeValue === '' && sexValue === undefined){
+        if(profileData.location === location && profileData.introduction === introduction && typeValue === '' && sexValue === undefined){
             editProfileBtn.classList.remove('hide');
             profileContainer.classList.add('hide');
         }else{

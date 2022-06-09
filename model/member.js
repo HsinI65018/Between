@@ -2,7 +2,7 @@ const transaction = require('./utility');
 
 class Member{
     async getUserProfile(email) {
-        const sql = ["SELECT location, introduction, type, sex, searchCondition FROM profile WHERE user = ?"];
+        const sql = ["SELECT location, introduction, type, sex FROM profile WHERE user = ?"];
         const value = [[email]];
         const data = await transaction(sql ,value)
         return data[0]
@@ -40,9 +40,9 @@ class Member{
         await transaction(sql ,value);
     }
 
-    async updateUserProfile(location, introduction, type, sex, condition, email) {
-        const sql = ["UPDATE profile SET location = ?, introduction = ?, type = ?, sex = ?, searchCondition = ? WHERE user = ?"];
-        const value = [[location, introduction, type, sex, condition, email]];
+    async updateUserProfile(location, introduction, type, sex, email) {
+        const sql = ["UPDATE profile SET location = ?, introduction = ?, type = ?, sex = ? WHERE user = ?"];
+        const value = [[location, introduction, type, sex, email]];
         await transaction(sql ,value);
     }
 

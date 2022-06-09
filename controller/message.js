@@ -15,7 +15,7 @@ const response = new Response();
 const getFriendList = async (req, res) => {
     const email = getUserEmail(req);
     try {
-        const data = await client.hget("friends", email, async (error, result) => {
+        const data = await client.hGet("friends", email, async (error, result) => {
             if(error){
                 const data = await message.getFriendList(email)
                 const friendList = [];
@@ -68,9 +68,8 @@ const getHistoryFromDB = async (sender, receiver) => {
 
 const getHistory = async (req, res) => {
     const { sender, receiver } = req.body;
-    // console.log(`${sender}-${receiver}`)
     try {
-        const messagesData = await client.hget("message", `${sender}-${receiver}`, async (error, result) => {
+        const messagesData = await client.hGet("message", `${sender}-${receiver}`, async (error, result) => {
             if(error){
                 const { imgResponse, messages } =  await getHistoryFromDB(sender, receiver);
                 res.status(200).json(response.getOthereSuccess(imgResponse, messages))
@@ -80,7 +79,7 @@ const getHistory = async (req, res) => {
         });
         const messages = JSON.parse(messagesData)
 
-        const imgData = await client.hget("image", `${sender}-${receiver}`, async (error, result) => {
+        const imgData = await client.hGet("image", `${sender}-${receiver}`, async (error, result) => {
             if(error){
                 const senderData = await message.getHistoryUser(sender);
                 const receiverData = await message.getHistoryUser(receiver);
@@ -94,20 +93,6 @@ const getHistory = async (req, res) => {
             }
         });
         const imgResponse = JSON.parse(imgData)
-
-
-
-        // const messages = JSON.parse(messagesData)
-        // const imgResponse = JSON.parse(imgData);
-
-        // const data = await message.getHistory(sender, receiver);
-        // const messages = data;
-        // const senderData = await message.getHistoryUser(sender);
-        // const receiverData = await message.getHistoryUser(receiver);
-        // const imgResponse = {};
-        // imgResponse[sender] = senderData[0];
-        // imgResponse[receiver] = receiverData[0];
-
         res.status(200).json(response.getOthereSuccess(imgResponse, messages))
     } catch (error) {
         console.log(error)

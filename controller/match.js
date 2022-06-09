@@ -40,7 +40,7 @@ const getMatchSuccessInfo = async (req, res) => {
 
 
             ///////////
-            const friendData = await client.hget("friends", email);
+            const friendData = await client.hGet("friends", email);
             const friendList = JSON.parse(friendData);
 
             if(friendList === null){
@@ -51,14 +51,14 @@ const getMatchSuccessInfo = async (req, res) => {
                         "image": matchData[0]['image']
                     }
                 ]
-                client.hset("friends", email, JSON.stringify(initFriendList))
+                client.hSet("friends", email, JSON.stringify(initFriendList))
             }else{
                 friendList.push({
                     "id": data[0][0]['matched'],
                     "username": matchData[0]['username'],
                     "image": matchData[0]['image']
                 })
-                client.hset("friends", email, JSON.stringify(friendList));
+                client.hSet("friends", email, JSON.stringify(friendList));
             }
             
             const senderData = await match.getHistoryUser(email);
@@ -67,7 +67,7 @@ const getMatchSuccessInfo = async (req, res) => {
             const imgResponse = {};
             imgResponse[email] = senderData[0];
             imgResponse[matchData[0]['email']] = receiverData[0];
-            client.hset("image", `${email}-${matchData[0]['email']}`, JSON.stringify(imgResponse));
+            client.hSet("image", `${email}-${matchData[0]['email']}`, JSON.stringify(imgResponse));
             ///////
 
 

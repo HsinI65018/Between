@@ -6,22 +6,6 @@ const Response = require('./response');
 const member = new Member();
 const response = new Response();
 
-// const redis = require('redis');
-
-// (async () => {
-
-//   const client = redis.createClient();
-
-//   const subscriber = client.duplicate();
-
-//   await subscriber.connect();
-
-//   await subscriber.subscribe('articles', (message, channel) => {
-//     console.log("Message from channel " + channel + ": " + message); // 'message'
-//   });
-
-// })();
-
 
 const getUserEmail = (req) => {
     let email;
@@ -77,10 +61,10 @@ const uploadImage = async (req, res) => {
 
 
 const updateProfile = async (req, res) => {
-    const {location, introduction, type, sex, condition} = req.body;
+    const {location, introduction, type, sex} = req.body;
     const email = getUserEmail(req);
     try {
-        await member.updateUserProfile(location, introduction, type, sex, condition, email);
+        await member.updateUserProfile(location, introduction, type, sex, email);
         await member.updateMatching(email);
         const data = await member.getUserImage(email);
         const image = data[0]['image'];

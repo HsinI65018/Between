@@ -12,7 +12,7 @@ closeMenu.addEventListener('click', friendMenuController);
 
 ////
 const body = document.querySelector('body');
-const section = document.querySelector('section');
+const article = document.querySelector('article');
 const main = document.querySelector('main');
 const loading = document.querySelector('.loading');
 const friendListContainer = document.querySelector('.friend-zone-container');
@@ -23,10 +23,9 @@ const friendListController = async () => {
     // console.log(friendList)
     
     loading.style.display = 'none';
-    
 
     if(friendList === null){
-        section.style.display = 'flex';
+        article.style.display = 'flex';
     }else{
         body.style.justifyContent = 'initial'
         main.style.display = 'flex';
@@ -175,8 +174,8 @@ const createChatRoom = async (e) => {
     const historyData = await historyResponse.json();
     const senderList = historyData.people;
     const messageList = historyData.data;
-    console.log(senderList)
-    console.log(messageList)
+    // console.log(senderList)
+    // console.log(messageList)
 
     /////bugggggggggggg
     if(messageList !== null){
@@ -204,6 +203,11 @@ const sendMsgController = async (e) => {
             message: message.value,
             time: time
         })
+
+        socket.emit('redis', {
+            sender: sender,
+            receiver: receiver
+        })
     }
     displayData(image, userName, time, message.value)
     
@@ -217,7 +221,7 @@ msgForm.addEventListener('submit', sendMsgController)
 socket.on('new_message', (data) => {
     console.log(data);
     const currentUser = document.querySelector('.chat-name');
-    console.log(currentUser.textContent)
+    // console.log(currentUser.textContent)
     if(currentUser.textContent === data.sender){
         displayData(data.image, data.sender, data.time, data.message)
     }else{

@@ -60,11 +60,9 @@ const memberController = async (data) => {
 
         const location = document.querySelector('.location-value');
         const introduction = document.querySelector('.intro-value');
-        const condition = document.querySelector('.condition-value');
         
         location.value = profileData.location;
         introduction.value = profileData.introduction;
-        condition.value = profileData.searchCondition;
 
         const sex = document.querySelector(`.sex-${profileData.sex[0]}`);
         const typeOne = document.querySelector(`.type-${profileData.type[0]}`);

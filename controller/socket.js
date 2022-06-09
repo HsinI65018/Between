@@ -6,21 +6,17 @@ const Formate = require('./formatData');
 const socketIo = new SocketIo();
 const formate = new Formate()
 
-// const redis = require('redis');
-// const publisher = redis.createClient();
-
-// (async () => {
-
-//   const article = {
-//     id: '12',
-//     name: 'nancy',
-//     blog: 'test',
-//   };
-
-//   await publisher.connect();
-
-//   await publisher.publish('articles', JSON.stringify(article));
-// })();
+const redis = require('redis');
+require('dotenv').config();
+const url = `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`;
+const publisher = redis.createClient({
+    // url
+})
+publisher.connect();
+const subscriber = redis.createClient({
+    // url
+})
+subscriber.connect();
 
 const users = [];
 function initSocket(io){
@@ -43,38 +39,50 @@ function initSocket(io){
             const { image, username } = userData[0][0];
             const response = formate.formateMessage(data, image, username)
 
-            io.to(id).emit('new_message', response)
+            await publisher.publish(data.sender, JSON.stringify(response));
+
+            // io.to(id).emit('new_message', response)
             
 
-            const senderHistory = await client.hget("message", `${data.sender}-${data.receiver}`);
+            const senderHistory = await client.hGet("message", `${data.sender}-${data.receiver}`);
             const senderHistoryList = JSON.parse(senderHistory);
             if(senderHistoryList === null){
                 const initFriendList = [
                     formate.formateRedisMessage(data.sender, data.receiver, data.message, data.time)
                 ]
-                client.hset("message", `${data.sender}-${data.receiver}`, JSON.stringify(initFriendList))
+                client.hSet("message", `${data.sender}-${data.receiver}`, JSON.stringify(initFriendList))
             }else{
                 senderHistoryList.push(
                     formate.formateRedisMessage(data.sender, data.receiver, data.message, data.time)
                 )
-                client.hset("message", `${data.sender}-${data.receiver}`, JSON.stringify(senderHistoryList));
+                client.hSet("message", `${data.sender}-${data.receiver}`, JSON.stringify(senderHistoryList));
             }
 
-            const receiverHistory = await client.hget("message", `${data.receiver}-${data.sender}`);
+            const receiverHistory = await client.hGet("message", `${data.receiver}-${data.sender}`);
             const receiverHistoryList = JSON.parse(receiverHistory);
             if(receiverHistoryList === null){
                 const initFriendList = [
                     formate.formateRedisMessage(data.sender, data.receiver, data.message, data.time)
                 ]
-                client.hset("message", `${data.receiver}-${data.sender}`, JSON.stringify(initFriendList))
+                client.hSet("message", `${data.receiver}-${data.sender}`, JSON.stringify(initFriendList))
             }else{
                 receiverHistoryList.push(
                     formate.formateRedisMessage(data.sender, data.receiver, data.message, data.time)
                 )
-                client.hset("message", `${data.receiver}-${data.sender}`, JSON.stringify(receiverHistoryList));
+                client.hSet("message", `${data.receiver}-${data.sender}`, JSON.stringify(receiverHistoryList));
             }
 
             await socketIo.createUserMessage(data.sender, data.receiver, data.message, data.time)
+        })
+
+        socket.on('redis', async (data) => {
+            const id = users[data.receiver];
+            await subscriber.subscribe(data.sender, (message, channel) => {
+                console.log("Message from channel " + channel + ": " + message);
+                const response = JSON.parse(message);
+                console.log(response)
+                io.to(id).emit('new_message', response)
+            });
         })
 
         socket.on('disconnect', () => {
