@@ -11,6 +11,8 @@ closeMenu.addEventListener('click', friendMenuController);
 
 
 ////
+const body = document.querySelector('body');
+const section = document.querySelector('section');
 const main = document.querySelector('main');
 const loading = document.querySelector('.loading');
 const friendListContainer = document.querySelector('.friend-zone-container');
@@ -19,43 +21,51 @@ const friendListController = async () => {
     const data = await response.json();
     const friendList = data.data
     // console.log(friendList)
-    main.style.display = 'flex';
+    
     loading.style.display = 'none';
-    for(let i = 0; i < friendList.length; i++){
-        const friendCard = document.createElement('div');
-        const imgContainer = document.createElement('div');
-        const image = document.createElement('img');
-        const friendInfo = document.createElement('div');
-        const friendName = document.createElement('div');
-        const unReadMsg = document.createElement('div');
+    
 
-        const counter = localStorage.getItem(friendList[i]['username']);
-        if(counter){
-            unReadMsg.textContent = counter;
-        }else{
-            unReadMsg.textContent = 0;
-            unReadMsg.classList.add('hide')
+    if(friendList === null){
+        section.style.display = 'flex';
+    }else{
+        body.style.justifyContent = 'initial'
+        main.style.display = 'flex';
+        for(let i = 0; i < friendList.length; i++){
+            const friendCard = document.createElement('div');
+            const imgContainer = document.createElement('div');
+            const image = document.createElement('img');
+            const friendInfo = document.createElement('div');
+            const friendName = document.createElement('div');
+            const unReadMsg = document.createElement('div');
+    
+            const counter = localStorage.getItem(friendList[i]['username']);
+            if(counter){
+                unReadMsg.textContent = counter;
+            }else{
+                unReadMsg.textContent = 0;
+                unReadMsg.classList.add('hide')
+            }
+            image.src = friendList[i]['image'];
+            friendName.textContent = friendList[i]['username'];
+            friendName.setAttribute('class', 'name')
+            friendName.classList.add('name-list')
+    
+            imgContainer.setAttribute('class', 'img-container');
+            unReadMsg.classList.add('un-read-msg')
+            unReadMsg.setAttribute('id', `${friendList[i]['username']}-msg`)
+            friendInfo.setAttribute('class', 'friend-info');
+    
+            imgContainer.appendChild(image);
+            friendInfo.appendChild(friendName);
+            friendInfo.appendChild(unReadMsg)
+    
+            friendCard.setAttribute('class', 'friend-card')
+            friendCard.setAttribute('id', `${friendList[i]['username']}-${friendList[i]['id']}`);
+            friendCard.appendChild(imgContainer);
+            friendCard.appendChild(friendInfo);
+    
+            friendListContainer.appendChild(friendCard)
         }
-        image.src = friendList[i]['image'];
-        friendName.textContent = friendList[i]['username'];
-        friendName.setAttribute('class', 'name')
-        friendName.classList.add('name-list')
-
-        imgContainer.setAttribute('class', 'img-container');
-        unReadMsg.classList.add('un-read-msg')
-        unReadMsg.setAttribute('id', `${friendList[i]['username']}-msg`)
-        friendInfo.setAttribute('class', 'friend-info');
-
-        imgContainer.appendChild(image);
-        friendInfo.appendChild(friendName);
-        friendInfo.appendChild(unReadMsg)
-
-        friendCard.setAttribute('class', 'friend-card')
-        friendCard.setAttribute('id', `${friendList[i]['username']}-${friendList[i]['id']}`);
-        friendCard.appendChild(imgContainer);
-        friendCard.appendChild(friendInfo);
-
-        friendListContainer.appendChild(friendCard)
     }
 }
 friendListController();
@@ -169,10 +179,12 @@ const createChatRoom = async (e) => {
     console.log(messageList)
 
     /////bugggggggggggg
-    for(let i = 0; i < messageList.length; i++){
-        const image = senderList[messageList[i]['sender']]['image'];
-        const username = senderList[messageList[i]['sender']]['username'];
-        displayData(image, username, messageList[i]['time'], messageList[i]['message'])
+    if(messageList !== null){
+        for(let i = 0; i < messageList.length; i++){
+            const image = senderList[messageList[i]['sender']]['image'];
+            const username = senderList[messageList[i]['sender']]['username'];
+            displayData(image, username, messageList[i]['time'], messageList[i]['message'])
+        }
     }
 }
 friendCardContainer.addEventListener('click', createChatRoom)

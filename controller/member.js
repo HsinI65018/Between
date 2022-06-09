@@ -6,6 +6,22 @@ const Response = require('./response');
 const member = new Member();
 const response = new Response();
 
+// const redis = require('redis');
+
+// (async () => {
+
+//   const client = redis.createClient();
+
+//   const subscriber = client.duplicate();
+
+//   await subscriber.connect();
+
+//   await subscriber.subscribe('articles', (message, channel) => {
+//     console.log("Message from channel " + channel + ": " + message); // 'message'
+//   });
+
+// })();
+
 
 const getUserEmail = (req) => {
     let email;

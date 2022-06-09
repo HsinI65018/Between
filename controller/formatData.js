@@ -13,6 +13,15 @@ class Formate{
             "time": data.time
         }
     }
+
+    formateRedisMessage(sender, receiver, message, time) {
+        return {
+            "sender": sender,
+            "receiver": receiver,
+            "message": message,
+            "time": time
+        }
+    }
 }
 
 module.exports = Formate

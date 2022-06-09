@@ -13,6 +13,15 @@ body{
 .loading{
     margin-top: 20%;
 }
+
+.default-friend{
+    margin-top: 20%;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
 main{
     /* display: flex; */
     display: none;

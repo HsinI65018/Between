@@ -37,7 +37,7 @@ const getFriendList = async (req, res) => {
                 }
                 return res.status(200).json(response.getResponseSuccess(responseData))
             }else{
-                return JSON.parse(result);
+                return result;
             }
         });
         const responseData = JSON.parse(data);
@@ -68,38 +68,45 @@ const getHistoryFromDB = async (sender, receiver) => {
 
 const getHistory = async (req, res) => {
     const { sender, receiver } = req.body;
+    // console.log(`${sender}-${receiver}`)
     try {
-        // const messagesData = await client.hget("message", `${sender}-${receiver}`, async (error, result) => {
-        //     if(error){
-        //         const { imgResponse, messages } =  await getHistoryFromDB(sender, receiver);
-        //         res.status(200).json(response.getOthereSuccess(imgResponse, messages))
-        //     }else{
-        //         return result
-        //     } 
-        // });
-        
-        // const imgData = await client.hget("image", `${sender}-${receiver}`, async (error, result) => {
-        //     if(error){
-        //         const { imgResponse, messages } =  await getHistoryFromDB(sender, receiver);
-        //         res.status(200).json(response.getOthereSuccess(imgResponse, messages))
-        //     }else{
-        //         return result
-        //     }
-        // });
+        const messagesData = await client.hget("message", `${sender}-${receiver}`, async (error, result) => {
+            if(error){
+                const { imgResponse, messages } =  await getHistoryFromDB(sender, receiver);
+                res.status(200).json(response.getOthereSuccess(imgResponse, messages))
+            }else{
+                return result
+            }
+        });
+        const messages = JSON.parse(messagesData)
+
+        const imgData = await client.hget("image", `${sender}-${receiver}`, async (error, result) => {
+            if(error){
+                const senderData = await message.getHistoryUser(sender);
+                const receiverData = await message.getHistoryUser(receiver);
+
+                const imgResponse = {};
+                imgResponse[sender] = senderData[0];
+                imgResponse[receiver] = receiverData[0];
+                res.status(200).json(response.getOthereSuccess(imgResponse, messages))
+            }else{
+                return result
+            }
+        });
+        const imgResponse = JSON.parse(imgData)
+
+
 
         // const messages = JSON.parse(messagesData)
         // const imgResponse = JSON.parse(imgData);
 
-        const data = await message.getHistory(sender, receiver);
-        const messages = data;
-        // console.log(message)
-        const senderData = await message.getHistoryUser(sender);
-        const receiverData = await message.getHistoryUser(receiver);
-        // console.log(imgData[0])
-        const imgResponse = {};
-        imgResponse[sender] = senderData[0];
-        imgResponse[receiver] = receiverData[0];
-        // console.log('re=',imgResponse)
+        // const data = await message.getHistory(sender, receiver);
+        // const messages = data;
+        // const senderData = await message.getHistoryUser(sender);
+        // const receiverData = await message.getHistoryUser(receiver);
+        // const imgResponse = {};
+        // imgResponse[sender] = senderData[0];
+        // imgResponse[receiver] = receiverData[0];
 
         res.status(200).json(response.getOthereSuccess(imgResponse, messages))
     } catch (error) {
