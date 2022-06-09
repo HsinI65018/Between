@@ -51,6 +51,12 @@ class Member{
         const value = [[statusCode, email]];
         await transaction(sql, value)
     }
+
+    async updateMatching(email) {
+        const sql = ["DELETE FROM stp_skip WHERE user = ?", "DELETE FROM otp_skip WHERE user = ?", "DELETE FROM un_match WHERE user = ?"];
+        const value = [[email], [email], [email]];
+        await transaction(sql, value)
+    }
 }
 
 module.exports = Member;

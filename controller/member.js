@@ -65,6 +65,7 @@ const updateProfile = async (req, res) => {
     const email = getUserEmail(req);
     try {
         await member.updateUserProfile(location, introduction, type, sex, condition, email);
+        await member.updateMatching(email);
         const data = await member.getUserImage(email);
         const image = data[0]['image'];
         if(image !== null) {

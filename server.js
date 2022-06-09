@@ -4,20 +4,20 @@ const session = require('express-session');
 const render = require('./router/render');
 const user = require('./router/user');
 const member = require('./router/member');
+const candidate = require('./router/candidate')
 const match = require('./router/match');
 const message = require('./router/message');
 const passport = require('passport');
 
 const http = require('http');
 const socketio = require('socket.io');
-const formatMessage = require('./controller/formatDate')
-
-require('dotenv').config();
-require('./controller/googleAuth');
 
 const app = express();
 const server = http.createServer(app);
-const transaction = require('./model/utility');
+const initSocket = require('./controller/socket');
+
+require('dotenv').config();
+require('./controller/googleAuth');
 
 app.set('view engine', 'ejs');
 app.use(cookieParser());
@@ -31,73 +31,47 @@ app.use(passport.session());
 app.use('/', render);
 app.use('/api/user', user);
 app.use('/api/user/profile', member);
+app.use('/api/user/candidate', candidate);
 app.use('/api/user/match', match);
 app.use('/api/user/message', message)
+
+const io = socketio(server);
+initSocket(io)
 
 const PORT = 3000;
 const HOST = '0.0.0.0';
 
-// app.listen(PORT, HOST);
 server.listen(PORT, HOST);
 console.log('Server listen at port 3000...');
 
-const io = socketio(server);
 
 
-app.post('/history', async (req, res) => {
-    const {sender, receiver} = req.body;
-    // console.log(sender, receiver)
-    const sql = ["SELECT sender, receiver, message, time FROM message WHERE sender = ? AND receiver = ? OR sender = ? AND receiver = ?"];
-    const value = [[sender, receiver, receiver, sender]]
-    const data = await transaction(sql, value);
-    const message = data[0];
-    // console.log(message)
+// const users = [];
+// io.on('connection', (socket) => {
+//     console.log('a user connected');
+//     socket.on('user_connected', async (userId) => {
+//         console.log('prev=',users)
+//         const data = await transaction(["SELECT email FROM member WHERE id = ?"], [[userId]]);
+//         const {email} = data[0][0]
 
-    const senderData = await transaction(["SELECT image, username FROM member WHERE email = ?"], [[sender]])
-    const receiverData = await transaction(["SELECT image, username FROM member WHERE email = ?"], [[receiver]])
-    // console.log(imgData[0])
-    const imgResponse = {};
-    imgResponse[sender] = senderData[0][0];
-    imgResponse[receiver] = receiverData[0][0];
-    // console.log('re=',imgResponse)
-    res.status(200).json({'people': imgResponse, 'data': message})
-})
+//         users[email] = socket.id;
+//         console.log('users=',users)
+//     })
 
-app.post('/people', async (req, res) => {
-    const {userId, friendId} = req.body;
-    const data = await transaction(["SELECT username, email, image FROM member WHERE id = ?"], [[userId]]);
-    const {username, email, image} = data[0][0]
+//     socket.on('send_message', async (data) => {
+//         // console.log(data)
+//         const id = users[data.receiver];
+//         const imgData = await transaction(["SELECT image, username FROM member WHERE email = ?"], [[data.sender]]);
+//         const {image, username} = imgData[0][0];
+//         const response = formate.formateMessage(data, image, username)
 
-    const friendData = await transaction(["SELECT email FROM member WHERE id = ?"], [[friendId]]);
-    const friendEmail = friendData[0][0]['email']
+//         io.to(id).emit('new_message', response)
+//         await transaction(["INSERT INTO message (sender, receiver, message, time) VALUES (?, ?, ?, ?)"], [[data.sender, data.receiver, data.message, data.time]])
+//     })
 
-    const response = {
-        'sender': email,
-        'username': username,
-        'image': image,
-        'receiver': friendEmail
-    }
-    res.status(200).json({'success': true, 'data': response})
-})
-
-const users = [];
-io.on('connection', (socket) => {
-    console.log('a user connected');
-    socket.on('user_connected', async (userId, friendId) => {
-        const data = await transaction(["SELECT email FROM member WHERE id = ?"], [[userId]]);
-        const {email} = data[0][0]
-
-        users[email] = socket.id;
-    })
-
-    socket.on('send_message', async (data) => {
-        // console.log(data)
-        const id = users[data.receiver];
-        const imgData = await transaction(["SELECT image, username FROM member WHERE email = ?"], [[data.sender]]);
-        const {image, username} = imgData[0][0];
-        const response = formatMessage(data, image, username);
-
-        io.to(id).emit('new_message', response)
-        await transaction(["INSERT INTO message (sender, receiver, message, time) VALUES (?, ?, ?, ?)"], [[data.sender, data.receiver, data.message, data.time]])
-    })
-})
+//     socket.on('disconnect', () => {
+//         console.log('a user disconnected');
+//         // const user = socket.id;
+//         // console.log(user)
+//     })
+// })

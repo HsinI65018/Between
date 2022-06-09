@@ -9,12 +9,18 @@ const friendMenuController = (e) => {
 showMenu.addEventListener('click', friendMenuController);
 closeMenu.addEventListener('click', friendMenuController);
 
+
+////
+const main = document.querySelector('main');
+const loading = document.querySelector('.loading');
 const friendListContainer = document.querySelector('.friend-zone-container');
 const friendListController = async () => {
     const response = await fetch('/api/user/message/friend/list');
     const data = await response.json();
     const friendList = data.data
     // console.log(friendList)
+    main.style.display = 'flex';
+    loading.style.display = 'none';
     for(let i = 0; i < friendList.length; i++){
         const friendCard = document.createElement('div');
         const imgContainer = document.createElement('div');
@@ -112,7 +118,7 @@ const createChatRoom = async (e) => {
     const [username, friendId] = e.target.id.split('-');
     const unReadUser = document.querySelector(`#${username}-msg`);
 
-    const response = await fetch('/people', {
+    const response = await fetch('api/user/message/people', {
         method: "POST",
         body: JSON.stringify({
             "userId": userId,
@@ -143,10 +149,10 @@ const createChatRoom = async (e) => {
     unReadUser.classList.add('hide');
 
     // send connect
-    socket.emit('user_connected', userId, friendId)
+    socket.emit('user_connected', userId)
 
     // history message
-    const historyResponse = await fetch('/history', {
+    const historyResponse = await fetch('api/user/message/history', {
         method: "POST",
         body: JSON.stringify({
             "sender": sender,
@@ -159,7 +165,10 @@ const createChatRoom = async (e) => {
     const historyData = await historyResponse.json();
     const senderList = historyData.people;
     const messageList = historyData.data;
+    console.log(senderList)
+    console.log(messageList)
 
+    /////bugggggggggggg
     for(let i = 0; i < messageList.length; i++){
         const image = senderList[messageList[i]['sender']]['image'];
         const username = senderList[messageList[i]['sender']]['username'];
@@ -173,7 +182,6 @@ const msgForm = document.querySelector('.msg-form');
 const message = document.querySelector('.message-value');
 const sendMsgController = async (e) => {
     e.preventDefault();
-    // console.log(sender, receiver)
     const current = new Date();
     const time = current.toLocaleTimeString('en-US',{timeStyle: 'short'});
 
@@ -189,7 +197,6 @@ const sendMsgController = async (e) => {
     
     message.value = '';
     message.focus();
-    // sectionContainer.scrollTop = sectionContainer.scrollHeight;
 }
 msgForm.addEventListener('submit', sendMsgController)
 
@@ -215,7 +222,7 @@ socket.on('new_message', (data) => {
 })
 
 
-////
+//// search controller
 const search = document.querySelector('.search-input');
 const searchController = () => {
     const filter = search.value.toUpperCase()

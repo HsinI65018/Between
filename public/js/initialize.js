@@ -17,23 +17,21 @@ const checkSignInController = async () => {
             window.location = '/member';
         }
     }
-
-    const previousURL = document.referrer;
-    if(window.location.pathname !== '/match' && previousURL.includes('/match')){
-        const defaultResponse = await fetch('/api/user/match/update/default', {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        });
-        const defaultdata = await defaultResponse.json();
-    }
 }
 checkSignInController();
 
 
 //// init member page
+const body = document.querySelector('body');
+const header = document.querySelector('header');
+const main = document.querySelector('main');
+const loading = document.querySelector('.loading');
 const memberController = async (data) => {
+    body.style.display = 'block';
+    header.style.display = 'flex';
+    main.style.display = 'flex';
+    loading.style.display = 'none';
+
     const userData = data['data'];
     const userName = document.querySelector('.save-user-username');
     const userEmail = document.querySelector('.save-user-email');
@@ -61,14 +59,10 @@ const memberController = async (data) => {
         const profileData = data.data;
 
         const location = document.querySelector('.location-value');
-        // const facebook = document.querySelector('.fb-value');
-        // const instagram = document.querySelector('.ig-value');
         const introduction = document.querySelector('.intro-value');
         const condition = document.querySelector('.condition-value');
         
         location.value = profileData.location;
-        // facebook.value = profileData.facebook;
-        // instagram.value = profileData.instagram;
         introduction.value = profileData.introduction;
         condition.value = profileData.searchCondition;
 
