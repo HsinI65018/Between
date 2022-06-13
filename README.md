@@ -15,10 +15,12 @@
 - Password: lola
     
 #### Select MBIT type
-- User can edit information and choose there own MBIT type.
+- Users can upload one image as prifile photo.
+- Users can edit information and choose there own MBIT type.
+<img src="public/img/member.gif"/>
   
 #### Match with someone you like
-- User will only meet each person one time.
+- Users will only meet each person one time.
 - Click the arrow button to switch the person.
 - Click LIKE to wait for match success. 
 <img src="public/img/match.gif"/>
@@ -39,6 +41,7 @@
 
 
 ## System Architecture
+<img src="public/img/structure.png"/>
     
 ## Database Schema
 <img src="public/img/schema.png"/>
