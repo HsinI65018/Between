@@ -16,7 +16,7 @@
     
 #### Select MBIT type
 - Users can upload one image as prifile photo.
-- Users can edit information and choose there own MBIT type.
+- Users can edit information and choose there own MBTI type.
 <img src="public/img/member.gif"/>
   
 #### Match with someone you like
@@ -34,7 +34,7 @@
 - Use Json Web Token to achieve authentication.
 - Store user profile image in AWS S3 and use Cloud Front as CDN.
 - Use AWS RDS as Database and set index to optimize query.
-- Random same MBIT type person to user as first priority.
+- Random same MBTI type person to user as first priority.
 - Use Socket IO for real-time chat.
 - Use AWS ElastiCache to improve loading speed for user's friend list and chatting history.
 - Support mobile devises.
