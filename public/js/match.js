@@ -169,7 +169,6 @@ const matchController = async () => {
         showCandidateInfo();
     }
 }
-// setTimeout(async () => {await matchController();}, 2000)
 matchController();
 
 

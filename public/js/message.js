@@ -10,7 +10,7 @@ showMenu.addEventListener('click', friendMenuController);
 closeMenu.addEventListener('click', friendMenuController);
 
 
-////
+//// display friend list
 const body = document.querySelector('body');
 const article = document.querySelector('article');
 const main = document.querySelector('main');
@@ -20,7 +20,6 @@ const friendListController = async () => {
     const response = await fetch('/api/user/message/friend/list');
     const data = await response.json();
     const friendList = data.data
-    // console.log(friendList)
     
     loading.style.display = 'none';
 
@@ -71,7 +70,7 @@ const friendListController = async () => {
 friendListController();
 
 
-//// [start...]
+/// socket io
 const socket = io();
 
 const displayData = (image, sender, time, message) => {
@@ -177,10 +176,7 @@ const createChatRoom = async (e) => {
     const historyData = await historyResponse.json();
     const senderList = historyData.people;
     const messageList = historyData.data;
-    // console.log(senderList)
-    // console.log(messageList)
 
-    /////bugggggggggggg
     if(messageList !== null){
         for(let i = 0; i < messageList.length; i++){
             const image = senderList[messageList[i]['sender']]['image'];
@@ -222,9 +218,7 @@ msgForm.addEventListener('submit', sendMsgController)
 
 // show message
 socket.on('new_message', (data) => {
-    console.log(data);
     const currentUser = document.querySelector('.chat-name');
-    // console.log(currentUser.textContent)
     if(currentUser.textContent === data.sender){
         displayData(data.image, data.sender, data.time, data.message)
     }else{
@@ -233,8 +227,6 @@ socket.on('new_message', (data) => {
         unReadUser.textContent = counter;
         localStorage.setItem(data.sender, counter)
         unReadUser.classList.remove('hide')
-        console.log('other person=',data);
-
     }
     
 })

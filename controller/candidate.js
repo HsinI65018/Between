@@ -22,7 +22,6 @@ const randomCandidate = async (initData, page, table, email) => {
     for(let i = 0; i < randomList.length; i++){
         selectList.push(initData[randomList[i]].id);
     }
-    // console.log('select-list=', selectList)
 
     // update random peson to db
     await updateSkipCandidate(table, selectList, email);
@@ -57,7 +56,6 @@ const optController = async (email, sexOption, type) => {
     let responseData;
     const initData = await candidate.getOTPCandidateId(sexOption, type)
     const data = await candidate.getUserSkip('otp_skip', email)
-    // console.log('new-opt-skip=',data[0])
 
     if(data[0].length === 0){
         console.log('first time otp')
@@ -94,7 +92,6 @@ const getUnMatchCandidate = async (req, res) => {
     const email = getUserEmail(req);
     try {
         const data = await candidate.getUserUnMatch(email)
-        // console.log(data)
         const newList = [];
         data.map((item) => {
             newList.push(item.un_match)
@@ -127,14 +124,12 @@ const generateMatchCandidate = async (req, res) => {
     let responseData;
     let initData = await candidate.getSTPCandidateId(sexOption, type)
     const data = await candidate.getUserSkip('stp_skip', email)
-    // console.log('new-stp-skip=',data[0])
 
     let bisexualData = initData[0]
     if(sexOption === 'Bisexual'){
         bisexualData = bisexualData.filter((item) => item.id !== id)
         initData[0] = bisexualData
     }
-    // console.log('init-data=',initData[0])
 
     try {
         if(data[0].length === 0){
@@ -150,9 +145,7 @@ const generateMatchCandidate = async (req, res) => {
             for(let i = 0; i < data[0].length; i++){
                 newArr = newArr.filter((item) => item.id !== data[0][i]['skip'])
             }
-            // console.log('newArr=',newArr)
     
-            /// HERE!!!!
             if(newArr.length === 0){
                 console.log('no data');
                 console.log('start opt')
@@ -167,7 +160,6 @@ const generateMatchCandidate = async (req, res) => {
     
             responseData = await randomCandidate(newArr, 10, 'stp_skip', email)
         }
-        // console.log('responseData=', responseData)
         res.status(200).json(response.getResponseSuccess(responseData))
     } catch (error) {
         res.status(500).json(response.getServerError())

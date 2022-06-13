@@ -126,9 +126,7 @@ form > .sign-up-link, form > .sign-in-link{
 .hide-form{
     display: none;
 }
-
-
-/**/
+/* details */
 aside{
     width: auto;
     height: 250px;
@@ -262,11 +260,8 @@ aside > div{
 .message-container > img{
     width: 550px;
     height: 466px;
-    /* height: 700px; */
     object-fit: contain;
 }
-
-
 footer{
     height: 100px;
     align-items: center;
@@ -305,14 +300,10 @@ footer > .github{
     .slogan-container > div{
         display: none;
     }
-
-    aside > div{
-        width: auto
-    }
     .match-section{
         height: 1000px;
     }
-    .match-section > .main-match{
+    .match-section > .main-match, aside > div, .message-container{
        width: auto;
     }
     .match-item{
@@ -334,7 +325,7 @@ footer > .github{
         margin-left: 50px;
         margin-top: 100px;
     }
-    .match-banner{
+    .match-banner, .message-banner, .message-container > img{
         width: 400px;
     }
     .message-section{
@@ -343,15 +334,6 @@ footer > .github{
     .message-section > .main-message{
         width: auto;
         flex-direction: column;
-    }
-    .message-banner{
-        width: 400px;
-    }
-    .message-container{
-        width: auto;
-    }
-    .message-container > img{
-        width: 400px;
     }
 }
 @media(max-width: 560px){
@@ -370,7 +352,7 @@ footer > .github{
     .input-container, form > .google-btn, form > button{
         max-width: 80%;
     }
-    aside > div, .match-banner, .message-banner > div, .message-banner{
+    aside > div, .match-banner, .message-banner > div, .message-banner, .left-container > .type-container{
         max-width: 250px;
     }
     .message-section{
@@ -382,9 +364,6 @@ footer > .github{
     }
     .match-section{
         height: auto;
-    }
-    .left-container > .type-container{
-        width: 250px;
     }
     .type-container > .type, .heart{
         width: 50px;

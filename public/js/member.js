@@ -146,8 +146,6 @@ const saveProfileController = async (e) => {
             }
         }
         typeValue = prevType.join('');
-        // console.log(typeValue)
-        console.log('first')
         fetchUpdateAPI(typeValue);
     }else{
         if(profileData.location === location && profileData.introduction === introduction && typeValue === '' && sexValue === undefined){
@@ -171,8 +169,6 @@ const saveProfileController = async (e) => {
                 }
             }
             typeValue = prevType.join('');
-            // console.log(typeValue)
-            console.log('second')
             fetchUpdateAPI(typeValue);
         }
     }
@@ -216,7 +212,7 @@ const personalityController = (e)=> {
         selectType.classList.add('select');
         removeType.classList.remove('select');
     } catch (error) {
-        console.log('HI')
+        console.log(error)
     }
 }
 typeE.addEventListener('click', personalityController);

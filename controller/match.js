@@ -6,7 +6,7 @@ const Response = require('./response');
 const match = new Match();
 const response = new Response();
 
-//// add front-end like to pending
+
 const updatePending = async (req, res) => {
     let { pendingList } = req.body;
     const email = getUserEmail(req);
@@ -79,7 +79,6 @@ const getMatchSuccessInfo = async (req, res) => {
 }
 
 
-//// check if it is match
 const checkMatching = async (req, res) => {
     const email = getUserEmail(req);
     const { id } = await match.getUserId(email);

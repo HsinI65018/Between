@@ -23,7 +23,6 @@ body{
 }
 
 main{
-    /* display: flex; */
     display: none;
     margin-top: 50px;
 }
@@ -43,7 +42,6 @@ aside > .aside-tool-container{
     flex-direction: column;
     align-items: center;
     background-color: #E8E8E8E8;
-    /* padding-top: 18px; */
 }
 .aside-tool-container > .close> img{
     width: 25px;
@@ -85,7 +83,6 @@ aside > .aside-tool-container{
 
 /* friend zone */
 aside > .aside-friend-container{
-    /* padding: 0px 5px 0px 5px; */
     margin: 0px auto 0px auto;
 }
 /* search engine */
@@ -247,7 +244,6 @@ section > .section-footer{
 .section-footer > form{
     display: flex;
     justify-content: space-between;
-    /* width: calc(100vw - 400px - 80px); */
 }
 .section-footer > form > .input-container{
     width: calc(100vw - 450px - 80px - 120px);

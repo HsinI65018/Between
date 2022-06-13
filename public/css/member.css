@@ -18,7 +18,6 @@ body{
 header{
     margin-top: 50px;
     height: 320px;
-    /* display: flex; */
     display: none;
     align-items: center;
     justify-content: center;
@@ -28,7 +27,6 @@ header > .header-container{
     height: 200px;
     margin: 10px auto;
     display: flex;
-    /* display: none; */
     align-items: center;
     justify-content: space-between;
 }
@@ -64,7 +62,6 @@ header > .header-container{
     display: flex;
 }
 .info-container > .title{
-    /* width: 86px; */
     margin-right: 50px;
     display: flex;
     align-items: center;
@@ -111,7 +108,6 @@ header > .header-container{
 main{
     max-width: 1200px;
     margin: 3rem auto;
-    /* display: flex; */
     display: none;
     flex-direction: column;
     align-items: center;

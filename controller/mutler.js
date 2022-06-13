@@ -18,7 +18,6 @@ const uploadToS3 = multer({
         contentType: multerS3.AUTO_CONTENT_TYPE,
         contentDisposition: "inline",
         key: function(req, file, cb){
-            // console.log(file);
             cb(null, file.originalname);
         }
     })

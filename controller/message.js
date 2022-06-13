@@ -7,10 +7,6 @@ const message = new Message();
 const response = new Response();
 
 
-// client.hget("image", "nancy@gmail.com-leo@gmail.com", (err, result) => {
-//     const re = JSON.parse(result)
-//     console.log(re);
-// })
 const updateRedisFriend = async (email) => {
     const data = await message.getFriendList(email)
     const friendList = [];
