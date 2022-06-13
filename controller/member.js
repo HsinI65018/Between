@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const client = require('../model/redisConnection');
 const Member = require('../model/member');
 const Response = require('./response');
 
@@ -27,11 +28,18 @@ const getProfile = async (req, res) => {
 
 
 const editUserInfo = async (req, res) => {
-    const {type, data} = req.body;
+    const {type, data, id} = req.body;
     const email = getUserEmail(req);
     try {
-        if(type === 'username') await member.updateUserName(data, email);
-
+        if(type === 'username'){
+            await member.updateUserName(data, email);
+            const friends = await member.getUserFriend(id);
+            for(let i = 0; i < friends.length; i++){
+                client.hDel("friends", friends[i]['user'])
+                client.hDel("image", `${email}-${friends[i]['user']}`)
+                client.hDel("image", `${friends[i]['user']}-${email}`)
+            }
+        }
         if(type === 'password'){
             const salt = bcrypt.genSaltSync(10);
             const hash = bcrypt.hashSync(data, salt);
@@ -39,6 +47,7 @@ const editUserInfo = async (req, res) => {
         }
         res.status(200).json(response.getSuccess())
     } catch (error) {
+        console.log(error)
         res.status(500).json(response.getServerError())
     }
 };
@@ -49,10 +58,16 @@ const uploadImage = async (req, res) => {
     const email = getUserEmail(req);
     try {
         await member.updateUserImage(fileURL, email);
-        const data = await member.getUserStatus(email);
-        const userStatus = data[0]['userstatus'];
-        console.log(userStatus)
-        if(userStatus === 2) await member.updateUserStatus(1, email);
+        const data = await member.getUserInfo(email);
+        const { userstatus, id } = data[0][0]
+        if(userstatus === 2) await member.updateUserStatus(1, email);
+        if(userstatus === 1){
+            const friends = await member.getUserFriend(id);
+            for(let i = 0; i < friends.length; i++){
+                client.hDel("image", `${email}-${friends[i]['user']}`)
+                client.hDel("image", `${friends[i]['user']}-${email}`)
+            }
+        }
         res.status(200).json({"success": true, "imgURL": fileURL})
     } catch (error) {
         res.status(500).json(response.getServerError())

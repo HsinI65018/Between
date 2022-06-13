@@ -70,7 +70,7 @@ const signUpController = async (e) => {
     const response = await fetch('/api/user/signup', {
         method: "POST",
         body: JSON.stringify({
-            "username":signUpName,
+            "username":signUpName.trim(),
             "email": signUpEmail,
             "password": signUpPassword
         }),
@@ -87,3 +87,9 @@ const signUpController = async (e) => {
     }
 }
 signUpForm.addEventListener('submit', signUpController);
+
+const startBtn = document.querySelector('.start');
+const startController = () => {
+    window.scrollTo(0, 0);
+}
+startBtn.addEventListener('click', startController)

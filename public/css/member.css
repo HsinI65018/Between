@@ -119,12 +119,13 @@ main{
 }
 /* profile btn */
 main > .btn-container{
+    width: 800px;
     margin: auto;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-evenly;
 }
-.btn-container > button{
+.btn-container > button, .btn-container > a{
     width: 200px;
     height: 50px;
     background: #B6244F;
@@ -132,6 +133,10 @@ main > .btn-container{
     border: none;
     color: #FFFFFF;
     cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 /* profile content */
 main > .profile-container{
@@ -197,7 +202,12 @@ form{
 .personality-container > .describe{
     margin-bottom: 50px;
 }
-.personality-container > .describe > p, .describe >p> b{
+.describe > p > b {
+    font-weight: 700;
+    color: #B6244F;
+    font-size: 25px;
+}
+.personality-container > .describe > p{
     font-size: 16px;
 }
 .personality-container > .type-container{

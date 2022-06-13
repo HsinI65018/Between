@@ -52,6 +52,7 @@ const friendListController = async () => {
             imgContainer.setAttribute('class', 'img-container');
             unReadMsg.classList.add('un-read-msg')
             unReadMsg.setAttribute('id', `${friendList[i]['username']}-msg`)
+            unReadMsg.setAttribute('id', `${friendList[i]['username']}`)
             friendInfo.setAttribute('class', 'friend-info');
     
             imgContainer.appendChild(image);
@@ -59,7 +60,7 @@ const friendListController = async () => {
             friendInfo.appendChild(unReadMsg)
     
             friendCard.setAttribute('class', 'friend-card')
-            friendCard.setAttribute('id', `${friendList[i]['username']}-${friendList[i]['id']}`);
+            friendCard.setAttribute('id', `${friendList[i]['username']} id=${friendList[i]['id']}`);
             friendCard.appendChild(imgContainer);
             friendCard.appendChild(friendInfo);
     
@@ -124,8 +125,10 @@ const friendCardContainer = document.querySelector('.friend-zone-container');
 const chatUser = document.querySelector('.chat-name');
 const createChatRoom = async (e) => {
     const userId = document.querySelector('.profile-icon').id;
-    const [username, friendId] = e.target.id.split('-');
-    const unReadUser = document.querySelector(`#${username}-msg`);
+    const [username, friendId] = e.target.id.split(' id=');
+
+    const unReadUser = document.getElementById(`${username}`)
+    
 
     const response = await fetch('api/user/message/people', {
         method: "POST",
@@ -226,7 +229,6 @@ socket.on('new_message', (data) => {
         displayData(data.image, data.sender, data.time, data.message)
     }else{
         const unReadUser = document.querySelector(`#${data.sender}-msg`);
-        // console.log(unReadUser)
         const counter = Number(unReadUser.textContent) + 1;
         unReadUser.textContent = counter;
         localStorage.setItem(data.sender, counter)
@@ -257,8 +259,12 @@ search.addEventListener('keyup', searchController)
 
 
 //// emoji controller
+const wrapper = document.querySelector('.wrapper');
 const emoji = document.querySelector('.emoji');
-const picker = new EmojiButton();
+const picker = new EmojiButton({
+    position: 'bottom-end'
+});
+
 picker.on('emoji', selection => {
   document.querySelector('.message-value').value += selection;
 });

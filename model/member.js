@@ -15,9 +15,16 @@ class Member{
         return data[0]
     }
 
-    async getUserStatus(email) {
-        const sql = ["SELECT userstatus FROM member WHERE email = ?"];
+    async getUserInfo(email) {
+        const sql = ["SELECT userstatus, id FROM member WHERE email = ?"];
         const value = [[email]];
+        const data = await transaction(sql ,value)
+        return data
+    }
+
+    async getUserFriend(id) {
+        const sql = ["SELECT user FROM friend WHERE friend = ?"];
+        const value = [[id]];
         const data = await transaction(sql ,value)
         return data[0]
     }

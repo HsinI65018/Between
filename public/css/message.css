@@ -292,7 +292,6 @@ section > .section-footer{
 .hide{
     display: none;
 }
-
 /* RWD */
 @media(max-width: 900px){
     .show-friend{

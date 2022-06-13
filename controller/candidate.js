@@ -22,7 +22,7 @@ const randomCandidate = async (initData, page, table, email) => {
     for(let i = 0; i < randomList.length; i++){
         selectList.push(initData[randomList[i]].id);
     }
-    console.log('select-list=', selectList)
+    // console.log('select-list=', selectList)
 
     // update random peson to db
     await updateSkipCandidate(table, selectList, email);
@@ -94,7 +94,7 @@ const getUnMatchCandidate = async (req, res) => {
     const email = getUserEmail(req);
     try {
         const data = await candidate.getUserUnMatch(email)
-        console.log(data)
+        // console.log(data)
         const newList = [];
         data.map((item) => {
             newList.push(item.un_match)

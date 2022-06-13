@@ -38,8 +38,6 @@ const getMatchSuccessInfo = async (req, res) => {
                 "image": image
             }
 
-
-            ///////////
             const friendData = await client.hGet("friends", email);
             const friendList = JSON.parse(friendData);
 
@@ -68,8 +66,6 @@ const getMatchSuccessInfo = async (req, res) => {
             imgResponse[email] = senderData[0];
             imgResponse[matchData[0]['email']] = receiverData[0];
             client.hSet("image", `${email}-${matchData[0]['email']}`, JSON.stringify(imgResponse));
-            ///////
-
 
             await match.deleteUserMatch(email, data[0][0]['matched'])
             res.status(200).json(response.getResponseSuccess(responseData))
@@ -116,6 +112,7 @@ const checkMatching = async (req, res) => {
         res.status(500).json(response.getServerError())
     }
 }
+
 
 module.exports = {
     updatePending,
