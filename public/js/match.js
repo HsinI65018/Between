@@ -77,11 +77,9 @@ const matchPerson = document.querySelector('.person-1 > img');
 const user = document.querySelector('.person-2 > img');
 const nextBtn = document.querySelector('.next-btn');
 const checkMatchingController = async () => {
-    console.log('start match!!!!!')
     const response = await fetch('/api/user/match');
     const data = await response.json();
     const matchData = data.data;
-    console.log(data)
     if(matchData !== null){
         clearInterval(autoMatching);
         showMatch.classList.remove('hide');
@@ -156,8 +154,6 @@ const introduction = document.querySelector('.introduction');
 const matchController = async () => {
     const response = await fetch('/api/user/candidate');
     const data = await response.json();
-    console.log(data.data)
-    console.log(data.data.length)
 
     if(data['data'].length === 0){
         await generateMatchCandidate();
@@ -185,7 +181,6 @@ const generateMatchCandidate = async () => {
     if(data['data'] === null){
         clearInterval(autoGenerate);
         setTimeout(() => {
-            console.log('start again!')
             startGenerateCandidate()
         }, 20000)
     }else{

@@ -4,7 +4,6 @@ const errorMessage = document.querySelector('.error > .message');
 const checkSignInController = async () => {
     const response = await fetch('/api/user/');
     const data = await response.json();
-    console.log(data)
     if(data.success === false) window.location = '/';
 
     if(window.location.pathname !== '/'){
