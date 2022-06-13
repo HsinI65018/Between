@@ -23,7 +23,7 @@ class Candidate {
     }
 
     async getUserUnMatch(email) {
-        const sql = ["SELECT un_match FROM un_match WHERE user = ?"];
+        const sql = ["SELECT un_match FROM un_match WHERE user = ? ORDER BY un_match_id LIMIT 10"];
         const value = [[email]];
         const data = await transaction(sql, value)
         return data[0]

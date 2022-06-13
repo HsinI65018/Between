@@ -6,7 +6,7 @@ const Response = require('./response');
 const match = new Match();
 const response = new Response();
 
-//// add front-end like to pending
+
 const updatePending = async (req, res) => {
     let { pendingList } = req.body;
     const email = getUserEmail(req);
@@ -38,9 +38,7 @@ const getMatchSuccessInfo = async (req, res) => {
                 "image": image
             }
 
-
-            ///////////
-            const friendData = await client.hget("friends", email);
+            const friendData = await client.hGet("friends", email);
             const friendList = JSON.parse(friendData);
 
             if(friendList === null){
@@ -51,14 +49,14 @@ const getMatchSuccessInfo = async (req, res) => {
                         "image": matchData[0]['image']
                     }
                 ]
-                client.hset("friends", email, JSON.stringify(initFriendList))
+                client.hSet("friends", email, JSON.stringify(initFriendList))
             }else{
                 friendList.push({
                     "id": data[0][0]['matched'],
                     "username": matchData[0]['username'],
                     "image": matchData[0]['image']
                 })
-                client.hset("friends", email, JSON.stringify(friendList));
+                client.hSet("friends", email, JSON.stringify(friendList));
             }
             
             const senderData = await match.getHistoryUser(email);
@@ -67,9 +65,7 @@ const getMatchSuccessInfo = async (req, res) => {
             const imgResponse = {};
             imgResponse[email] = senderData[0];
             imgResponse[matchData[0]['email']] = receiverData[0];
-            client.hset("image", `${email}-${matchData[0]['email']}`, JSON.stringify(imgResponse));
-            ///////
-
+            client.hSet("image", `${email}-${matchData[0]['email']}`, JSON.stringify(imgResponse));
 
             await match.deleteUserMatch(email, data[0][0]['matched'])
             res.status(200).json(response.getResponseSuccess(responseData))
@@ -83,7 +79,6 @@ const getMatchSuccessInfo = async (req, res) => {
 }
 
 
-//// check if it is match
 const checkMatching = async (req, res) => {
     const email = getUserEmail(req);
     const { id } = await match.getUserId(email);
@@ -116,6 +111,7 @@ const checkMatching = async (req, res) => {
         res.status(500).json(response.getServerError())
     }
 }
+
 
 module.exports = {
     updatePending,

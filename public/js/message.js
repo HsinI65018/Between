@@ -10,7 +10,9 @@ showMenu.addEventListener('click', friendMenuController);
 closeMenu.addEventListener('click', friendMenuController);
 
 
-////
+//// display friend list
+const body = document.querySelector('body');
+const article = document.querySelector('article');
 const main = document.querySelector('main');
 const loading = document.querySelector('.loading');
 const friendListContainer = document.querySelector('.friend-zone-container');
@@ -18,50 +20,57 @@ const friendListController = async () => {
     const response = await fetch('/api/user/message/friend/list');
     const data = await response.json();
     const friendList = data.data
-    // console.log(friendList)
-    main.style.display = 'flex';
+    
     loading.style.display = 'none';
-    for(let i = 0; i < friendList.length; i++){
-        const friendCard = document.createElement('div');
-        const imgContainer = document.createElement('div');
-        const image = document.createElement('img');
-        const friendInfo = document.createElement('div');
-        const friendName = document.createElement('div');
-        const unReadMsg = document.createElement('div');
 
-        const counter = localStorage.getItem(friendList[i]['username']);
-        if(counter){
-            unReadMsg.textContent = counter;
-        }else{
-            unReadMsg.textContent = 0;
-            unReadMsg.classList.add('hide')
+    if(friendList === null){
+        article.style.display = 'flex';
+    }else{
+        body.style.justifyContent = 'initial'
+        main.style.display = 'flex';
+        for(let i = 0; i < friendList.length; i++){
+            const friendCard = document.createElement('div');
+            const imgContainer = document.createElement('div');
+            const image = document.createElement('img');
+            const friendInfo = document.createElement('div');
+            const friendName = document.createElement('div');
+            const unReadMsg = document.createElement('div');
+    
+            const counter = localStorage.getItem(friendList[i]['username']);
+            if(counter){
+                unReadMsg.textContent = counter;
+            }else{
+                unReadMsg.textContent = 0;
+                unReadMsg.classList.add('hide')
+            }
+            image.src = friendList[i]['image'];
+            friendName.textContent = friendList[i]['username'];
+            friendName.setAttribute('class', 'name')
+            friendName.classList.add('name-list')
+    
+            imgContainer.setAttribute('class', 'img-container');
+            unReadMsg.classList.add('un-read-msg')
+            unReadMsg.setAttribute('id', `${friendList[i]['username']}-msg`)
+            unReadMsg.setAttribute('id', `${friendList[i]['username']}`)
+            friendInfo.setAttribute('class', 'friend-info');
+    
+            imgContainer.appendChild(image);
+            friendInfo.appendChild(friendName);
+            friendInfo.appendChild(unReadMsg)
+    
+            friendCard.setAttribute('class', 'friend-card')
+            friendCard.setAttribute('id', `${friendList[i]['username']} id=${friendList[i]['id']}`);
+            friendCard.appendChild(imgContainer);
+            friendCard.appendChild(friendInfo);
+    
+            friendListContainer.appendChild(friendCard)
         }
-        image.src = friendList[i]['image'];
-        friendName.textContent = friendList[i]['username'];
-        friendName.setAttribute('class', 'name')
-        friendName.classList.add('name-list')
-
-        imgContainer.setAttribute('class', 'img-container');
-        unReadMsg.classList.add('un-read-msg')
-        unReadMsg.setAttribute('id', `${friendList[i]['username']}-msg`)
-        friendInfo.setAttribute('class', 'friend-info');
-
-        imgContainer.appendChild(image);
-        friendInfo.appendChild(friendName);
-        friendInfo.appendChild(unReadMsg)
-
-        friendCard.setAttribute('class', 'friend-card')
-        friendCard.setAttribute('id', `${friendList[i]['username']}-${friendList[i]['id']}`);
-        friendCard.appendChild(imgContainer);
-        friendCard.appendChild(friendInfo);
-
-        friendListContainer.appendChild(friendCard)
     }
 }
 friendListController();
 
 
-//// [start...]
+/// socket io
 const socket = io();
 
 const displayData = (image, sender, time, message) => {
@@ -115,8 +124,10 @@ const friendCardContainer = document.querySelector('.friend-zone-container');
 const chatUser = document.querySelector('.chat-name');
 const createChatRoom = async (e) => {
     const userId = document.querySelector('.profile-icon').id;
-    const [username, friendId] = e.target.id.split('-');
-    const unReadUser = document.querySelector(`#${username}-msg`);
+    const [username, friendId] = e.target.id.split(' id=');
+
+    const unReadUser = document.getElementById(`${username}`)
+    
 
     const response = await fetch('api/user/message/people', {
         method: "POST",
@@ -165,14 +176,13 @@ const createChatRoom = async (e) => {
     const historyData = await historyResponse.json();
     const senderList = historyData.people;
     const messageList = historyData.data;
-    console.log(senderList)
-    console.log(messageList)
 
-    /////bugggggggggggg
-    for(let i = 0; i < messageList.length; i++){
-        const image = senderList[messageList[i]['sender']]['image'];
-        const username = senderList[messageList[i]['sender']]['username'];
-        displayData(image, username, messageList[i]['time'], messageList[i]['message'])
+    if(messageList !== null){
+        for(let i = 0; i < messageList.length; i++){
+            const image = senderList[messageList[i]['sender']]['image'];
+            const username = senderList[messageList[i]['sender']]['username'];
+            displayData(image, username, messageList[i]['time'], messageList[i]['message'])
+        }
     }
 }
 friendCardContainer.addEventListener('click', createChatRoom)
@@ -192,6 +202,11 @@ const sendMsgController = async (e) => {
             message: message.value,
             time: time
         })
+
+        socket.emit('redis', {
+            sender: sender,
+            receiver: receiver
+        })
     }
     displayData(image, userName, time, message.value)
     
@@ -203,20 +218,15 @@ msgForm.addEventListener('submit', sendMsgController)
 
 // show message
 socket.on('new_message', (data) => {
-    console.log(data);
     const currentUser = document.querySelector('.chat-name');
-    console.log(currentUser.textContent)
     if(currentUser.textContent === data.sender){
         displayData(data.image, data.sender, data.time, data.message)
     }else{
         const unReadUser = document.querySelector(`#${data.sender}-msg`);
-        // console.log(unReadUser)
         const counter = Number(unReadUser.textContent) + 1;
         unReadUser.textContent = counter;
         localStorage.setItem(data.sender, counter)
         unReadUser.classList.remove('hide')
-        console.log('other person=',data);
-
     }
     
 })
@@ -241,8 +251,12 @@ search.addEventListener('keyup', searchController)
 
 
 //// emoji controller
+const wrapper = document.querySelector('.wrapper');
 const emoji = document.querySelector('.emoji');
-const picker = new EmojiButton();
+const picker = new EmojiButton({
+    position: 'bottom-end'
+});
+
 picker.on('emoji', selection => {
   document.querySelector('.message-value').value += selection;
 });

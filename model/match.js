@@ -8,7 +8,7 @@ class Match{
         const data = await transaction(sql ,value)
         return data[0]
     }
-    ////
+    
     async getUserImage(email) {
         const sql = ["SELECT image FROM member WHERE email = ?"];
         const value = [[email]];

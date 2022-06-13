@@ -109,6 +109,9 @@ nav > .nav-container{
     text-align: center;
     margin-bottom: 15px;
 }
+.error > .message > b{
+    color: #B6244F;
+}
 .error > button{
     width: 200px;
     height: 30px;

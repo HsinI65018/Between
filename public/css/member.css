@@ -18,7 +18,6 @@ body{
 header{
     margin-top: 50px;
     height: 320px;
-    /* display: flex; */
     display: none;
     align-items: center;
     justify-content: center;
@@ -28,7 +27,6 @@ header > .header-container{
     height: 200px;
     margin: 10px auto;
     display: flex;
-    /* display: none; */
     align-items: center;
     justify-content: space-between;
 }
@@ -64,7 +62,6 @@ header > .header-container{
     display: flex;
 }
 .info-container > .title{
-    /* width: 86px; */
     margin-right: 50px;
     display: flex;
     align-items: center;
@@ -111,7 +108,6 @@ header > .header-container{
 main{
     max-width: 1200px;
     margin: 3rem auto;
-    /* display: flex; */
     display: none;
     flex-direction: column;
     align-items: center;
@@ -119,12 +115,13 @@ main{
 }
 /* profile btn */
 main > .btn-container{
+    width: 800px;
     margin: auto;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-evenly;
 }
-.btn-container > button{
+.btn-container > button, .btn-container > a{
     width: 200px;
     height: 50px;
     background: #B6244F;
@@ -132,6 +129,10 @@ main > .btn-container{
     border: none;
     color: #FFFFFF;
     cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 /* profile content */
 main > .profile-container{
@@ -197,7 +198,12 @@ form{
 .personality-container > .describe{
     margin-bottom: 50px;
 }
-.personality-container > .describe > p, .describe >p> b{
+.describe > p > b {
+    font-weight: 700;
+    color: #B6244F;
+    font-size: 25px;
+}
+.personality-container > .describe > p{
     font-size: 16px;
 }
 .personality-container > .type-container{
@@ -206,18 +212,25 @@ form{
     flex-wrap: wrap;
 }
 .type-container > #type{
-    width: auto;
+    width: 370px;
+    height: auto;
     padding: 10px 10px 10px 10px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: space-around;
     align-items: center;
-    justify-content: center;
     margin-bottom: 30px;
     cursor: pointer;
-    margin-right: 2px;
+    margin-right: 10px;
+}
+.hide-hr{
+    width: 100%;
+    margin-bottom: 30px;
+    display: block;
+    border: 1px solid #E8E8E8;
 }
 #type:hover, .select{
-    background-color: #E8E8E8E8;
+    background-color: #E8E8E8;
     border-radius: 10px;
 }
 #type > .type-block{
@@ -242,10 +255,14 @@ form{
     font-size: 20px;
 }
 #type > .content{
-    width: 170px;
-    height: 210px;
+    width: auto;
     text-align: left;
     font-size: 17px;
+
+    width: auto;
+    height: auto;
+    overflow: scroll;
+    margin-left: 30px;
 }
 .type-block, .type-block > .latter, .type-block > .title, #type > .content{
     pointer-events: none;
@@ -294,9 +311,7 @@ form{
     border: none;
     color: #FFFFFF;
     cursor: pointer;
-}
-.hide-hr{
-    display: none;
+    margin-top: 40px;
 }
 
 /* RWD */
@@ -347,22 +362,7 @@ form{
         justify-content: space-between;
     }
     .type-container > #type{
-        height: auto;
-        flex-direction: row;
-        justify-content: space-around;
-        align-items: center;
         width: 100%;
-    }
-    #type > .content{
-        width: auto;
-        height: auto;
-        overflow: scroll;
-        margin-left: 30px;
-    }
-    .hide-hr{
-        width: 100%;
-        margin-bottom: 30px;
-        display: block;
     }
 }
 @media(max-width: 420px){

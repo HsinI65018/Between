@@ -1,8 +1,9 @@
 //// check sigin status
+const errorContainer = document.querySelector('.error-container');
+const errorMessage = document.querySelector('.error > .message');
 const checkSignInController = async () => {
     const response = await fetch('/api/user/');
     const data = await response.json();
-    console.log(data)
     if(data.success === false) window.location = '/';
 
     if(window.location.pathname !== '/'){
@@ -15,6 +16,10 @@ const checkSignInController = async () => {
     if(data.data.userstatus !== 1){
         if(window.location.pathname === '/match' || window.location.pathname === '/message'){
             window.location = '/member';
+        }
+        if(data.data.userstatus === 2){
+            errorContainer.classList.remove('hide');
+            errorMessage.textContent = 'Oops, you forget to upload the photo.'
         }
     }
 }
@@ -39,6 +44,7 @@ const memberController = async (data) => {
     const userPassword = document.querySelector('.register-pwd');
     const profile = document.querySelector('.profile-container ');
     const editBtn = document.querySelector('.edit-profile');
+    const startMatchBtn = document.querySelector('.start-match');
 
     userName.textContent = userData.username;
     userEmail.textContent = userData.email;
@@ -52,7 +58,8 @@ const memberController = async (data) => {
 
     if(userData.userstatus === 0){
         profile.classList.remove('hide');
-        editBtn.classList.add('hide');
+        editBtn.style.display = 'none';
+        startMatchBtn.style.display = 'none';
     }else{
         const response = await fetch('/api/user/profile');
         const data = await response.json();
@@ -60,11 +67,9 @@ const memberController = async (data) => {
 
         const location = document.querySelector('.location-value');
         const introduction = document.querySelector('.intro-value');
-        const condition = document.querySelector('.condition-value');
         
         location.value = profileData.location;
         introduction.value = profileData.introduction;
-        condition.value = profileData.searchCondition;
 
         const sex = document.querySelector(`.sex-${profileData.sex[0]}`);
         const typeOne = document.querySelector(`.type-${profileData.type[0]}`);

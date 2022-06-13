@@ -77,11 +77,9 @@ const matchPerson = document.querySelector('.person-1 > img');
 const user = document.querySelector('.person-2 > img');
 const nextBtn = document.querySelector('.next-btn');
 const checkMatchingController = async () => {
-    console.log('start match!!!!!')
     const response = await fetch('/api/user/match');
     const data = await response.json();
     const matchData = data.data;
-    console.log(data)
     if(matchData !== null){
         clearInterval(autoMatching);
         showMatch.classList.remove('hide');
@@ -156,7 +154,6 @@ const introduction = document.querySelector('.introduction');
 const matchController = async () => {
     const response = await fetch('/api/user/candidate');
     const data = await response.json();
-    console.log(data)
 
     if(data['data'].length === 0){
         await generateMatchCandidate();
@@ -168,7 +165,6 @@ const matchController = async () => {
         showCandidateInfo();
     }
 }
-// setTimeout(async () => {await matchController();}, 2000)
 matchController();
 
 
@@ -185,7 +181,6 @@ const generateMatchCandidate = async () => {
     if(data['data'] === null){
         clearInterval(autoGenerate);
         setTimeout(() => {
-            console.log('start again!')
             startGenerateCandidate()
         }, 20000)
     }else{
@@ -210,19 +205,37 @@ startGenerateCandidate();
 
 
 //// next button controller
-const imgContainer = document.querySelector('.test');
+const imgBackgroung = document.querySelector('.img-container');
+const imgContainer = document.querySelector('.cover');
 const errorContainer = document.querySelector('.error-container');
 const errorMessage = document.querySelector('.error > .message');
 const nextPersonController = async () => {
     if(dataList.length === 0){
-        errorContainer.classList.remove('hide');
-        errorMessage.textContent = 'Oops, something went wrong. You seem playing to fast. Click the button to refresh the page.'
+        imgBackgroung.style.backgroundImage = 'url(https://d1dd0qmbf0xvcr.cloudfront.net/icon/loading.gif)';
+        imgBackgroung.style.backgroundSize = 'auto';
+        infoContainer.style.display = 'none';
+        nextBtn.classList.add('hide');
+
+        const response = await fetch('/api/user/candidate');
+        const data = await response.json();
+
+        if(data['data'].length === 0){
+            errorContainer.classList.remove('hide');
+            errorMessage.textContent = 'Oops, something went wrong. You seem playing to fast. Click the button to refresh the page.'
+        }else{
+            for(let i = 0; i < data['data'].length; i++){
+                dataList.push(data['data'][i])
+            }
+            showCandidateInfo();
+        }
     }else{
         showCandidateInfo();
     }
 }
-console.log(window.screen.width)
 nextBtn.addEventListener('click', nextPersonController);
+
+
+//// for mobile
 if(window.screen.width < 800){
     imgContainer.classList.remove('hide');
     imgContainer.addEventListener('touchstart', nextPersonController);
