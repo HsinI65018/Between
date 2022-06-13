@@ -9,30 +9,34 @@
 </div>
 
 ## Demo
-<div>
-  <h4>Website URL : https://between.website/<h4>
-  <h4>Test account</h4>
-  <ul>
-    <li>Email: lola@gmail.com</li>
-    <li>Password: lola</li>
-  </ul>  
-</div>
+#### Website URL : https://between.website/
+#### Test account
+- Email: lola@gmail.com
+- Password: lola
     
-## Main Features
-#### Login
-- Use 
-
 #### Select MBIT type
-- 
-<img src="public/img/member.gif"/>    
-    
-#### Match
-- 
+- User can edit information and choose there own MBIT type.
+  
+#### Match with someone you like
+- User will only meet each person one time.
+- Click the arrow button to switch the person.
+- Click LIKE to wait for match success. 
 <img src="public/img/match.gif"/>
     
-#### Chat
-- 
-<img src="public/img/chat.gif"/>      
+#### Real-time chat
+- Users can chat with friends when there is a match success.    
+<img src="public/img/chat.gif"/>     
+    
+## Main Features
+- Support signup locally and Google OAuth 2.0.
+- Use Json Web Token to achieve authentication.
+- Store user profile image in AWS S3 and use Cloud Front as CDN.
+- Use AWS RDS as Database and set index to optimize query.
+- Random same MBIT type person to user as first priority.
+- Use Socket IO for real-time chat.
+- Use AWS ElastiCache to improve loading speed for user's friend list and chatting history.
+- Support mobile devises.
+
 
 ## System Architecture
     
@@ -75,3 +79,7 @@
 - CSS
 - JavaScript
 - AJAX
+
+## Contact
+- Hsin-I Chang
+- Email: nancy65018@gmail.com
