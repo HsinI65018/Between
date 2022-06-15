@@ -77,6 +77,9 @@
 - bcrypt
 - multer
 
+#### Design Pattern
+- MVC
+
 ## Front-End Technique
 - HTML
 - CSS
