@@ -37,6 +37,8 @@
 - Random same MBTI type person to user as first priority.
 - Use Socket IO for real-time chat.
 - Use AWS ElastiCache to improve loading speed for user's friend list and chatting history.
+- Convert domain name to IP with AWS Route 53.
+- Use Nginx to redirect HTTP to HTTPS.
 - Support mobile devises.
 
 
